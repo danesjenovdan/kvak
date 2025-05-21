@@ -15,3 +15,4 @@ To start the application, simply run:
 
 ```bash
 docker compose up
+```

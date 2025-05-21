@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+from django.utils.log import DEFAULT_LOGGING
+
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
@@ -20,6 +22,8 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
+# Log to console even when debug is off
+DEFAULT_LOGGING["handlers"]["console"]["filters"] = []
 
 # Application definition
 
@@ -87,8 +91,12 @@ WSGI_APPLICATION = "kvak.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": os.getenv("DJANGO_DATABASE_HOST", "db"),
+        "NAME": os.getenv("DJANGO_DATABASE_NAME", "kvak"),
+        "USER": os.getenv("DJANGO_DATABASE_USERNAME", "kvak"),
+        "PASSWORD": os.getenv("DJANGO_DATABASE_PASSWORD", "changeme"),
+        "PORT": os.getenv("DJANGO_DATABASE_PORT", "5432"),
     }
 }
 
