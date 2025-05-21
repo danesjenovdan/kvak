@@ -1,12 +1,10 @@
 from django.conf import settings
-from django.urls import include, path
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-
-from wagtail.admin import urls as wagtailadmin_urls
+from django.urls import include, path
 from wagtail import urls as wagtail_urls
+from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
-
 
 urlpatterns = [
     path("django-admin/", admin.site.urls),
@@ -30,7 +28,6 @@ urlpatterns = urlpatterns + [
     # path("login/", auth_views.LoginView.as_view(), name="login"),
     # path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("accounts/", include("django.contrib.auth.urls")),
-
     path("", include(wagtail_urls)),
     # Alternatively, if you want Wagtail pages to be served from a subpath
     # of your site, rather than the site root:
