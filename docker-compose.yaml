@@ -7,11 +7,14 @@ services:
     build: ./kvak
     working_dir: /app
     command: ./manage.py runserver 0.0.0.0:8000
+    user: "wagtail:wagtail"
     volumes:
       - ./kvak:/app:delegated,rw
+      - ./kvak/ipython_config.py:/tmp/ipython/profile_default/ipython_config.py:delegated,rw
     ports:
       - "8000:8000"
     environment:
+      DJANGO_RUNSERVER_HIDE_WARNING: "true"
       DJANGO_DATABASE_HOST: db
       DJANGO_DATABASE_NAME: kvak
       DJANGO_DATABASE_USERNAME: kvak
