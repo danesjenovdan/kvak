@@ -25,7 +25,7 @@ This project check python formatting in a GitHub Action on push to `main`.
 
 #### Manually running checks
 
-- make sure you have `black` and `isort` installed (or install from requirements.txt in a virtual env)
+- make sure you have `black` and `isort` installed (or install from `kvak/requirements.txt` in a virtual env)
 - run `./check_formatting.sh` to run the checks
 - you can run `./check_formatting.sh --fix` to automatically format files
 
