@@ -4,14 +4,14 @@ on:
     branches:
       - "main"
 jobs:
-  pull-requests:
+  pull_requests:
     name: Automatic PRs
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: pull-request-k8s
+      - name: Pull request to k8s
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: "k8s"
