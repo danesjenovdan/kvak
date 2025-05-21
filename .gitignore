@@ -1,0 +1,5 @@
+# kustomize secrets
+/kustomize/secrets.yaml
+
+# db dump
+*.dump
