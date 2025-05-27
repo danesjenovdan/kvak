@@ -1,0 +1,138 @@
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  cursor: pointer;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+  line-height: 1.2;
+}
+
+/*
+  Generic Styles
+*/
+:root {
+  /* colors */
+  --color-green: #7ec242;
+  --color-green-lighter: #c1e961;
+  --color-green-lightest: #e3f9b1;
+  --color-green-barely: #fcfff4;
+  --color-purple: #6258b9;
+  --color-purple-lighter: #b8b3ea;
+  --color-purple-lightest: red;
+  --color-purple-barely: #f8f7ff;
+
+  /* default theme color */
+  --th-color: var(--color-green);
+  --th-color-lighter: var(--color-green-lighter);
+  --th-color-lightest: var(--color-green-lightest);
+  --th-color-barely: var(--color-green-barely);
+
+  /* font and font metrics */
+  --font-family: "wf-anek-latin", sans-serif;
+  --fm-units-per-em: 2000;
+  --fm-capital-height: 1278;
+  --fm-ascender: 1800;
+  --fm-descender: 400;
+  --fm-line-gap: 0;
+  --fm-line-height: calc(
+    (var(--fm-ascender) + var(--fm-descender) + var(--fm-line-gap))
+  );
+
+  /* misc */
+  --gutter: 1.5rem;
+}
+
+body {
+  font-family: var(--font-family);
+}
+
+.bg-green-lightest {
+  background-color: var(--color-green-lightest);
+}
+
+.bg-purple-barely {
+  background-color: var(--color-purple-barely);
+}
+
+.th-green {
+  --th-color: var(--color-green);
+  --th-color-lighter: var(--color-green-lighter);
+  --th-color-lightest: var(--color-green-lightest);
+  --th-color-barely: var(--color-green-barely);
+}
+
+.th-purple {
+  --th-color: var(--color-purple);
+  --th-color-lighter: var(--color-purple-lighter);
+  --th-color-lightest: var(--color-purple-lightest);
+  --th-color-barely: var(--color-purple-barely);
+}
+
+.container {
+  max-width: calc(80rem + 2 * var(--gutter));
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}

@@ -1,0 +1,39 @@
+.landing-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding-inline: 1.5rem;
+
+  h2 {
+    position: relative;
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: calc(var(--fm-line-height) / var(--fm-units-per-em));
+    z-index: 1;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      --top: calc(
+        (var(--fm-ascender) - var(--fm-capital-height)) / var(--fm-units-per-em) *
+          1em - 0.05em
+      );
+      --bottom: calc(
+        var(--fm-descender) / var(--fm-units-per-em) * 1em - 0.05em
+      );
+      top: var(--top);
+      bottom: var(--bottom);
+      z-index: -1;
+      display: block;
+      background-color: var(--th-color-lighter);
+    }
+  }
+
+  .description {
+    margin-right: auto;
+    max-width: 68ch;
+    font-size: 1.125rem;
+    line-height: 1.1;
+  }
+}
