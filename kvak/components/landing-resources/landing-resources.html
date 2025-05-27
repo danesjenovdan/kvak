@@ -7,7 +7,28 @@
         button_text="See all resources"
         button_href="#"
       / %}
-      <div>todo resources</div>
+      <div class="resources">
+        {% component "resource-card"
+          title="Title of the resource"
+          description="Nunc mollis commodo mauris, at lacinia neque interdum sed. Nam rhoncus,  eros eu sollicitudin placerat, velit magna euismod mi, at sodales lacus  lacus sit amet nisl."
+          href="#"
+        / %}
+        {% component "resource-card"
+          title="Title of the handbook which is a bit longer"
+          description="Nunc mauris, at lacinia neque interdum sed. Nam rhoncus,  eros eu sollicitudin placerat, velit magna euismod mi, at sodales lacus  lacus sit amet nisl."
+          href="#"
+        / %}
+        {% component "resource-card"
+          title="Title of the resource"
+          description="Nam rhoncus,  eros eu sollicitudin placerat, velit magna euismod mi, at sodales lacus  lacus sit amet nisl."
+          href="#"
+        / %}
+        {% component "resource-card"
+          title="Title of the resource"
+          description="Nunc mollis commodo mauris, at lacinia neque interdum sed. Nam rhoncus,  eros eu sollicitudin placerat, velit magna euismod mi, at sodales lacus  lacus sit amet nisl."
+          href="#"
+        / %}
+      </div>
     </div>
   </div>
 </div>

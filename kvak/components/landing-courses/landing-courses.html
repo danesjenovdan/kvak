@@ -7,8 +7,32 @@
         button_text="See all courses"
         button_href="#"
       / %}
-      <div>todo courses</div>
-      <div>todo suggestions email</div>
+      <div class="courses">
+        {% component "course-card"
+          title="Title of the course"
+          description="Nunc mollis commodo mauris, at lacinia neque interdum sed. Nam rhoncus,  eros eu sollicitudin placerat, velit magna euismod mi, at sodales lacus  lacus sit amet nisl."
+          href="#"
+        / %}
+        {% component "course-card"
+          title="Title of the course"
+          description="Nunc mauris, at lacinia neque interdum sed. Nam rhoncus,  eros eu sollicitudin placerat, velit magna euismod mi, at sodales lacus  lacus sit amet nisl."
+          href="#"
+        / %}
+        {% component "course-card"
+          title="Title of the course that is a bit longer"
+          description="Nam rhoncus,  eros eu sollicitudin placerat, velit magna euismod mi, at sodales lacus  lacus sit amet nisl."
+          href="#"
+        / %}
+      </div>
+      <div class="suggest">
+        <div class="suggest-text">
+          Do you have a suggestion for a course that we should offer?<br>
+          Do you want to share your educational content with us?
+        </div>
+        <div class="suggest-cta">
+          Send us an email to <a href="mailto:mail@mail.com">mail@mail.com</a>.
+        </div>
+      </div>
     </div>
   </div>
 </div>
