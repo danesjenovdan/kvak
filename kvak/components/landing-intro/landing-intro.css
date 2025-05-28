@@ -1,0 +1,11 @@
+.landing-intro-component {
+  padding-block: 4.75rem;
+
+  p {
+    max-width: 42ch;
+    margin-inline: auto;
+    font-size: 2.25rem;
+    line-height: 1.1;
+    text-align: center;
+  }
+}

@@ -27,6 +27,10 @@
       "editor.tabSize": 4,
       "editor.insertSpaces": true
     },
-    "isort.args": ["--profile", "black"]
+    "isort.args": ["--profile", "black"],
+    "files.associations": {
+      "*.css": "css",
+      "*.html": "django-html"
+    }
   }
 }

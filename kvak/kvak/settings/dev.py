@@ -10,3 +10,6 @@ SECRET_KEY = "django-insecure-hz_13%qy^^2(e1!t#hloa3)$&6$=llxm_*)js7$tq57jg2=b(9
 ALLOWED_HOSTS = ["*"]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# Reload dev server on component file changes
+COMPONENTS["reload_on_file_change"] = True
