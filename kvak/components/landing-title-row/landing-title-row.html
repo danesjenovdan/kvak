@@ -1,5 +1,11 @@
 <div class="landing-title-row">
+  {% if title %}
   <h2>{{ title }}</h2>
+  {% endif %}
+  {% if description %}
   <div class="description">{{ description }}</div>
+  {% endif %}
+  {% if button_text %}
   {% component "arrow-button" text=button_text href=button_href / %}
+  {% endif %}
 </div>

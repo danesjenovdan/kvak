@@ -1,0 +1,47 @@
+.landing-about-component {
+  padding-block: 3.875rem 5rem;
+
+  .columns {
+    display: grid;
+    gap: 4rem;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 2rem;
+    padding-inline: 1.5rem;
+
+    h3 {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      font-size: 1.75rem;
+      font-weight: 600;
+      line-height: 1.1;
+
+      svg {
+        width: 1.875rem;
+        height: 1.875rem;
+        margin-left: 0.5rem;
+      }
+    }
+
+    .description {
+      font-size: 1.125rem;
+      line-height: 1.2;
+
+      p:not(:last-child),
+      ul:not(:last-child) {
+        margin-bottom: 1em;
+      }
+
+      .logos {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+
+        .logo {
+          border: 1px solid #000;
+          aspect-ratio: 4 / 3;
+        }
+      }
+    }
+  }
+}
