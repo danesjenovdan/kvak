@@ -63,3 +63,4 @@ urllib3==2.4.0
 wagtail==7.0
 wcwidth==0.2.13
 Willow==1.10.0
+django-countries==7.6.1
