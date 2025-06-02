@@ -1,6 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
 
 
@@ -43,7 +44,9 @@ class UserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     username = None
-    email = models.EmailField(unique=True, verbose_name="Email Address")
+    email = models.EmailField(_("email address"), blank=True, unique=True)
+    first_name = models.CharField(_("first name"), max_length=150)
+    last_name = models.CharField(_("last name"), max_length=150)
     is_youth_worker = models.BooleanField(
         default=True, verbose_name="Are you a young person or youth worker?"
     )

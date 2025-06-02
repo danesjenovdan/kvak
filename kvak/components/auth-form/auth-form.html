@@ -26,7 +26,13 @@
           <div class="form-field {% if field.errors %}has-error{% endif %}">
             <label for="{{ field.id_for_label }}">
               <span>{{ field.label }}</span>
-              {% if field.errors %}<span class="error">{{ field.errors|join:", " }}</span>{% endif %}
+              {% if field.errors %}
+              <div class="error">
+                {% for error in field.errors %}
+                <div class="error-message">{{ error }}</div>
+                {% endfor %}
+              </div>
+              {% endif %}
             </label>
             {{ field }}
           </div>

@@ -15,11 +15,16 @@ class CustomUserCreationForm(DjangoUserCreationForm):
     )
     country = CountryField().formfield(
         label=_("Nationality or country of residence"),
-        widget=CountrySelectWidget(),
     )
     is_youth_worker = forms.BooleanField(
         required=False,
         label=_("Are you a young person or youth worker?"),
+    )
+    agree_to_terms = forms.BooleanField(
+        required=True,
+        label=_(
+            "By creating an account, I agree to our Terms of use and Privacy Policy."
+        ),
     )
 
     def __init__(self, *args, **kwargs):
