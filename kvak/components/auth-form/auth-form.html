@@ -1,0 +1,49 @@
+  <div class="container">
+    <div class="auth-form-component bg-green-barely">
+      <div class="max-width-wrapper">
+        {% slot "title" %}
+        <div class="auth-form-title">
+          <h1 class="form-title">FORM TITLE</h1>
+          <a href="#" class="form-subtitle">Optional link.</a>
+        </div>
+        {% endslot %}
+
+        {% slot "notice" %}
+        {% endslot %}
+
+        {% if form %}
+        <form method="{{ method }}" action="{{ action }}">
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+            <div class="non-field-error">{{ error }}</div>
+            {% endfor %}
+          {% endif %}
+
+          {% slot "form_fields" %}
+          {% for field in form %}
+          <div class="form-field {% if field.errors %}has-error{% endif %}">
+            <label for="{{ field.id_for_label }}">
+              <span>{{ field.label }}</span>
+              {% if field.errors %}
+              <div class="error">
+                {% for error in field.errors %}
+                <div class="error-message">{{ error }}</div>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </label>
+            {{ field }}
+          </div>
+          {% endfor %}
+          {% endslot %}
+
+          {% slot "submit" %}
+          <button type="submit">Submit</button>
+          {% endslot %}
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>

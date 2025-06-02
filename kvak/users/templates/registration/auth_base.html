@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block body_class %}template-auth{% endblock %}
+
+{% block content %}
+{% component "header" / %}
+<main class="main-content">
+{% block form_content %}{% endblock %}
+</main>
+{% component "footer" / %}
+{% endblock %}

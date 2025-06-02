@@ -1,0 +1,23 @@
+{% extends "registration/auth_base.html" %}
+
+{% block form_content %}
+{% component "auth-form"
+  method="POST"
+  action="{% url 'login' %}"
+  form=form
+%}
+  {% fill "title" %}
+  <div class="auth-form-title">
+    <h1 class="form-title">SIGN IN TO YOUR ACCOUNT</h1>
+    <a href="{% url 'register' %}" class="form-subtitle">Don't have an account? Register instead.</a>
+  </div>
+  {% endfill %}
+
+  {% fill "submit" %}
+    {% component "arrow-button" type="submit" primary=True full_width=True text="SIGN IN" / %}
+    <div class="under-submit">
+      <a href="{% url 'password_reset' %}">Forgot your password?</a>
+    </div>
+  {% endfill %}
+{% endcomponent %}
+{% endblock %}

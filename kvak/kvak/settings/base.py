@@ -29,11 +29,12 @@ DEFAULT_LOGGING["handlers"]["console"]["filters"] = []
 
 INSTALLED_APPS = [
     "home",
+    "users",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
     "wagtail.sites",
-    "wagtail.users",
+    "kvak.apps.CustomUsersAppConfig",
     "wagtail.snippets",
     "wagtail.documents",
     "wagtail.images",
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_components",
+    "django_countries",
 ]
 
 MIDDLEWARE = [
@@ -226,3 +228,5 @@ WAGTAILDOCS_EXTENSIONS = [
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "/login/"
 LOGOUT_REDIRECT_URL = "/"
+
+AUTH_USER_MODEL = "users.CustomUser"
