@@ -7,4 +7,4 @@ class CourseCard(Component):
     css_file = "course-card.css"
 
     def get_context_data(self, *args, **kwargs):
-        return {**kwargs}
+        return {**kwargs, "user": self.request.user}

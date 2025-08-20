@@ -1,7 +1,7 @@
 {% load static %}
 
 <div class="container">
-  <header class="header-component">
+  <header class="header-component th-green">
     <a href="/" class="header-logo">
       <img
         src="{% static 'img/kvak-logo.svg' %}"
@@ -14,7 +14,7 @@
       <li><a href="#">About Badges</a></li>
       <li><a href="#">About Kvak</a></li>
       <li><a href="#">About Partners</a></li>
-      <li><a href="{% url 'login' %}">Sign in</a></li>
+      <li><a href="{% url 'login' %}" class="active">Sign in</a></li>
     </ul>
   </header>
 </div>
