@@ -1,4 +1,4 @@
-{% load static %}
+{% load static wagtailcore_tags kvak_extras %}
 
 <div class="container">
   <header class="header-component th-green">
@@ -10,11 +10,10 @@
       />
     </a>
     <ul role="navigation" class="nav">
-      <li><a href="#">Courses</a></li>
-      <li><a href="#">About Badges</a></li>
-      <li><a href="#">About Kvak</a></li>
-      <li><a href="#">About Partners</a></li>
-      <li><a href="{% url 'login' %}" class="active">Sign in</a></li>
+      {% for link in settings.home.HeaderSettings.navigation %}
+      <li class="nav-item {% if link.value.page and link.value.page.id == page.id %}active{% endif %}"><a href="{% if link.value.page %}{% pageurl link.value.page %}{% else %}{{ link.value.url }}{% endif %}" {% if link.value.url %}target="_blank"{% endif %}>{{ link.value.title }}</a></li>
+      {% endfor %}
+      <li class="nav-item {% if request|is_login_page %}active{% endif %}"><a href="{% url 'login' %}">Sign in</a></li>
     </ul>
   </header>
 </div>
