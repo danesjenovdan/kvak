@@ -1,11 +1,11 @@
+{% load wagtailcore_tags %}
+
 <div class="bg-green-lightest">
   <div class="container">
     <div class="landing-intro-component">
-      <p>
-        KVAK is rhoncus nisi enim, in iaculis diam tempus quis. Nullam ornare
-        eget nisl nec tincidunt. Fusce molestie sapien quis dui scelerisque, at
-        tincidunt turpis ultricies.
-      </p>
+      <div class="rich-text">
+        {{ page.intro_text|richtext }}
+      </div>
     </div>
   </div>
 </div>
