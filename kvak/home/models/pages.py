@@ -70,4 +70,11 @@ class HomePage(Page):
 
 
 class GenericPage(Page):
-    pass
+    body = RichTextField(
+        blank=True,
+        verbose_name=_("Body"),
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("body"),
+    ]
