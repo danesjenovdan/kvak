@@ -6,5 +6,5 @@ class ResourceCard(Component):
     template_file = "resource-card.html"
     css_file = "resource-card.css"
 
-    def get_context_data(self, *args, **kwargs):
+    def get_template_data(self, args, kwargs, slots, context):
         return {**kwargs}

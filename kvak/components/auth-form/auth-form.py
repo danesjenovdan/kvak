@@ -7,7 +7,7 @@ class AuthForm(Component):
     css_file = "auth-form.css"
     js_file = "auth-form.js"
 
-    def get_context_data(self, *args, **kwargs):
+    def get_template_data(self, args, kwargs, slots, context):
         return {**kwargs}
 
     class Media:

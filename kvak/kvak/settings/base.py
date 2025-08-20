@@ -63,7 +63,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
-    "django_components.middleware.ComponentDependencyMiddleware",
 ]
 
 ROOT_URLCONF = "kvak.urls"
