@@ -17,6 +17,26 @@ To start the application, simply run:
 docker compose up
 ```
 
+### Seeding Course Data
+
+To populate the application with sample course data, run the seed command:
+
+```bash
+# Create sample courses, exercises, and materials
+docker compose exec app python manage.py seed_course
+
+# Or to clear existing data and create fresh sample data
+docker compose exec app python manage.py seed_course --clear
+```
+
+This will create:
+- A complete course structure with categories
+- 2 sample courses (Python for Beginners & JavaScript Web Development)
+- Multiple exercises with realistic content
+- Course materials with various question types (multiple choice, text answers, priority ordering)
+
+After running the seed command, you can explore the hierarchical page structure in the Wagtail admin at `/admin/pages/`.
+
 ## 💻 Development
 
 ### Automatic formatting and checks when developing
