@@ -1,9 +1,12 @@
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Page
+
+from .utils import ProgressTracker
 
 
 class HomePage(Page):
@@ -116,6 +119,17 @@ class CoursePage(Page):
     parent_page_types = ["home.CoursesListPage"]
     subpage_types = ["home.ExercisePage"]
 
+    def get_user_progress(self, user):
+        # Get all ExercisePage instances that are children of this CoursePage
+        total_exercises = self.get_children().type(ExercisePage).count()
+        if total_exercises == 0:
+            return ProgressTracker(total_exercises, 0)
+        finished_exercises = UserFinishedExcercisePage.objects.filter(
+            user=user,
+            exercise__in=self.get_children().type(ExercisePage)
+        ).count()
+        return ProgressTracker(total_exercises, finished_exercises)
+
 
 class ExcerciseCategoryPage(Page):
     description = RichTextField(
@@ -160,6 +174,20 @@ class ExercisePage(Page):
 
     parent_page_types = ["home.CoursePage"]
     subpage_types = ["home.BaseMaterialPage"]
+
+    def get_user_progress(self, user):
+        # Get all BaseMaterialPage instances that are children of this ExercisePage
+        total_based_materials = self.get_children().type(BaseMaterialPage).count()
+        if total_based_materials == 0:
+            return ProgressTracker(total_based_materials, 0)
+        
+        # Get finished BaseMaterialPage instances that are children of this ExercisePage
+        base_material_pages = self.get_children().type(BaseMaterialPage).specific()
+        finished_based_materials = UserFinishedBaseMaterial.objects.filter(
+            user=user,
+            base_material__in=base_material_pages
+        ).count()
+        return ProgressTracker(total_based_materials, finished_based_materials)
 
 
 class AnswerOptionBlock(blocks.StructBlock):
@@ -313,3 +341,41 @@ class BaseMaterialPage(Page):
 
     parent_page_types = ["home.ExercisePage"]
     subpage_types = []
+
+
+class UserFinishedBaseMaterial(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='finished_exercises',
+        verbose_name=_("User"),
+    )
+    base_material = models.ForeignKey(
+        BaseMaterialPage,
+        on_delete=models.CASCADE,
+        related_name='finished_by_users',
+        verbose_name=_("Base Material"),
+    )
+    finished_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_("Finished at"),
+    )
+
+
+class UserFinishedExcercisePage(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='finished_courses',
+        verbose_name=_("User"),
+    )
+    exercise = models.ForeignKey(
+        ExercisePage,
+        on_delete=models.CASCADE,
+        related_name='finished_by_users',
+        verbose_name=_("Exercise"),
+    )
+    finished_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_("Finished at"),
+    )
