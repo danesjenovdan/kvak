@@ -10,7 +10,7 @@ from wagtail.documents import urls as wagtaildocs_urls
 from users.views import ProfileView, RegisterView
 
 urlpatterns = [
-    path("favicon.ico", RedirectView.as_view(url=static("favicon/favicon.ico"))),
+    # path("favicon.ico", RedirectView.as_view(url=static("favicon/favicon.ico"))),
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
