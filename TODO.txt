@@ -1,0 +1,7 @@
+KVAK:
+- add generic blog page content
+- mobile styles
+
+
+TODO AFTER DEPLOY:
+- set site name
