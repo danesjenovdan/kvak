@@ -71,9 +71,9 @@ class HomePage(Page):
 
     parent_page_types = ["wagtailcore.Page"]
     subpage_types = [
-        "home.CoursesListPage", 
-        "home.ExcerciseCategoryPage", 
-        "home.GenericPage"
+        "home.CoursesListPage",
+        "home.ExcerciseCategoryPage",
+        "home.GenericPage",
     ]
 
 
@@ -125,10 +125,14 @@ class CoursePage(Page):
         if total_exercises == 0:
             return ProgressTracker(total_exercises, 0)
         finished_exercises = UserFinishedExcercisePage.objects.filter(
-            user=user,
-            exercise__in=self.get_children().type(ExercisePage)
+            user=user, exercise__in=self.get_children().type(ExercisePage)
         ).count()
         return ProgressTracker(total_exercises, finished_exercises)
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["user_progress"] = self.get_user_progress(request.user)
+        return context
 
 
 class ExcerciseCategoryPage(Page):
@@ -180,14 +184,17 @@ class ExercisePage(Page):
         total_based_materials = self.get_children().type(BaseMaterialPage).count()
         if total_based_materials == 0:
             return ProgressTracker(total_based_materials, 0)
-        
         # Get finished BaseMaterialPage instances that are children of this ExercisePage
         base_material_pages = self.get_children().type(BaseMaterialPage).specific()
         finished_based_materials = UserFinishedBaseMaterial.objects.filter(
-            user=user,
-            base_material__in=base_material_pages
+            user=user, base_material__in=base_material_pages
         ).count()
         return ProgressTracker(total_based_materials, finished_based_materials)
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["user_progress"] = self.get_user_progress(request.user)
+        return context
 
 
 class AnswerOptionBlock(blocks.StructBlock):
@@ -347,13 +354,13 @@ class UserFinishedBaseMaterial(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='finished_exercises',
+        related_name="finished_exercises",
         verbose_name=_("User"),
     )
     base_material = models.ForeignKey(
         BaseMaterialPage,
         on_delete=models.CASCADE,
-        related_name='finished_by_users',
+        related_name="finished_by_users",
         verbose_name=_("Base Material"),
     )
     finished_at = models.DateTimeField(
@@ -366,13 +373,13 @@ class UserFinishedExcercisePage(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='finished_courses',
+        related_name="finished_courses",
         verbose_name=_("User"),
     )
     exercise = models.ForeignKey(
         ExercisePage,
         on_delete=models.CASCADE,
-        related_name='finished_by_users',
+        related_name="finished_by_users",
         verbose_name=_("Exercise"),
     )
     finished_at = models.DateTimeField(
