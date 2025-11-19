@@ -1,0 +1,23 @@
+{% extends "registration/auth_base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block form_content %}
+{% component "auth-form"
+  method="POST"
+  action="{% url 'logout' %}"
+  form=form
+%}
+  {% fill "title" %}
+  <div class="auth-form-title">
+    <h1 class="form-title">HELLO!</h1>
+    <span class="form-subtitle">This is your profile, yaaay!</span>
+    {{user}}
+  </div>
+  {% endfill %}
+
+  {% fill "submit" %}
+    {% component "arrow-button" type="submit" primary=True full_width=True text="Logout" / %}
+  {% endfill %}
+{% endcomponent %}
+{% endblock %}
