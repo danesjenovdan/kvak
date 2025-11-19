@@ -1,0 +1,36 @@
+{% load static wagtailcore_tags %}
+
+<div class="container">
+  <div class="course-intro-component">
+    <div class="intro-text">
+      <h1>{{ page.title }}</h1>
+      <div class="rich-text">{{ page.overview|richtext }}</div>
+    </div>
+    <div class="intro-image">
+      <img src="{% static 'img/tmp-course.png' %}" alt="" />
+    </div>
+    <hr />
+    <div class="intro-progress">
+      {% component "arrow-button" primary=True hide_arrow=True text="🏁 START THE COURSE 🏁" href="#" / %}
+      <div class="exercise-progress">
+        <div class="num"><strong>0/{{ page.get_children|length }}</strong> exercises finished</div>
+        todo: progress pips
+      </div>
+      <div class="intro-badge">
+        <div class="badge">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 43 43"
+          >
+            <path
+              fill="#8c8e85"
+              d="M3.3704 25.978c-1.3603 2.002-1.5528 4.0496-.5301 5.8215s2.8944 2.6291 5.3083 2.4512c-.1779 2.4161.679 4.2854 2.4513 5.3084 1.7723 1.0231 3.8195.8302 5.8215-.5321 1.0558 2.1819 2.7326 3.3727 4.7783 3.3727s3.7225-1.1904 4.7783-3.3703c2.002 1.3622 4.0496 1.5527 5.8215.5301s2.6291-2.8924 2.4512-5.3084c2.414.1799 4.2854-.6789 5.3084-2.4513s.8302-3.8195-.5321-5.8215c2.1819-1.0557 3.3727-2.7326 3.3727-4.7783s-1.1904-3.7225-3.3703-4.7782c1.3603-2.002 1.5527-4.0497.5301-5.8216-1.0227-1.7718-2.8944-2.6335-5.3084-2.4512.1779-2.416-.6789-4.2853-2.4513-5.3084s-3.8195-.8301-5.8215.5322C24.9226 1.1908 23.2457 0 21.2 0s-3.7225 1.1904-4.7782 3.3704c-2.002-1.3603-4.0497-1.5528-5.8216-.5301-1.7718 1.0226-2.629 2.8923-2.4512 5.3083-2.422-.1799-4.2853.679-5.3084 2.4513s-.8301 3.8195.5322 5.8215C1.1908 17.4772 0 19.154 0 21.1997s1.1904 3.7225 3.3704 4.7783"
+            />
+          </svg>
+        </div>
+        Badge not collected yet
+      </div>
+    </div>
+  </div>
+</div>

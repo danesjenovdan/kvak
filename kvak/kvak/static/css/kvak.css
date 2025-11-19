@@ -85,6 +85,8 @@ h6 {
   --color-purple-barely: #f8f7ff;
   --color-error: #d80037;
 
+  --color-pale: #eff3e6;
+
   /* default theme color */
   --th-color: var(--color-green);
   --th-color-lighter: var(--color-green-lighter);
@@ -153,6 +155,16 @@ body {
 }
 
 .rich-text {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+  }
+
   p,
   ul,
   ol {
@@ -221,4 +233,12 @@ body {
       text-decoration: none;
     }
   }
+}
+
+.ratio-16x9 iframe,
+iframe.ratio-16x9 {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
 }
