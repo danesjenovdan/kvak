@@ -1,0 +1,95 @@
+.course-intro-component {
+  display: flex;
+  gap: 0 3rem;
+  flex-wrap: wrap;
+  padding-block: 3rem;
+  padding-inline: 4.5rem;
+  margin-bottom: 2.375rem;
+  background-color: var(--color-pale);
+  border-radius: 20px;
+
+  .intro-text {
+    flex: 2.5;
+
+    h1 {
+      margin-bottom: 0.875rem;
+      font-size: 4rem;
+      line-height: 1.1;
+      font-weight: 800;
+    }
+
+    p,
+    ul,
+    ol {
+      font-size: 1.5rem;
+      line-height: 1.3;
+    }
+  }
+
+  .intro-image {
+    flex: 1;
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 15px;
+    }
+  }
+
+  hr {
+    flex-basis: 100%;
+    margin-block: 3rem 2rem;
+    height: 0;
+    border: 0;
+    border-top: 1px solid #000;
+  }
+
+  .intro-progress {
+    flex-basis: 100%;
+    display: flex;
+    gap: 1.5rem;
+
+    .arrow-button {
+      font-size: 1.5rem;
+      padding: 0.625rem 0.5rem;
+    }
+
+    .exercise-progress {
+      flex: 1;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      padding-inline: 1rem;
+      border: 1px solid #000;
+      border-radius: 10px;
+
+      .num {
+        strong {
+          font-size: 1.5rem;
+          font-weight: 700;
+        }
+      }
+    }
+
+    .intro-badge {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      padding-inline: 1rem 1.25rem;
+      border: 1px solid #000;
+      border-radius: 10px;
+      font-size: 1.25rem;
+      font-weight: 600;
+
+      .badge {
+        width: 43px;
+        height: 43px;
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}

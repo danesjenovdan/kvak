@@ -4,8 +4,8 @@
   padding: 1.5rem;
   padding-bottom: 3.175rem;
   border: 1px solid #000;
+  border-bottom-width: 4px;
   border-radius: 20px;
-  box-shadow: 0 4px 0 0 #000;
   background: var(--color-green-barely);
   text-decoration: none;
   color: inherit;
@@ -36,11 +36,25 @@
     line-height: 1.2;
   }
 
-  svg {
+  .arrow-button {
+    margin-top: 1.5rem;
+    margin-bottom: -2rem;
+  }
+
+  .course-card__icon {
     position: absolute;
     bottom: 0.65rem;
     right: 0.75rem;
     width: 1.875rem;
     height: 1.875rem;
+    transition: transform 0.15s ease;
+  }
+
+  &:hover {
+    box-shadow: 0 0 0 4px var(--th-color-lighter);
+
+    .course-card__icon {
+      transform: rotate(-45deg);
+    }
   }
 }

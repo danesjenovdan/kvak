@@ -15,19 +15,34 @@
 
   .nav {
     display: flex;
-    gap: 3.25rem;
+    gap: 1.5rem;
     list-style: none;
     padding: 0;
 
-    a {
-      color: inherit;
-      text-transform: uppercase;
-      text-decoration: none;
-      font-size: 1.125rem;
-      font-weight: 500;
+    .nav-item {
+      &.active {
+        a {
+          background-color: var(--th-color-lightest);
+          border-color: #000;
+          box-shadow: 0 0 0 4px var(--th-color-lightest);
+          font-weight: 600;
+        }
+      }
 
-      &:hover {
-        text-decoration: underline;
+      a {
+        padding: 0.25rem 0.75rem;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        color: inherit;
+        text-transform: uppercase;
+        text-decoration: none;
+        font-size: 1.125rem;
+        font-weight: 500;
+
+        &:hover {
+          border-color: #000;
+          box-shadow: 0 0 0 4px var(--th-color-lighter);
+        }
       }
     }
   }

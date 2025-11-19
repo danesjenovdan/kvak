@@ -1,7 +1,7 @@
-{% load static %}
+{% load static wagtailcore_tags kvak_extras %}
 
 <div class="container">
-  <header class="header-component">
+  <header class="header-component th-green">
     <a href="/" class="header-logo">
       <img
         src="{% static 'img/kvak-logo.svg' %}"
@@ -10,11 +10,14 @@
       />
     </a>
     <ul role="navigation" class="nav">
-      <li><a href="#">Courses</a></li>
-      <li><a href="#">About Badges</a></li>
-      <li><a href="#">About Kvak</a></li>
-      <li><a href="#">About Partners</a></li>
-      <li><a href="{% url 'login' %}">Login</a></li>
+      {% for link in settings.home.HeaderSettings.navigation %}
+      <li class="nav-item {% if link.value.page and link.value.page.id == page.id %}active{% endif %}"><a href="{% if link.value.page %}{% pageurl link.value.page %}{% else %}{{ link.value.url }}{% endif %}" {% if link.value.url %}target="_blank"{% endif %}>{{ link.value.title }}</a></li>
+      {% endfor %}
+      {% if request.user.is_anonymous %}
+      <li class="nav-item {% if request|is_profile_page %}active{% endif %}"><a href="{% url 'login' %}">Sign in</a></li>
+      {% else %}
+      <li class="nav-item {% if request|is_profile_page %}active{% endif %}"><a href="{% url 'profile' %}">Profile</a></li>
+      {% endif %}
     </ul>
   </header>
 </div>

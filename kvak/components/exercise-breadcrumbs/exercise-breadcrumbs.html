@@ -1,0 +1,39 @@
+{% load static wagtailcore_tags %}
+
+<div class="container">
+  <div class="exercise-breadcrumbs-component">
+    <nav aria-label="breadcrumbs">
+      <ol class="breadcrumbs">
+        <li class="breadcrumb-item">
+          <a href="{% pageurl page.get_parent.get_parent %}">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="12"
+                fill="#c1e961"
+                transform="rotate(-180 12 12)"
+              />
+              <path
+                fill="#000"
+                d="m17.7168 9.725-1.9351-1.382V6.4993a.2.2 0 0 0-.2-.2H14.334a.2.2 0 0 0-.2001.2v.6664L12.1167 5.725a.199.199 0 0 0-.2328 0l-5.6 4a.2.2 0 0 0-.0742.2234.2005.2005 0 0 0 .1906.139h.6v6.025c0 .1109.089.2.2.2h2.975c.1109 0 .2-.0891.2-.2V11.2h3.25v4.9125c0 .1109.0891.2.2.2h2.975a.1995.1995 0 0 0 .2001-.2v-6.025h.5999a.1997.1997 0 0 0 .1165-.3624"
+              />
+            </svg>
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% pageurl page.get_parent %}"
+            >{{ page.get_parent.title }}</a
+          >
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          {{ page.title }}
+        </li>
+      </ol>
+    </nav>
+  </div>
+</div>

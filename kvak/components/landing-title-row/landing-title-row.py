@@ -6,5 +6,5 @@ class LandingTitleRow(Component):
     template_file = "landing-title-row.html"
     css_file = "landing-title-row.css"
 
-    def get_context_data(self, *args, **kwargs):
+    def get_template_data(self, args, kwargs, slots, context):
         return {**kwargs}

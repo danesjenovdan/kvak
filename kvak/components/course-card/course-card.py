@@ -6,5 +6,5 @@ class CourseCard(Component):
     template_file = "course-card.html"
     css_file = "course-card.css"
 
-    def get_context_data(self, *args, **kwargs):
-        return {**kwargs}
+    def get_template_data(self, args, kwargs, slots, context):
+        return {**kwargs, "user": self.request.user}

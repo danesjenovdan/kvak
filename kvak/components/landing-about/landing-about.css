@@ -20,17 +20,27 @@
         width: 1.875rem;
         height: 1.875rem;
         margin-left: 0.5rem;
+        transition: transform 0.15s ease;
+      }
+
+      a {
+        display: flex;
+        align-items: center;
+        color: inherit;
+
+        &:hover {
+          text-decoration: none;
+
+          svg {
+            transform: rotate(-45deg);
+          }
+        }
       }
     }
 
     .description {
       font-size: 1.125rem;
       line-height: 1.2;
-
-      p:not(:last-child),
-      ul:not(:last-child) {
-        margin-bottom: 1em;
-      }
 
       .logos {
         display: grid;

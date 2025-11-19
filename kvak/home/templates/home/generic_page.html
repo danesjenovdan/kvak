@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block content %}
+{% component "header" / %}
+
+{% if page.body %}
+<div class="container">
+  <div class="rich-text">
+    {{ page.body|richtext }}
+  </div>
+</div>
+{% endif %}
+
+{% component "footer" / %}
+{% endblock content %}

@@ -1,0 +1,43 @@
+.exercise-breadcrumbs-component {
+  margin-bottom: 1rem;
+  background-color: var(--color-pale);
+  border-radius: 10px;
+
+  ol.breadcrumbs {
+    display: flex;
+    list-style: none;
+    padding: 1rem 1.25rem;
+
+    .breadcrumb-item {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+
+      &:not(:first-child)::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 11px;
+        margin-inline: 0.5rem;
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 11"><path fill="%23000" d="M1.9754.3226C1.511-.1124.786-.1124.3226.3521c-.435.4644-.435 1.1894.0295 1.6527l2.9577 2.9c.29.29.29.7545 0 1.0445L.4382 8.907c-.435.4644-.435 1.1895.0294 1.6528.2323.2323.5222.3195.8122.3195s.6096-.1155.8406-.3478l2.9-2.9577c1.1894-1.2178 1.16-3.1604-.0578-4.3501z"/></svg>');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100% 100%;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+
+      svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+}

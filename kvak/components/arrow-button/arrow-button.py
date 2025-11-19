@@ -6,5 +6,5 @@ class ArrowButton(Component):
     template_file = "arrow-button.html"
     css_file = "arrow-button.css"
 
-    def get_context_data(self, *args, **kwargs):
+    def get_template_data(self, args, kwargs, slots, context):
         return {**kwargs}

@@ -85,6 +85,8 @@ h6 {
   --color-purple-barely: #f8f7ff;
   --color-error: #d80037;
 
+  --color-pale: #eff3e6;
+
   /* default theme color */
   --th-color: var(--color-green);
   --th-color-lighter: var(--color-green-lighter);
@@ -112,10 +114,6 @@ body {
 
 .bg-green-lightest {
   background-color: var(--color-green-lightest);
-}
-
-.bg-green-barely {
-  background-color: var(--color-green-barely);
 }
 
 .bg-purple-barely {
@@ -154,4 +152,93 @@ body {
   max-width: calc(80rem + 2 * var(--gutter));
   margin: 0 auto;
   padding-inline: var(--gutter);
+}
+
+.rich-text {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+  }
+
+  p,
+  ul,
+  ol {
+    margin-bottom: 0.75em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  /* p:has(+ ul),
+  p:has(+ ol) {
+    margin-bottom: 0;
+  } */
+
+  ul {
+    padding-left: 1.5em;
+    list-style: "•";
+
+    li {
+      padding-left: 0.5em;
+    }
+  }
+
+  ol {
+    padding-left: 1.75em;
+    list-style-type: decimal;
+
+    li {
+      padding-left: 0.25em;
+    }
+
+    ol {
+      list-style-type: lower-alpha;
+
+      ol {
+        list-style-type: lower-roman;
+
+        ol {
+          list-style-type: decimal;
+
+          ol {
+            list-style-type: lower-alpha;
+          }
+        }
+      }
+    }
+  }
+
+  b,
+  strong {
+    font-weight: 700;
+  }
+
+  i,
+  em {
+    font-style: italic;
+  }
+
+  a {
+    font-weight: 500;
+    color: inherit;
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.ratio-16x9 iframe,
+iframe.ratio-16x9 {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
 }

@@ -1,0 +1,21 @@
+{% load wagtailcore_tags %}
+
+<div>
+  <div class="container">
+    <div class="exercise-intro-component">
+      <h1>{{ page.title }}</h1>
+      <div class="exercise-content">
+        <div class="exercise-metadata">
+          <div class="time">⏱️ {{ page.estimated_time }} minutes</div>
+          |
+          <div class="category">📂 {{ page.category }}</div>
+        </div>
+        {{ page.description|richtext }}
+      </div>
+      <div class="exercise-progress">
+        <div class="num"><strong>{{ user_progress.finished }}/{{ user_progress.total }}</strong></div>
+        {% component "progress-pips" progress=user_progress / %}
+      </div>
+    </div>
+  </div>
+</div>

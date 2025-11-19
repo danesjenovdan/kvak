@@ -1,0 +1,62 @@
+.exercise-intro-component {
+  max-width: 800px;
+  margin-inline: auto;
+  margin-bottom: 3.875rem;
+
+  h1 {
+    position: relative;
+    display: inline-block;
+    margin-top: 2.25rem;
+    font-size: 2.25rem;
+    font-weight: 600;
+    line-height: calc(var(--fm-line-height) / var(--fm-units-per-em));
+    z-index: 1;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      --top: calc(
+        (var(--fm-ascender) - var(--fm-capital-height)) / var(--fm-units-per-em) *
+          1em - 0.05em
+      );
+      --bottom: calc(
+        var(--fm-descender) / var(--fm-units-per-em) * 1em - 0.05em
+      );
+      top: var(--top);
+      bottom: var(--bottom);
+      z-index: -1;
+      display: block;
+      background-color: var(--th-color-lighter);
+    }
+  }
+
+  .exercise-content {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 1.3125rem;
+
+    .exercise-metadata {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      font-size: 1.3125rem;
+    }
+  }
+
+  .exercise-progress {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding-block: 0.75rem;
+    padding-inline: 1rem;
+    background-color: var(--color-pale);
+    border-radius: 10px;
+
+    .num {
+      strong {
+        font-weight: 700;
+      }
+    }
+  }
+}

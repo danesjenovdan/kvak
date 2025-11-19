@@ -3,6 +3,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.375rem;
+  width: fit-content;
   background: #fff;
   border: 1px solid #000;
   border-radius: 10px;
@@ -15,13 +16,9 @@
     margin-inline: 0.8125rem;
   }
 
-  svg {
+  .arrow-button__icon {
     width: 1.875rem;
     height: 1.875rem;
-  }
-
-  &:hover {
-    box-shadow: 0 0 0 4px var(--th-color-lighter);
   }
 
   &.full-width {
@@ -35,5 +32,12 @@
 
   &.primary {
     background-color: var(--th-color-lightest);
+  }
+}
+
+a.arrow-button,
+button.arrow-button {
+  &:hover {
+    box-shadow: 0 0 0 4px var(--th-color-lighter);
   }
 }
