@@ -1,3 +1,5 @@
+{% load wagtailcore_tags %}
+
 <div>
   <div class="container">
     <div class="landing-courses-component">
@@ -5,24 +7,16 @@
         title="COURSES"
         description=page.courses_description
         button_text="See all courses"
-        button_href="#"
+        button_href=page.courses_page.get_url
       / %}
       <div class="courses">
+        {% for course in courses %}
         {% component "course-card"
-          title="Title of the course"
-          description="Nunc mollis commodo mauris, at lacinia neque interdum sed. Nam rhoncus,  eros eu sollicitudin placerat, velit magna euismod mi, at sodales lacus  lacus sit amet nisl."
-          href="#"
+          title=course.title
+          description=course.overview|richtext
+          href=course.get_url
         / %}
-        {% component "course-card"
-          title="Title of the course"
-          description="Nunc mauris, at lacinia neque interdum sed. Nam rhoncus,  eros eu sollicitudin placerat, velit magna euismod mi, at sodales lacus  lacus sit amet nisl."
-          href="#"
-        / %}
-        {% component "course-card"
-          title="Title of the course that is a bit longer"
-          description="Nam rhoncus,  eros eu sollicitudin placerat, velit magna euismod mi, at sodales lacus  lacus sit amet nisl."
-          href="#"
-        / %}
+        {% endfor %}
       </div>
       <div class="suggest">
         <div class="suggest-text">

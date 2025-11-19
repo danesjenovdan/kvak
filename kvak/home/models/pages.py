@@ -19,6 +19,14 @@ class HomePage(Page):
         blank=True,
         verbose_name=_("Courses description"),
     )
+    courses_page = models.ForeignKey(
+        "home.CoursesListPage",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="+",
+        verbose_name=_("Courses page"),
+    )
     resources_description = models.TextField(
         blank=True,
         verbose_name=_("Resources description"),
@@ -65,6 +73,7 @@ class HomePage(Page):
     content_panels = Page.content_panels + [
         FieldPanel("intro_text"),
         FieldPanel("courses_description"),
+        FieldPanel("courses_page"),
         FieldPanel("resources_description"),
         FieldPanel("about_columns"),
     ]
@@ -75,6 +84,13 @@ class HomePage(Page):
         "home.ExcerciseCategoryPage",
         "home.GenericPage",
     ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        if self.courses_page:
+            courses = self.courses_page.get_children().type(CoursePage).specific()
+            context["courses"] = courses[:3]
+        return context
 
 
 class GenericPage(Page):
