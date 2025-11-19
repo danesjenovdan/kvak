@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block body_class %}template-courses-list{% endblock %}
+
+{% block content %}
+{% component "header" / %}
+{% component "courses-list-intro" / %}
+{% component "courses-list-courses" / %}
+{% component "footer" / %}
+{% endblock content %}

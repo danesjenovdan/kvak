@@ -13,9 +13,21 @@ AUTH_URL_NAMES = [
     "password_reset_confirm",
     "password_reset_complete",
     "register",
+    "profile",
 ]
 
 
 @register.filter
-def is_login_page(request):
+def is_profile_page(request):
     return request.resolver_match.url_name in AUTH_URL_NAMES
+
+
+@register.filter
+def debug_print(value):
+    print("-----")
+    print(type(value))
+    print(value)
+    print(dir(value))
+    print(vars(value))
+    print("-----")
+    return ""

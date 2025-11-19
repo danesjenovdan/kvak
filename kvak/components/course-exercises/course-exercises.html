@@ -1,0 +1,34 @@
+{% load wagtailcore_tags %}
+
+<div>
+  <div class="container">
+    <div class="course-exercises-component">
+      {% for exercise in page.get_children.specific %}
+      <details {% if forloop.first %}open{% endif %}>
+        <summary>
+          <div class="marker"></div>
+          <div class="exercise-summary">
+            <div>Exercise {{ forloop.counter }}</div>
+            <h2>{{ exercise.title }}</h2>
+          </div>
+          {% if forloop.first %}
+          <div class="start-button">
+            {% component "arrow-button" primary=True text="START" href=exercise.get_url / %}
+          </div>
+          {% endif %}
+        </summary>
+        <div class="exercise-content">
+          <div class="exercise-metadata">
+            <div class="time">⏱️ {{ exercise.estimated_time }} minutes</div>
+            |
+            <div class="category">📂 {{ exercise.category }}</div>
+          </div>
+          {{ exercise.description|richtext }}
+        </div>
+      </details>
+      {% if not forloop.last %}
+      <hr />
+      {% endif %} {% endfor %}
+    </div>
+  </div>
+</div>
