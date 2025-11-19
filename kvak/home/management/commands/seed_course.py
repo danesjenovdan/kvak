@@ -4,12 +4,12 @@ from wagtail.models import Page
 from wagtail.rich_text import RichText
 
 from home.models import (
-    HomePage,
-    CoursesListPage,
+    BaseMaterialPage,
     CoursePage,
+    CoursesListPage,
     ExcerciseCategoryPage,
     ExercisePage,
-    BaseMaterialPage,
+    HomePage,
 )
 
 
@@ -18,44 +18,42 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            '--clear',
-            action='store_true',
-            help='Clear existing course data before creating new',
+            "--clear",
+            action="store_true",
+            help="Clear existing course data before creating new",
         )
 
     def handle(self, *args, **options):
-        if options['clear']:
+        if options["clear"]:
             self.clear_existing_data()
 
         self.stdout.write("Creating seed course data...")
-        
+
         # Get or create HomePage
         home_page = self.get_home_page()
-        
+
         # Create exercise categories
         categories = self.create_categories(home_page)
-        
+
         # Create courses list page
         courses_list = self.create_courses_list(home_page)
-        
+
         # Create courses with exercises and materials
         self.create_courses(courses_list, categories)
-        
-        self.stdout.write(
-            self.style.SUCCESS("Successfully created seed course data!")
-        )
+
+        self.stdout.write(self.style.SUCCESS("Successfully created seed course data!"))
 
     def clear_existing_data(self):
         """Clear existing course-related pages"""
         self.stdout.write("Clearing existing course data...")
-        
+
         # Delete in reverse hierarchy order to avoid constraint issues
         BaseMaterialPage.objects.all().delete()
         ExercisePage.objects.all().delete()
         CoursePage.objects.all().delete()
         CoursesListPage.objects.all().delete()
         ExcerciseCategoryPage.objects.all().delete()
-        
+
         self.stdout.write("Existing data cleared.")
 
     def get_home_page(self):
@@ -79,22 +77,22 @@ class Command(BaseCommand):
         categories_data = [
             {
                 "title": "Fundamentals",
-                "description": "<p>Basic programming concepts and syntax</p>"
+                "description": "<p>Basic programming concepts and syntax</p>",
             },
             {
                 "title": "Data Structures",
-                "description": "<p>Arrays, lists, dictionaries, and more complex structures</p>"
+                "description": "<p>Arrays, lists, dictionaries, and more complex structures</p>",
             },
             {
                 "title": "Algorithms",
-                "description": "<p>Problem-solving techniques and algorithmic thinking</p>"
+                "description": "<p>Problem-solving techniques and algorithmic thinking</p>",
             },
             {
                 "title": "Object-Oriented Programming",
-                "description": "<p>Classes, objects, inheritance, and design patterns</p>"
+                "description": "<p>Classes, objects, inheritance, and design patterns</p>",
             },
         ]
-        
+
         categories = {}
         for cat_data in categories_data:
             category = ExcerciseCategoryPage(
@@ -105,7 +103,7 @@ class Command(BaseCommand):
             home_page.add_child(instance=category)
             categories[cat_data["title"]] = category
             self.stdout.write(f"Created category: {cat_data['title']}")
-        
+
         return categories
 
     def create_courses_list(self, home_page):
@@ -146,7 +144,7 @@ class Command(BaseCommand):
                         "title": "Control Structures",
                         "description": "<p>Master if statements, loops, and conditional logic in Python.</p>",
                         "time": 45,
-                        "category": "Fundamentals", 
+                        "category": "Fundamentals",
                         "order": 2,
                     },
                     {
@@ -156,7 +154,7 @@ class Command(BaseCommand):
                         "category": "Fundamentals",
                         "order": 3,
                     },
-                ]
+                ],
             },
             {
                 "title": "JavaScript Web Development",
@@ -199,8 +197,8 @@ class Command(BaseCommand):
                         "category": "Object-Oriented Programming",
                         "order": 4,
                     },
-                ]
-            }
+                ],
+            },
         ]
 
         for course_data in courses_data:
@@ -232,7 +230,7 @@ class Command(BaseCommand):
 
     def create_material_for_exercise(self, exercise, exercise_data):
         """Create a BaseMaterialPage with questions for an exercise"""
-        
+
         # Material content based on exercise topic
         material_content = {
             "Variables and Data Types": {
@@ -323,13 +321,16 @@ element.style.color = 'red';</code></pre>
                 "video_url": "https://www.youtube.com/watch?v=example4",
             },
         }
-        
+
         # Get content or use default
-        content = material_content.get(exercise_data["title"], {
-            "text": f"<h2>{exercise_data['title']}</h2><p>Complete course material coming soon!</p>",
-            "video_url": "https://www.youtube.com/watch?v=example",
-        })
-        
+        content = material_content.get(
+            exercise_data["title"],
+            {
+                "text": f"<h2>{exercise_data['title']}</h2><p>Complete course material coming soon!</p>",
+                "video_url": "https://www.youtube.com/watch?v=example",
+            },
+        )
+
         # Create material
         material = BaseMaterialPage(
             title=f"{exercise_data['title']} - Course Material",
@@ -337,17 +338,17 @@ element.style.color = 'red';</code></pre>
             video_url=content["video_url"],
             slug=slugify(f"{exercise_data['title']}-material"),
         )
-        
+
         # Add questions based on topic
         questions = self.create_questions_for_topic(exercise_data["title"])
         material.questions = questions
-        
+
         exercise.add_child(instance=material)
         return material
 
     def create_questions_for_topic(self, topic_title):
         """Create questions based on the topic"""
-        
+
         questions_data = {
             "Variables and Data Types": [
                 {
@@ -360,10 +361,10 @@ element.style.color = 'red';</code></pre>
                         {"option_text": "float", "is_correct": True},
                         {"option_text": "bool", "is_correct": True},
                         {"option_text": "number", "is_correct": False},
-                    ]
+                    ],
                 },
                 {
-                    "type": "one_correct_answer_question", 
+                    "type": "one_correct_answer_question",
                     "question_text": "<p>What will be the output of: <code>print(type(3.14))</code></p>",
                     "explanation_text": "<p>3.14 is a decimal number, so Python treats it as a float type.</p>",
                     "answer_options": [
@@ -371,13 +372,13 @@ element.style.color = 'red';</code></pre>
                         {"option_text": "<class 'float'>", "is_correct": True},
                         {"option_text": "<class 'str'>", "is_correct": False},
                         {"option_text": "<class 'decimal'>", "is_correct": False},
-                    ]
+                    ],
                 },
                 {
                     "type": "text_answer_question",
                     "question_text": "<p>Complete the code to create a variable named 'age' with value 25:</p><p><code>___ = 25</code></p>",
                     "explanation_text": "<p>In Python, you simply assign a value to a variable name using the = operator.</p>",
-                }
+                },
             ],
             "Control Structures": [
                 {
@@ -389,7 +390,7 @@ element.style.color = 'red';</code></pre>
                         {"option_text": "B", "is_correct": False},
                         {"option_text": "C", "is_correct": False},
                         {"option_text": "Nothing", "is_correct": False},
-                    ]
+                    ],
                 },
                 {
                     "type": "order_by_priority_question",
@@ -399,8 +400,8 @@ element.style.color = 'red';</code></pre>
                         {"option_text": "for loop"},
                         {"option_text": "while loop"},
                         {"option_text": "do-while loop"},
-                    ]
-                }
+                    ],
+                },
             ],
             "DOM Manipulation": [
                 {
@@ -412,56 +413,64 @@ element.style.color = 'red';</code></pre>
                         {"option_text": "querySelector", "is_correct": True},
                         {"option_text": "getElementByClass", "is_correct": False},
                         {"option_text": "querySelectorAll", "is_correct": True},
-                    ]
+                    ],
                 },
                 {
                     "type": "text_answer_question",
                     "question_text": "<p>What property would you use to change the text content of an element?</p>",
                     "explanation_text": "<p>The textContent property is used to get or set the text content of an element.</p>",
-                }
+                },
             ],
         }
-        
+
         # Get questions for this topic or return empty list
         topic_questions = questions_data.get(topic_title, [])
-        
+
         # Convert to StreamField format
         questions = []
         for q_data in topic_questions:
             if q_data["type"] == "multiple_choice_question":
-                questions.append((
-                    "multiple_choice_question",
-                    {
-                        "question_text": q_data["question_text"],
-                        "explanation_text": q_data.get("explanation_text", ""),
-                        "answer_options": q_data["answer_options"]
-                    }
-                ))
+                questions.append(
+                    (
+                        "multiple_choice_question",
+                        {
+                            "question_text": q_data["question_text"],
+                            "explanation_text": q_data.get("explanation_text", ""),
+                            "answer_options": q_data["answer_options"],
+                        },
+                    )
+                )
             elif q_data["type"] == "one_correct_answer_question":
-                questions.append((
-                    "one_correct_answer_question",
-                    {
-                        "question_text": q_data["question_text"],
-                        "explanation_text": q_data.get("explanation_text", ""),
-                        "answer_options": q_data["answer_options"]
-                    }
-                ))
+                questions.append(
+                    (
+                        "one_correct_answer_question",
+                        {
+                            "question_text": q_data["question_text"],
+                            "explanation_text": q_data.get("explanation_text", ""),
+                            "answer_options": q_data["answer_options"],
+                        },
+                    )
+                )
             elif q_data["type"] == "text_answer_question":
-                questions.append((
-                    "text_answer_question",
-                    {
-                        "question_text": q_data["question_text"],
-                        "explanation_text": q_data.get("explanation_text", ""),
-                    }
-                ))
+                questions.append(
+                    (
+                        "text_answer_question",
+                        {
+                            "question_text": q_data["question_text"],
+                            "explanation_text": q_data.get("explanation_text", ""),
+                        },
+                    )
+                )
             elif q_data["type"] == "order_by_priority_question":
-                questions.append((
-                    "order_by_priority_question",
-                    {
-                        "question_text": q_data["question_text"],
-                        "explanation_text": q_data.get("explanation_text", ""),
-                        "priority_options": q_data["priority_options"]
-                    }
-                ))
-        
+                questions.append(
+                    (
+                        "order_by_priority_question",
+                        {
+                            "question_text": q_data["question_text"],
+                            "explanation_text": q_data.get("explanation_text", ""),
+                            "priority_options": q_data["priority_options"],
+                        },
+                    )
+                )
+
         return questions
