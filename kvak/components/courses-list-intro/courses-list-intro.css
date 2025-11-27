@@ -27,6 +27,27 @@
       border: 0;
       border-top: 1px solid #000;
     }
+
+    .language-selector {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      select {
+        appearance: none;
+        padding: 0.5rem 2.5rem 0.5rem 1rem;
+        background: #fff;
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 12"><path fill="%23000" d="M7 12 .0718 0h13.8564L7 12Z"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 1em center;
+        background-size: 0.875em;
+        border: 1px solid #000;
+        border-radius: 10px;
+        font: inherit;
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
   }
 
   .intro-image {
