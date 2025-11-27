@@ -40,21 +40,40 @@
         <div class="question-text">
           {{ question.value.question_text|richtext }}
         </div>
-        {% comment %} <div class="explanation-text">
-          {{ question.value.explanation_text|richtext }}
-        </div> {% endcomment %}
-        <div class="answers">
+        <div class="answers" data-question-type="{{ question.block_type }}">
           {% if question.block_type == "multiple_choice_question" %}
             {% for answer_option in question.value.answer_options %}
-            <label class="answer-option">
+            <label class="answer-option {% if answer_option.is_correct %}correct{% endif %}">
               <input type="checkbox" name="{{ question.id }}" value="{{ answer_option.option_text }}" />
+              <div class="icon">
+                {% if answer_option.is_correct %}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 18">
+                  <path fill="#c1e961" stroke="#000" d="M17.5059 1.002c.6232-.6271 1.6121-.6667 2.2812-.1182l.1299.1181 1.084 1.0928h.001c.3201.322.4979.754.498 1.209a1.71 1.71 0 0 1-.4971 1.208l-.0009.002L8.5898 16.998c-.6649.669-1.7461.669-2.411 0L.997 11.7861c-.6632-.6672-.663-1.7496 0-2.417l.3974-.3994.6885-.6924a1.694 1.694 0 0 1 1.206-.502c.399 0 .7771.1375 1.0801.3868l.125.1143.001.001 2.8887 2.9062z"/>
+                </svg>
+                {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 19 19">
+                  <path fill="#ff6224" stroke="#000" d="M4.0713.5154c.5894.0367 1.18.298 1.6426.7617h.001l3.786 3.7861 3.7872-3.7861c.8974-.8972 2.3468-1.077 3.2392-.1836l1.3887 1.3887c.8916.8917.7149 2.34-.1836 3.2373l-3.7871 3.788 3.7871 3.7872c.843.8414 1.0505 2.1683.3389 3.0664l-.1553.1738-1.3887 1.3867c-.8359.8359-2.1617.7335-3.0644-.0215l-.1748-.1601-3.7871-3.7881L5.7148 17.74h-.001c-.8978.8969-2.3454 1.0729-3.2382.1826l-1.3877-1.3877v-.001c-.8927-.8933-.7139-2.3428.1826-3.2392l3.7861-3.7871-3.786-3.7871C.3738 4.8236.195 3.3734 1.0888 2.4812l1.3857-1.3877h.001c.3856-.3848.8874-.573 1.3994-.585l.1846-.0039z"/>
+                </svg>
+                {% endif %}
+              </div>
               <span>{{ answer_option.option_text }}</span>
             </label>
             {% endfor %}
           {% elif question.block_type == "one_correct_answer_question" %}
             {% for answer_option in question.value.answer_options %}
-            <label class="answer-option">
+            <label class="answer-option {% if answer_option.is_correct %}correct{% endif %}">
               <input type="radio" name="{{ question.id }}" value="{{ answer_option.option_text }}" />
+              <div class="icon">
+                {% if answer_option.is_correct %}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 18">
+                  <path fill="#c1e961" stroke="#000" d="M17.5059 1.002c.6232-.6271 1.6121-.6667 2.2812-.1182l.1299.1181 1.084 1.0928h.001c.3201.322.4979.754.498 1.209a1.71 1.71 0 0 1-.4971 1.208l-.0009.002L8.5898 16.998c-.6649.669-1.7461.669-2.411 0L.997 11.7861c-.6632-.6672-.663-1.7496 0-2.417l.3974-.3994.6885-.6924a1.694 1.694 0 0 1 1.206-.502c.399 0 .7771.1375 1.0801.3868l.125.1143.001.001 2.8887 2.9062z"/>
+                </svg>
+                {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 19 19">
+                  <path fill="#ff6224" stroke="#000" d="M4.0713.5154c.5894.0367 1.18.298 1.6426.7617h.001l3.786 3.7861 3.7872-3.7861c.8974-.8972 2.3468-1.077 3.2392-.1836l1.3887 1.3887c.8916.8917.7149 2.34-.1836 3.2373l-3.7871 3.788 3.7871 3.7872c.843.8414 1.0505 2.1683.3389 3.0664l-.1553.1738-1.3887 1.3867c-.8359.8359-2.1617.7335-3.0644-.0215l-.1748-.1601-3.7871-3.7881L5.7148 17.74h-.001c-.8978.8969-2.3454 1.0729-3.2382.1826l-1.3877-1.3877v-.001c-.8927-.8933-.7139-2.3428.1826-3.2392l3.7861-3.7871-3.786-3.7871C.3738 4.8236.195 3.3734 1.0888 2.4812l1.3857-1.3877h.001c.3856-.3848.8874-.573 1.3994-.585l.1846-.0039z"/>
+                </svg>
+                {% endif %}
+              </div>
               <span>{{ answer_option.option_text }}</span>
             </label>
             {% endfor %}
@@ -63,6 +82,14 @@
           {% else %}
             {{ question.block_type }}
           {% endif %}
+        </div>
+        <div class="asnwer-submit">
+          {% component "arrow-button" type="button" primary=True text="Submit" disabled=True / %}
+        </div>
+        <div class="explanation-text hidden">
+          <hr>
+          <div class="title">Explanation</div>
+          {{ question.value.explanation_text|richtext }}
         </div>
       </div>
       {% endfor %}
