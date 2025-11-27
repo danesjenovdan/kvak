@@ -12,6 +12,7 @@
       <div class="courses">
         {% for course in courses %}
         {% component "course-card"
+          heading="h3"
           title=course.title
           image=course.image
           description=course.overview|richtext
