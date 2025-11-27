@@ -15,7 +15,7 @@
     </div>
     <hr />
     <div class="intro-progress">
-      {% component "arrow-button" primary=True hide_arrow=True text="🏁 START THE COURSE 🏁" href="#" / %}
+      {% component "arrow-button" primary=True hide_arrow=True text="🏁 START THE COURSE 🏁" href="{{ page.get_children.first.get_url }}" / %}
       <div class="exercise-progress">
         <div class="num"><strong>{{ user_progress.finished }}/{{ user_progress.total }}</strong> exercises finished</div>
         {% component "progress-pips" progress=user_progress / %}

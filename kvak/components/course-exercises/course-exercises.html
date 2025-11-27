@@ -4,7 +4,7 @@
   <div class="container">
     <div class="course-exercises-component">
       {% for exercise in page.get_children.specific %}
-      <details {% if forloop.first %}open{% endif %}>
+      <details>
         <summary>
           <div class="marker"></div>
           <div class="exercise-summary">
