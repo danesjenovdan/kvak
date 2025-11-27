@@ -94,6 +94,7 @@
       }
 
       textarea {
+        display: block;
         width: 100%;
         min-height: 100px;
         margin-bottom: 1rem;
@@ -108,6 +109,12 @@
           cursor: default;
           color: inherit;
         }
+      }
+    }
+
+    .answer-submit {
+      &.hidden {
+        display: none;
       }
     }
 
@@ -179,5 +186,11 @@
         }
       }
     }
+  }
+
+  .page-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
   }
 }

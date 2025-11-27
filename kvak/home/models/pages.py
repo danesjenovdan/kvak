@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.db import models
+from django.shortcuts import redirect
 from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
-from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel
+from wagtail.contrib.routable_page.models import RoutablePageMixin, path
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Page
 
@@ -174,7 +176,7 @@ class ExcerciseCategoryPage(Page):
     subpage_types = []
 
 
-class ExercisePage(Page):
+class ExercisePage(RoutablePageMixin, Page):
     description = RichTextField(
         blank=True,
         verbose_name=_("Exercise description"),
@@ -204,21 +206,55 @@ class ExercisePage(Page):
     parent_page_types = ["home.CoursePage"]
     subpage_types = ["home.BaseMaterialPage"]
 
+    @path("")
+    def render_custom(self, request):
+        if not request.user or request.user.is_anonymous:
+            parent_page = self.get_parent()
+            if parent_page:
+                return redirect(parent_page.get_url())
+
+        return self.render(request)
+
     def get_user_progress(self, user):
         # Get all BaseMaterialPage instances that are children of this ExercisePage
-        total_based_materials = self.get_children().type(BaseMaterialPage).count()
-        if user.is_anonymous or total_based_materials == 0:
-            return ProgressTracker(total_based_materials, 0)
+        total_base_materials = self.get_children().type(BaseMaterialPage).count()
+        if user.is_anonymous or total_base_materials == 0:
+            return ProgressTracker(total_base_materials, 0)
         # Get finished BaseMaterialPage instances that are children of this ExercisePage
         base_material_pages = self.get_children().type(BaseMaterialPage).specific()
-        finished_based_materials = UserFinishedBaseMaterial.objects.filter(
+        finished_base_materials = UserFinishedBaseMaterial.objects.filter(
             user=user, base_material__in=base_material_pages
         ).count()
-        return ProgressTracker(total_based_materials, finished_based_materials)
+        return ProgressTracker(total_base_materials, finished_base_materials)
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context["user_progress"] = self.get_user_progress(request.user)
+
+        user_progress = self.get_user_progress(request.user)
+        context["user_progress"] = user_progress
+
+        page_query = request.GET.get("page", "1")
+        try:
+            page_index = int(page_query)
+        except ValueError:
+            page_index = 1
+        page_index = max(1, min(user_progress.total, page_index))
+
+        context["base_material_page_index"] = page_index
+        context["base_material_page"] = (
+            self.get_children().type(BaseMaterialPage).specific()[page_index - 1]
+        )
+        context["base_material_next_page_index"] = (
+            page_index + 1 if page_index < user_progress.total else None
+        )
+        context["base_material_previous_page_index"] = (
+            page_index - 1 if page_index > 1 else None
+        )
+        if page_index == user_progress.total:
+            parent_page = self.get_parent()
+            if parent_page:
+                context["finish_exercise_url"] = parent_page.get_url()
+
         return context
 
 

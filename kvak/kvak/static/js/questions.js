@@ -10,7 +10,27 @@ const pageID = baseMaterial.dataset.id;
 const questions = $$(".question", baseMaterial);
 const csrfToken = $("[name='csrfmiddlewaretoken']").value;
 
+function updateNextPageButtonState() {
+  const nextPageLink = $(".next-page-button a", baseMaterial);
+  console.log(nextPageLink);
+  if (!nextPageLink) {
+    return;
+  }
+  const allAnswered = questions.every((question) =>
+    question.classList.contains("answered")
+  );
+  console.log("All answered:", allAnswered);
+  if (allAnswered) {
+    nextPageLink.removeAttribute("aria-disabled");
+  } else {
+    nextPageLink.setAttribute("aria-disabled", "true");
+  }
+}
+
+updateNextPageButtonState();
+
 questions.forEach((question) => {
+  const submitContainer = $(".answer-submit", question);
   const submitButton = $(".answer-submit button", question);
   const explanationText = $(".explanation-text", question);
   const answers = $(".answers", question);
@@ -18,10 +38,12 @@ questions.forEach((question) => {
   const type = answers.dataset.questionType;
 
   const disableQuestion = () => {
-    submitButton.setAttribute("disabled", "true");
+    submitButton.setAttribute("disabled", "disabled");
+    submitContainer.classList.add("hidden");
     inputs.forEach((input) => {
-      input.setAttribute("disabled", "true");
+      input.setAttribute("disabled", "disabled");
     });
+    updateNextPageButtonState();
   };
 
   if (question.classList.contains("answered")) {
@@ -35,7 +57,7 @@ questions.forEach((question) => {
     if (answerSelected) {
       submitButton.removeAttribute("disabled");
     } else {
-      submitButton.setAttribute("disabled", "true");
+      submitButton.setAttribute("disabled", "disabled");
     }
   };
 
@@ -74,9 +96,9 @@ questions.forEach((question) => {
   }
 
   submitButton.addEventListener("click", () => {
-    disableQuestion();
     question.classList.add("answered");
     explanationText.classList.remove("hidden");
+    disableQuestion();
     submitAnswer(question, type, inputs);
   });
 });

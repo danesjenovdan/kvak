@@ -1,6 +1,6 @@
 {% load wagtailcore_tags kvak_extras %}
 
-{% with base_material=page.get_children.first.specific %}
+{% with base_material=base_material_page %}
 <div>
   <div class="container">
     <div class="exercise-base-material-component" data-id="{{ base_material.id }}">
@@ -85,7 +85,7 @@
             {{ question.block_type }}
           {% endif %}
         </div>
-        <div class="answer-submit">
+        <div class="answer-submit {% if answered_question %}hidden{% endif %}">
           {% component "arrow-button" type="button" primary=True text="Submit" disabled=True / %}
         </div>
         <div class="explanation-text {% if not answered_question %}hidden{% endif %}">
@@ -95,6 +95,22 @@
         </div>
       </div>
       {% endfor %}
+      <div class="page-buttons">
+        {% if base_material_previous_page_index %}
+        <div class="previous-page-button">
+          {% component "arrow-button" type="link" reverse=True text="Previous page" href="?page={{ base_material_previous_page_index }}" / %}
+        </div>
+        {% endif %}
+        {% if base_material_next_page_index %}
+        <div class="next-page-button">
+          {% component "arrow-button" type="link" primary=True text="Next page" href="?page={{ base_material_next_page_index }}" disabled=True / %}
+        </div>
+        {% elif finish_exercise_url %}
+        <div class="next-page-button">
+          {% component "arrow-button" type="link" primary=True text="Finish exercise" href="{{ finish_exercise_url }}" disabled=True / %}
+        </div>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>

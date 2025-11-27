@@ -1,9 +1,9 @@
 {% if type == "inert" %}
-<span class="arrow-button {% if full_width %}full-width{% endif %} {% if primary %}primary{% endif %}">
+<span class="arrow-button {% if full_width %}full-width{% endif %} {% if primary %}primary{% endif %} {% if reverse %}reverse{% endif %}">
 {% elif type == "submit" or type == "button" %}
-<button type="{{ type }}" class="arrow-button {% if full_width %}full-width{% endif %} {% if primary %}primary{% endif %}" {% if disabled %}disabled{% endif %}>
+<button type="{{ type }}" class="arrow-button {% if full_width %}full-width{% endif %} {% if primary %}primary{% endif %} {% if reverse %}reverse{% endif %}" {% if disabled %}disabled{% endif %}>
 {% else %}
-<a href="{{ href }}" class="arrow-button {% if full_width %}full-width{% endif %} {% if primary %}primary{% endif %}">
+<a href="{{ href }}" class="arrow-button {% if full_width %}full-width{% endif %} {% if primary %}primary{% endif %} {% if reverse %}reverse{% endif %}" {% if disabled %}aria-disabled="true"{% endif %}>
 {% endif %}
   <span>{{ text }}</span>
   {% if not hide_arrow %}
