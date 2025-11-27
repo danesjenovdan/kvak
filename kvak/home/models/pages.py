@@ -352,7 +352,6 @@ class BaseMaterialPage(Page):
         blank=True,
         verbose_name=_("Video URL"),
     )
-
     questions = StreamField(
         [
             ("multiple_choice_question", MultipleChoiceQuestionBlock()),
@@ -365,6 +364,7 @@ class BaseMaterialPage(Page):
         verbose_name=_("Questions"),
         help_text=_("Add questions for this material"),
     )
+
     content_panels = Page.content_panels + [
         FieldPanel("text"),
         FieldPanel("video_url"),
@@ -373,6 +373,29 @@ class BaseMaterialPage(Page):
 
     parent_page_types = ["home.ExercisePage"]
     subpage_types = []
+
+
+class UserAnsweredQuestion(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="answered_questions",
+        verbose_name=_("User"),
+    )
+    base_material_page_id = models.PositiveIntegerField(
+        verbose_name=_("Base Material Page ID"),
+    )
+    question_id = models.CharField(
+        max_length=255,
+        verbose_name=_("Question ID"),
+    )
+    answer_data = models.JSONField(
+        verbose_name=_("Answer data"),
+    )
+    answered_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_("Answered at"),
+    )
 
 
 class UserFinishedBaseMaterial(models.Model):

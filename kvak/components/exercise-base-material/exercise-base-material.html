@@ -1,23 +1,25 @@
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags kvak_extras %}
 
+{% with base_material=page.get_children.first.specific %}
 <div>
   <div class="container">
-    <div class="exercise-base-material-component">
-      {% with base_material=page.get_children.first.specific %}
+    <div class="exercise-base-material-component" data-id="{{ base_material.id }}">
       <h2>{{ base_material.title }}</h2>
       <div class="description rich-text">{{ base_material.text|richtext }}</div>
       {% if base_material.video_url %}
       <div class="video-container ratio-16x9">
         <iframe
-          src="{{ base_material.video_url }}"
-          frameborder="0"
-          allowfullscreen
+        src="{{ base_material.video_url }}"
+        frameborder="0"
+        allowfullscreen
         ></iframe>
       </div>
       {% endif %}
+      {% csrf_token %}
       {% for question in base_material.questions %}
+      {% get_user_answered_question base_material question as answered_question %}
       <hr />
-      <div class="question">
+      <div class="question {% if answered_question %}answered{% endif %}" data-question-id="{{ question.id }}">
         <div class="question-number">
           <div class="icon">
             <svg
@@ -44,7 +46,7 @@
           {% if question.block_type == "multiple_choice_question" %}
             {% for answer_option in question.value.answer_options %}
             <label class="answer-option {% if answer_option.is_correct %}correct{% endif %}">
-              <input type="checkbox" name="{{ question.id }}" value="{{ answer_option.option_text }}" />
+              <input type="checkbox" name="{{ question.id }}" value="{{ answer_option.option_text }}" {% if answered_question and answered_question.answer_data and answer_option.option_text in answered_question.answer_data %}checked{% endif %} />
               <div class="icon">
                 {% if answer_option.is_correct %}
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 18">
@@ -62,7 +64,7 @@
           {% elif question.block_type == "one_correct_answer_question" %}
             {% for answer_option in question.value.answer_options %}
             <label class="answer-option {% if answer_option.is_correct %}correct{% endif %}">
-              <input type="radio" name="{{ question.id }}" value="{{ answer_option.option_text }}" />
+              <input type="radio" name="{{ question.id }}" value="{{ answer_option.option_text }}" {% if answered_question and answered_question.answer_data == answer_option.option_text %}checked{% endif %} />
               <div class="icon">
                 {% if answer_option.is_correct %}
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 18">
@@ -78,22 +80,22 @@
             </label>
             {% endfor %}
           {% elif question.block_type == "text_answer_question" %}
-            <textarea name="{{ question.id }}" rows="5"></textarea>
+            <textarea name="{{ question.id }}" rows="5">{% if answered_question %}{{ answered_question.answer_data }}{% endif %}</textarea>
           {% else %}
             {{ question.block_type }}
           {% endif %}
         </div>
-        <div class="asnwer-submit">
+        <div class="answer-submit">
           {% component "arrow-button" type="button" primary=True text="Submit" disabled=True / %}
         </div>
-        <div class="explanation-text hidden">
+        <div class="explanation-text {% if not answered_question %}hidden{% endif %}">
           <hr>
           <div class="title">Explanation</div>
           {{ question.value.explanation_text|richtext }}
         </div>
       </div>
       {% endfor %}
-      {% endwith %}
     </div>
   </div>
 </div>
+{% endwith %}

@@ -28,6 +28,7 @@ if settings.DEBUG:
 urlpatterns = urlpatterns + [
     path("register/", RegisterView.as_view(), name="register"),
     path("profile/", ProfileView.as_view(), name="profile"),
+    path("api/", include("home.urls")),
     path("", include("django.contrib.auth.urls")),
     path("", include(wagtail_urls)),
 ]
