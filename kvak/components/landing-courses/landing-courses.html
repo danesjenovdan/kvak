@@ -13,6 +13,7 @@
         {% for course in courses %}
         {% component "course-card"
           title=course.title
+          image=course.image
           description=course.overview|richtext
           href=course.get_url
         / %}

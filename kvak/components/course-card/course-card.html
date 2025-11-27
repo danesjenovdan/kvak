@@ -1,8 +1,12 @@
-{% load static %}
+{% load static wagtailimages_tags %}
 
 <a href="{{ href }}" class="course-card-component">
   <div class="image">
-    <img src="{% static 'img/tmp-course.png' %}" alt="">
+    {% if image %}
+    {% image image fill-720x405 %}
+    {% else %}
+    <img src="{% static 'img/image-placeholder.png' %}" alt="">
+    {% endif %}
   </div>
   <h3>{{ title }}</h3>
   <div class="description">{{ description }}</div>

@@ -7,6 +7,7 @@
         {% for course in page.get_children.specific %}
         {% component "course-card"
           title=course.title
+          image=course.image
           description=course.overview|richtext
           href=course.get_url
         / %}

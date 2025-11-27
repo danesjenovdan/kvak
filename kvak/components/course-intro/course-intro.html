@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
 <div class="container">
   <div class="course-intro-component">
@@ -7,7 +7,11 @@
       <div class="rich-text">{{ page.overview|richtext }}</div>
     </div>
     <div class="intro-image">
-      <img src="{% static 'img/tmp-course.png' %}" alt="" />
+      {% if page.image %}
+      {% image page.image fill-720x405 %}
+      {% else %}
+      <img src="{% static 'img/image-placeholder.png' %}" alt="">
+      {% endif %}
     </div>
     <hr />
     <div class="intro-progress">

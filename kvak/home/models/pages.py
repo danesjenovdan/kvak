@@ -123,12 +123,21 @@ class CoursesListPage(Page):
 
 
 class CoursePage(Page):
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Course image"),
+    )
     overview = RichTextField(
         blank=True,
         verbose_name=_("Course overview"),
     )
 
     content_panels = Page.content_panels + [
+        FieldPanel("image"),
         FieldPanel("overview"),
     ]
 
