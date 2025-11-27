@@ -2,7 +2,7 @@ from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
 from wagtail.contrib.settings.models import BaseGenericSetting, register_setting
-from wagtail.fields import StreamField
+from wagtail.fields import RichTextField, StreamField
 
 
 @register_setting
@@ -68,3 +68,25 @@ class HeaderSettings(BaseGenericSetting):
 
     class Meta:
         verbose_name = _("Header Settings")
+
+
+@register_setting
+class MiscSettings(BaseGenericSetting):
+    suggest_courses_text = RichTextField(
+        blank=True,
+        features=["bold", "italic", "link"],
+        verbose_name=_("Suggest courses text"),
+    )
+    suggest_courses_text_2 = RichTextField(
+        blank=True,
+        features=["bold", "italic", "link"],
+        verbose_name=_("Suggest courses text 2"),
+    )
+
+    panels = [
+        FieldPanel("suggest_courses_text"),
+        FieldPanel("suggest_courses_text_2"),
+    ]
+
+    class Meta:
+        verbose_name = _("Miscellaneous Settings")
