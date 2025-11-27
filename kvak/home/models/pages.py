@@ -147,7 +147,7 @@ class CoursePage(Page):
     def get_user_progress(self, user):
         # Get all ExercisePage instances that are children of this CoursePage
         total_exercises = self.get_children().type(ExercisePage).count()
-        if total_exercises == 0:
+        if user.is_anonymous or total_exercises == 0:
             return ProgressTracker(total_exercises, 0)
         finished_exercises = UserFinishedExcercisePage.objects.filter(
             user=user, exercise__in=self.get_children().type(ExercisePage)
@@ -207,7 +207,7 @@ class ExercisePage(Page):
     def get_user_progress(self, user):
         # Get all BaseMaterialPage instances that are children of this ExercisePage
         total_based_materials = self.get_children().type(BaseMaterialPage).count()
-        if total_based_materials == 0:
+        if user.is_anonymous or total_based_materials == 0:
             return ProgressTracker(total_based_materials, 0)
         # Get finished BaseMaterialPage instances that are children of this ExercisePage
         base_material_pages = self.get_children().type(BaseMaterialPage).specific()
