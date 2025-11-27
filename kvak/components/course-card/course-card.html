@@ -9,7 +9,9 @@
     {% endif %}
   </div>
   <h3>{{ title }}</h3>
-  <div class="description">{{ description }}</div>
+  <div class="description rich-text">
+    {{ description }}
+  </div>
   {% if user.is_anonymous %}
   {% component "arrow-button" type="inert" text="REGISTER" / %}
   {% else %}
