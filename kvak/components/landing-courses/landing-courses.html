@@ -12,21 +12,15 @@
       <div class="courses">
         {% for course in courses %}
         {% component "course-card"
+          heading="h3"
           title=course.title
+          image=course.image
           description=course.overview|richtext
           href=course.get_url
         / %}
         {% endfor %}
       </div>
-      <div class="suggest">
-        <div class="suggest-text">
-          Do you have a suggestion for a course that we should offer?<br>
-          Do you want to share your educational content with us?
-        </div>
-        <div class="suggest-cta">
-          Send us an email to <a href="mailto:mail@mail.com">mail@mail.com</a>.
-        </div>
-      </div>
+      {% component "suggest-courses" / %}
     </div>
   </div>
 </div>

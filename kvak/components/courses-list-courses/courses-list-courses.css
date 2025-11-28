@@ -1,35 +1,9 @@
 .courses-list-courses-component {
-  padding-block: 3.875rem;
+  padding-block: 5.25rem;
 
   .courses {
     display: grid;
     gap: 1.125rem;
     grid-template-columns: repeat(3, 1fr);
-    margin-top: 2rem;
-  }
-
-  .suggest {
-    display: flex;
-    align-items: center;
-    margin-top: 3.875rem;
-    padding: 1.5rem;
-    background: var(--color-green-lighter);
-    border-radius: 20px;
-    font-size: 1.5rem;
-
-    .suggest-text {
-      flex: 1.5;
-      font-weight: 600;
-      line-height: 1.2;
-    }
-
-    .suggest-cta {
-      flex: 1;
-
-      a {
-        color: inherit;
-        font-weight: 600;
-      }
-    }
   }
 }

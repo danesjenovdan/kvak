@@ -1,12 +1,20 @@
 {% load wagtailcore_tags %}
 
-<div class="progress-pips">
+<div class="progress-pips {% if progress.total == 1 %}single{% endif %}">
   <div class="line"></div>
   {% for pip in progress.range %}
   <div class="pip">
+  {% if current != None %}
     {% if forloop.counter <= progress.finished %}
-    <div class="filled"></div>
+    <div class="filled completed"></div>
+    {% elif forloop.counter == current %}
+    <div class="filled current"></div>
     {% endif %}
+  {% else %}
+    {% if forloop.counter <= progress.finished %}
+    <div class="filled completed"></div>
+    {% endif %}
+  {% endif %}
   </div>
   {% endfor %}
 </div>

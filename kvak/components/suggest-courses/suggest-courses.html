@@ -1,0 +1,12 @@
+{% load wagtailcore_tags %}
+
+<div class="suggest-courses-component">
+  <div class="suggest">
+    <div class="suggest-text">
+      {{ settings.home.MiscSettings.suggest_courses_text|richtext }}
+    </div>
+    <div class="suggest-cta">
+      {{ settings.home.MiscSettings.suggest_courses_text_2|richtext }}
+    </div>
+  </div>
+</div>

@@ -1,23 +1,25 @@
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags kvak_extras %}
 
+{% with base_material=base_material_page %}
 <div>
   <div class="container">
-    <div class="exercise-base-material-component">
-      {% with base_material=page.get_children.first.specific %}
+    <div class="exercise-base-material-component" data-id="{{ base_material.id }}">
       <h2>{{ base_material.title }}</h2>
       <div class="description rich-text">{{ base_material.text|richtext }}</div>
       {% if base_material.video_url %}
       <div class="video-container ratio-16x9">
         <iframe
-          src="{{ base_material.video_url }}"
-          frameborder="0"
-          allowfullscreen
+        src="{{ base_material.video_url }}"
+        frameborder="0"
+        allowfullscreen
         ></iframe>
       </div>
       {% endif %}
+      {% csrf_token %}
       {% for question in base_material.questions %}
+      {% get_user_answered_question base_material question as answered_question %}
       <hr />
-      <div class="question">
+      <div class="question {% if answered_question %}answered{% endif %}" data-question-id="{{ question.id }}">
         <div class="question-number">
           <div class="icon">
             <svg
@@ -40,33 +42,76 @@
         <div class="question-text">
           {{ question.value.question_text|richtext }}
         </div>
-        {% comment %} <div class="explanation-text">
-          {{ question.value.explanation_text|richtext }}
-        </div> {% endcomment %}
-        <div class="answers">
+        <div class="answers" data-question-type="{{ question.block_type }}">
           {% if question.block_type == "multiple_choice_question" %}
             {% for answer_option in question.value.answer_options %}
-            <label class="answer-option">
-              <input type="checkbox" name="{{ question.id }}" value="{{ answer_option.option_text }}" />
+            <label class="answer-option {% if answer_option.is_correct %}correct{% endif %}">
+              <input type="checkbox" name="{{ question.id }}" value="{{ answer_option.option_text }}" {% if answered_question and answered_question.answer_data and answer_option.option_text in answered_question.answer_data %}checked{% endif %} />
+              <div class="icon">
+                {% if answer_option.is_correct %}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 18">
+                  <path fill="#c1e961" stroke="#000" d="M17.5059 1.002c.6232-.6271 1.6121-.6667 2.2812-.1182l.1299.1181 1.084 1.0928h.001c.3201.322.4979.754.498 1.209a1.71 1.71 0 0 1-.4971 1.208l-.0009.002L8.5898 16.998c-.6649.669-1.7461.669-2.411 0L.997 11.7861c-.6632-.6672-.663-1.7496 0-2.417l.3974-.3994.6885-.6924a1.694 1.694 0 0 1 1.206-.502c.399 0 .7771.1375 1.0801.3868l.125.1143.001.001 2.8887 2.9062z"/>
+                </svg>
+                {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 19 19">
+                  <path fill="#ff6224" stroke="#000" d="M4.0713.5154c.5894.0367 1.18.298 1.6426.7617h.001l3.786 3.7861 3.7872-3.7861c.8974-.8972 2.3468-1.077 3.2392-.1836l1.3887 1.3887c.8916.8917.7149 2.34-.1836 3.2373l-3.7871 3.788 3.7871 3.7872c.843.8414 1.0505 2.1683.3389 3.0664l-.1553.1738-1.3887 1.3867c-.8359.8359-2.1617.7335-3.0644-.0215l-.1748-.1601-3.7871-3.7881L5.7148 17.74h-.001c-.8978.8969-2.3454 1.0729-3.2382.1826l-1.3877-1.3877v-.001c-.8927-.8933-.7139-2.3428.1826-3.2392l3.7861-3.7871-3.786-3.7871C.3738 4.8236.195 3.3734 1.0888 2.4812l1.3857-1.3877h.001c.3856-.3848.8874-.573 1.3994-.585l.1846-.0039z"/>
+                </svg>
+                {% endif %}
+              </div>
               <span>{{ answer_option.option_text }}</span>
             </label>
             {% endfor %}
           {% elif question.block_type == "one_correct_answer_question" %}
             {% for answer_option in question.value.answer_options %}
-            <label class="answer-option">
-              <input type="radio" name="{{ question.id }}" value="{{ answer_option.option_text }}" />
+            <label class="answer-option {% if answer_option.is_correct %}correct{% endif %}">
+              <input type="radio" name="{{ question.id }}" value="{{ answer_option.option_text }}" {% if answered_question and answered_question.answer_data == answer_option.option_text %}checked{% endif %} />
+              <div class="icon">
+                {% if answer_option.is_correct %}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 18">
+                  <path fill="#c1e961" stroke="#000" d="M17.5059 1.002c.6232-.6271 1.6121-.6667 2.2812-.1182l.1299.1181 1.084 1.0928h.001c.3201.322.4979.754.498 1.209a1.71 1.71 0 0 1-.4971 1.208l-.0009.002L8.5898 16.998c-.6649.669-1.7461.669-2.411 0L.997 11.7861c-.6632-.6672-.663-1.7496 0-2.417l.3974-.3994.6885-.6924a1.694 1.694 0 0 1 1.206-.502c.399 0 .7771.1375 1.0801.3868l.125.1143.001.001 2.8887 2.9062z"/>
+                </svg>
+                {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 19 19">
+                  <path fill="#ff6224" stroke="#000" d="M4.0713.5154c.5894.0367 1.18.298 1.6426.7617h.001l3.786 3.7861 3.7872-3.7861c.8974-.8972 2.3468-1.077 3.2392-.1836l1.3887 1.3887c.8916.8917.7149 2.34-.1836 3.2373l-3.7871 3.788 3.7871 3.7872c.843.8414 1.0505 2.1683.3389 3.0664l-.1553.1738-1.3887 1.3867c-.8359.8359-2.1617.7335-3.0644-.0215l-.1748-.1601-3.7871-3.7881L5.7148 17.74h-.001c-.8978.8969-2.3454 1.0729-3.2382.1826l-1.3877-1.3877v-.001c-.8927-.8933-.7139-2.3428.1826-3.2392l3.7861-3.7871-3.786-3.7871C.3738 4.8236.195 3.3734 1.0888 2.4812l1.3857-1.3877h.001c.3856-.3848.8874-.573 1.3994-.585l.1846-.0039z"/>
+                </svg>
+                {% endif %}
+              </div>
               <span>{{ answer_option.option_text }}</span>
             </label>
             {% endfor %}
           {% elif question.block_type == "text_answer_question" %}
-            <textarea name="{{ question.id }}" rows="5"></textarea>
+            <textarea name="{{ question.id }}" rows="5">{% if answered_question %}{{ answered_question.answer_data }}{% endif %}</textarea>
           {% else %}
             {{ question.block_type }}
           {% endif %}
         </div>
+        <div class="answer-submit {% if answered_question %}hidden{% endif %}">
+          {% component "arrow-button" type="button" primary=True text="Submit" disabled=True / %}
+        </div>
+        <div class="explanation-text {% if not answered_question %}hidden{% endif %}">
+          <hr>
+          <div class="title">Explanation</div>
+          {{ question.value.explanation_text|richtext }}
+        </div>
       </div>
       {% endfor %}
-      {% endwith %}
+      <div class="page-buttons">
+        {% if base_material_previous_page_index %}
+        <div class="previous-page-button">
+          {% component "arrow-button" type="link" reverse=True text="Previous page" href="?page={{ base_material_previous_page_index }}" / %}
+        </div>
+        {% endif %}
+        {% if base_material_next_page_index %}
+        <div class="next-page-button">
+          {% component "arrow-button" type="link" primary=True text="Next page" href="?page={{ base_material_next_page_index }}" disabled=True / %}
+        </div>
+        {% elif finish_exercise_url %}
+        <div class="next-page-button">
+          {% component "arrow-button" type="link" primary=True text="Finish exercise" href="{{ finish_exercise_url }}" disabled=True / %}
+        </div>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>
+{% endwith %}

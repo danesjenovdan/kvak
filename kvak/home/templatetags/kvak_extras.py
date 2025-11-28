@@ -1,5 +1,7 @@
 from django import template
 
+from home.models import UserAnsweredQuestion
+
 register = template.Library()
 
 
@@ -31,3 +33,19 @@ def debug_print(value):
     print(vars(value))
     print("-----")
     return ""
+
+
+@register.simple_tag(takes_context=True)
+def get_user_answered_question(context, base_material_page, question):
+    user = context["request"].user
+    if user.is_anonymous:
+        return None
+    return (
+        UserAnsweredQuestion.objects.filter(
+            user=user,
+            base_material_page_id=base_material_page.id,
+            question_id=question.id,
+        )
+        .order_by("-answered_at")
+        .first()
+    )

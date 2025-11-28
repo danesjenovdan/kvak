@@ -13,8 +13,8 @@
         {{ page.description|richtext }}
       </div>
       <div class="exercise-progress">
-        <div class="num"><strong>{{ user_progress.finished }}/{{ user_progress.total }}</strong></div>
-        {% component "progress-pips" progress=user_progress / %}
+        <div class="num"><strong>{{ base_material_page_index }}/{{ user_progress.total }}</strong></div>
+        {% component "progress-pips" progress=user_progress current=base_material_page_index / %}
       </div>
     </div>
   </div>

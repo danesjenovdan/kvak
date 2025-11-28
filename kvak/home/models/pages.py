@@ -1,8 +1,10 @@
 from django.conf import settings
 from django.db import models
+from django.shortcuts import redirect
 from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
-from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel
+from wagtail.contrib.routable_page.models import RoutablePageMixin, path
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Page
 
@@ -123,12 +125,21 @@ class CoursesListPage(Page):
 
 
 class CoursePage(Page):
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Course image"),
+    )
     overview = RichTextField(
         blank=True,
         verbose_name=_("Course overview"),
     )
 
     content_panels = Page.content_panels + [
+        FieldPanel("image"),
         FieldPanel("overview"),
     ]
 
@@ -138,7 +149,7 @@ class CoursePage(Page):
     def get_user_progress(self, user):
         # Get all ExercisePage instances that are children of this CoursePage
         total_exercises = self.get_children().type(ExercisePage).count()
-        if total_exercises == 0:
+        if user.is_anonymous or total_exercises == 0:
             return ProgressTracker(total_exercises, 0)
         finished_exercises = UserFinishedExcercisePage.objects.filter(
             user=user, exercise__in=self.get_children().type(ExercisePage)
@@ -147,7 +158,23 @@ class CoursePage(Page):
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context["user_progress"] = self.get_user_progress(request.user)
+
+        user_progress = self.get_user_progress(request.user)
+        context["user_progress"] = user_progress
+
+        exercise_index = None
+        if user_progress.total > 0:
+            if user_progress.finished < user_progress.total:
+                exercise_index = user_progress.finished + 1
+            elif user_progress.finished == user_progress.total:
+                exercise_index = 1
+        context["start_exercise_index"] = exercise_index
+
+        if exercise_index is not None:
+            context["start_exercise_page"] = (
+                self.get_children().type(ExercisePage).specific()[exercise_index - 1]
+            )
+
         return context
 
 
@@ -165,7 +192,7 @@ class ExcerciseCategoryPage(Page):
     subpage_types = []
 
 
-class ExercisePage(Page):
+class ExercisePage(RoutablePageMixin, Page):
     description = RichTextField(
         blank=True,
         verbose_name=_("Exercise description"),
@@ -195,21 +222,55 @@ class ExercisePage(Page):
     parent_page_types = ["home.CoursePage"]
     subpage_types = ["home.BaseMaterialPage"]
 
+    @path("")
+    def render_custom(self, request):
+        if not request.user or request.user.is_anonymous:
+            parent_page = self.get_parent()
+            if parent_page:
+                return redirect(parent_page.get_url())
+
+        return self.render(request)
+
     def get_user_progress(self, user):
         # Get all BaseMaterialPage instances that are children of this ExercisePage
-        total_based_materials = self.get_children().type(BaseMaterialPage).count()
-        if total_based_materials == 0:
-            return ProgressTracker(total_based_materials, 0)
+        total_base_materials = self.get_children().type(BaseMaterialPage).count()
+        if user.is_anonymous or total_base_materials == 0:
+            return ProgressTracker(total_base_materials, 0)
         # Get finished BaseMaterialPage instances that are children of this ExercisePage
         base_material_pages = self.get_children().type(BaseMaterialPage).specific()
-        finished_based_materials = UserFinishedBaseMaterial.objects.filter(
+        finished_base_materials = UserFinishedBaseMaterial.objects.filter(
             user=user, base_material__in=base_material_pages
         ).count()
-        return ProgressTracker(total_based_materials, finished_based_materials)
+        return ProgressTracker(total_base_materials, finished_base_materials)
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context["user_progress"] = self.get_user_progress(request.user)
+
+        user_progress = self.get_user_progress(request.user)
+        context["user_progress"] = user_progress
+
+        page_query = request.GET.get("page", "1")
+        try:
+            page_index = int(page_query)
+        except ValueError:
+            page_index = 1
+        page_index = max(1, min(user_progress.total, page_index))
+
+        context["base_material_page_index"] = page_index
+        context["base_material_page"] = (
+            self.get_children().type(BaseMaterialPage).specific()[page_index - 1]
+        )
+        context["base_material_next_page_index"] = (
+            page_index + 1 if page_index < user_progress.total else None
+        )
+        context["base_material_previous_page_index"] = (
+            page_index - 1 if page_index > 1 else None
+        )
+        if page_index == user_progress.total:
+            parent_page = self.get_parent()
+            if parent_page:
+                context["finish_exercise_url"] = parent_page.get_url()
+
         return context
 
 
@@ -343,7 +404,6 @@ class BaseMaterialPage(Page):
         blank=True,
         verbose_name=_("Video URL"),
     )
-
     questions = StreamField(
         [
             ("multiple_choice_question", MultipleChoiceQuestionBlock()),
@@ -356,6 +416,7 @@ class BaseMaterialPage(Page):
         verbose_name=_("Questions"),
         help_text=_("Add questions for this material"),
     )
+
     content_panels = Page.content_panels + [
         FieldPanel("text"),
         FieldPanel("video_url"),
@@ -364,6 +425,29 @@ class BaseMaterialPage(Page):
 
     parent_page_types = ["home.ExercisePage"]
     subpage_types = []
+
+
+class UserAnsweredQuestion(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="answered_questions",
+        verbose_name=_("User"),
+    )
+    base_material_page_id = models.PositiveIntegerField(
+        verbose_name=_("Base Material Page ID"),
+    )
+    question_id = models.CharField(
+        max_length=255,
+        verbose_name=_("Question ID"),
+    )
+    answer_data = models.JSONField(
+        verbose_name=_("Answer data"),
+    )
+    answered_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name=_("Answered at"),
+    )
 
 
 class UserFinishedBaseMaterial(models.Model):

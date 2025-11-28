@@ -1,7 +1,7 @@
+TODO VPRAŠANJA:
+- contact block?
+- resources? a to je blo mišljeno kot neka custom stvar al kr generic page?
+
 KVAK:
 - add generic blog page content
 - mobile styles
-
-
-TODO AFTER DEPLOY:
-- set site name
