@@ -1,6 +1,6 @@
 {% load wagtailcore_tags %}
 
-<div class="progress-pips">
+<div class="progress-pips {% if progress.total == 1 %}single{% endif %}">
   <div class="line"></div>
   {% for pip in progress.range %}
   <div class="pip">

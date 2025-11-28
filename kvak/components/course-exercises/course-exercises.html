@@ -11,7 +11,11 @@
             <div>Exercise {{ forloop.counter }}</div>
             <h2>{{ exercise.title }}</h2>
           </div>
-          {% if forloop.first %}
+          {% if forloop.counter < start_exercise_index or user_progress.finished == user_progress.total %}
+          <div class="start-button">
+            {% component "arrow-button" text="REVIEW" href=exercise.get_url / %}
+          </div>
+          {% elif forloop.counter == start_exercise_index %}
           <div class="start-button">
             {% component "arrow-button" primary=True text="START" href=exercise.get_url / %}
           </div>

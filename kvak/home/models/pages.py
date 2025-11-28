@@ -158,7 +158,23 @@ class CoursePage(Page):
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        context["user_progress"] = self.get_user_progress(request.user)
+
+        user_progress = self.get_user_progress(request.user)
+        context["user_progress"] = user_progress
+
+        exercise_index = None
+        if user_progress.total > 0:
+            if user_progress.finished < user_progress.total:
+                exercise_index = user_progress.finished + 1
+            elif user_progress.finished == user_progress.total:
+                exercise_index = 1
+        context["start_exercise_index"] = exercise_index
+
+        if exercise_index is not None:
+            context["start_exercise_page"] = (
+                self.get_children().type(ExercisePage).specific()[exercise_index - 1]
+            )
+
         return context
 
 

@@ -15,12 +15,36 @@
     </div>
     <hr />
     <div class="intro-progress">
-      {% component "arrow-button" primary=True hide_arrow=True text="🏁 START THE COURSE 🏁" href="{{ page.get_children.first.get_url }}" / %}
+      {% if start_exercise_index != None %}
+        {% if user_progress.finished == user_progress.total %}
+        {% component "arrow-button" primary=True hide_arrow=True text="🏁 REVIEW THE COURSE 🏁" href="{{ start_exercise_page.get_url }}" / %}
+        {% elif start_exercise_index > 1 %}
+        {% component "arrow-button" primary=True hide_arrow=True text="🏁 CONTINUE THE COURSE 🏁" href="{{ start_exercise_page.get_url }}" / %}
+        {% else %}
+        {% component "arrow-button" primary=True hide_arrow=True text="🏁 START THE COURSE 🏁" href="{{ start_exercise_page.get_url }}" / %}
+        {% endif %}
+      {% endif %}
       <div class="exercise-progress">
         <div class="num"><strong>{{ user_progress.finished }}/{{ user_progress.total }}</strong> exercises finished</div>
         {% component "progress-pips" progress=user_progress / %}
       </div>
       <div class="intro-badge">
+        {% if user_progress.finished == user_progress.total %}
+        <div class="badge">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 101 101"
+          >
+            <path
+              fill="#6258b9"
+              stroke="#000"
+              d="M50.2002.5c4.8153 0 8.7552 2.724 11.2832 7.5996 4.6206-2.96 9.3947-3.3485 13.5664-.9404 4.1714 2.4079 6.2215 6.7357 5.9707 12.2187 5.4806-.2597 9.814 1.8026 12.2207 5.9727 2.407 4.1707 2.0183 8.9448-.9375 13.5654 4.8723 2.5281 7.5957 6.4685 7.5957 11.2842 0 4.8156-2.7246 8.7552-7.6006 11.2832 2.9603 4.6207 3.3496 9.3946.9414 13.5664-2.4079 4.1715-6.7406 6.2259-12.2207 5.9707.2511 5.484-1.7997 9.8135-5.9707 12.2207-4.1706 2.407-8.9451 2.0229-13.5664-.9375-2.5281 4.872-6.4676 7.5957-11.2832 7.5957-4.816 0-8.7562-2.7248-11.2842-7.6015-4.6206 2.9601-9.3935 3.3505-13.5654.9423s-6.223-6.7367-5.9717-12.2207c-5.4792.2507-9.8126-1.8-12.2197-5.9707s-2.0194-8.9456.9365-13.5664C3.2232 58.9543.5 55.0145.5 50.1992c0-4.8157 2.7243-8.7561 7.6006-11.2842-2.9599-4.6205-3.3494-9.3937-.9414-13.5654 2.408-4.1715 6.7232-6.2271 12.2197-5.9717-.2508-5.4835 1.801-9.8126 5.9717-12.2197s8.9449-2.019 13.5654.9365C41.4441 3.223 45.3848.5 50.2002.5Z"
+            />
+          </svg>
+        </div>
+        Badge collected!
+        {% else %}
         <div class="badge">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -34,6 +58,7 @@
           </svg>
         </div>
         Badge not collected yet
+        {% endif %}
       </div>
     </div>
   </div>

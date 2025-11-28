@@ -5,6 +5,10 @@
   align-items: center;
   justify-content: space-between;
 
+  &.single {
+    justify-content: center;
+  }
+
   .line {
     position: absolute;
     top: 50%;
@@ -43,7 +47,7 @@
         background-color: var(--color-green-lightest);
 
         &::after {
-          content: '';
+          content: "";
           width: 14px;
           height: 7px;
           position: absolute;
