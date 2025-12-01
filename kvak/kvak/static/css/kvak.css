@@ -243,3 +243,31 @@ iframe.ratio-16x9 {
   height: auto;
   aspect-ratio: 16 / 9;
 }
+
+.generic-page-header {
+  padding-block: 4.75rem;
+
+  h1 {
+    font-size: 2.25rem;
+    line-height: 1.1;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
+.generic-page-body {
+  padding-block: 3.875rem;
+
+  .rich-text {
+    max-width: 800px;
+    margin-inline: auto;
+    font-size: 1.125rem;
+
+    img {
+      margin-inline: auto;
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+  }
+}
