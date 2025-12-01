@@ -8,5 +8,6 @@ class ExerciseBaseMaterial(Component):
 
     class Media:
         js = [
+            "js/Sortable@1.15.6/Sortable.min.js",
             "js/questions.js",
         ]

@@ -19,6 +19,12 @@
     font-size: 0.75rem;
     line-height: 1.2;
 
+    @media (max-width: 575.98px) {
+      flex-direction: column;
+      gap: 0.5rem;
+      text-align: center;
+    }
+
     img {
       height: 3rem;
     }

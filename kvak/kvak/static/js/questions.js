@@ -93,6 +93,10 @@ questions.forEach((question) => {
     };
     textarea.addEventListener("input", onInput);
     onInput();
+  } else if (type === "order_by_priority_question") {
+    question.__sortable = new Sortable(answers);
+    answerSelected = true;
+    updateSubmitButtonState();
   }
 
   submitButton.addEventListener("click", () => {
@@ -118,6 +122,10 @@ async function submitAnswer(question, type, inputs) {
   } else if (type === "text_answer_question") {
     const answer = inputs.find((input) => input.tagName === "TEXTAREA");
     value = answer ? answer.value : null;
+  } else if (type === "order_by_priority_question") {
+    const optionElements = $$(".priority-option", question);
+    value = optionElements.map((el) => parseInt(el.dataset.order));
+    question.__sortable.destroy();
   }
 
   if (!value) {

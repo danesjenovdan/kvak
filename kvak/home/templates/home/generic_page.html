@@ -1,15 +1,23 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags %}
 
-{% block body_class %}template-homepage{% endblock %}
+{% block body_class %}template-generic{% endblock %}
 
 {% block content %}
 {% component "header" / %}
 
+<div class="generic-page-header bg-green-lightest">
+  <div class="container">
+    <h1>{{ page.title }}</h1>
+  </div>
+</div>
+
 {% if page.body %}
 <div class="container">
-  <div class="rich-text">
-    {{ page.body|richtext }}
+  <div class="generic-page-body">
+    <div class="rich-text">
+      {{ page.body|richtext }}
+    </div>
   </div>
 </div>
 {% endif %}

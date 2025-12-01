@@ -1,3 +1,5 @@
+import random
+
 from django import template
 
 from home.models import UserAnsweredQuestion
@@ -49,3 +51,19 @@ def get_user_answered_question(context, base_material_page, question):
         .order_by("-answered_at")
         .first()
     )
+
+
+@register.filter
+def randomize_with_original_index(values):
+    original = list(values)
+    original_len = len(original)
+    original_indices = list(range(original_len))
+
+    randomized = list()
+    for i in range(original_len):
+        choice_index = random.choice(original_indices)
+        choice_value = original[choice_index]
+        original_indices.remove(choice_index)
+        randomized.append({"original_index": choice_index, "value": choice_value})
+
+    return randomized

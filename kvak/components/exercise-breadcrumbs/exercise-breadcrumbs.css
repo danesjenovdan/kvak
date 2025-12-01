@@ -3,10 +3,18 @@
   background-color: var(--color-pale);
   border-radius: 10px;
 
+  @media (max-width: 575.98px) {
+    margin-bottom: 0;
+  }
+
   ol.breadcrumbs {
     display: flex;
     list-style: none;
     padding: 1rem 1.25rem;
+
+    @media (max-width: 575.98px) {
+      flex-wrap: wrap;
+    }
 
     .breadcrumb-item {
       display: flex;
@@ -14,6 +22,7 @@
       font-weight: 600;
 
       &:not(:first-child)::before {
+        flex-shrink: 0;
         content: "";
         display: inline-block;
         width: 6px;
