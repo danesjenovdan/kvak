@@ -110,6 +110,20 @@
           color: inherit;
         }
       }
+
+      .priority-option {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        padding: 0.5rem 0.625rem;
+        background: var(--color-purple-barely);
+        border: 1px solid #000;
+        border-radius: 10px;
+        font-size: 1.125rem;
+        cursor: grab;
+        user-select: none;
+      }
     }
 
     .answer-submit {
@@ -142,6 +156,14 @@
             background-color: var(--color-green-lightest);
             box-shadow: 0 0 0 2px var(--color-green);
           }
+        }
+      }
+
+      .priority-option {
+        cursor: default;
+
+        .handle {
+          display: none;
         }
       }
     }

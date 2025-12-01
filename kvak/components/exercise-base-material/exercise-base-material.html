@@ -80,7 +80,14 @@
             </label>
             {% endfor %}
           {% elif question.block_type == "text_answer_question" %}
-            <textarea name="{{ question.id }}" rows="5">{% if answered_question %}{{ answered_question.answer_data }}{% endif %}</textarea>
+          <textarea name="{{ question.id }}" rows="5">{% if answered_question %}{{ answered_question.answer_data }}{% endif %}</textarea>
+          {% elif question.block_type == "order_by_priority_question" %}
+            {% for priority_option in question.value.priority_options|randomize_with_original_index %}
+            <div class="priority-option" data-order="{{ priority_option.original_index }}">
+              <span class="handle">⋮⋮</span>
+              <span class="option-text">{{ priority_option.value.option_text }}</span>
+            </div>
+            {% endfor %}
           {% else %}
             {{ question.block_type }}
           {% endif %}
