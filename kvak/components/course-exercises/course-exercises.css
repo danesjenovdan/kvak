@@ -5,6 +5,11 @@
   border: 1px solid #000;
   border-radius: 10px;
 
+  @media (max-width: 575.98px) {
+    padding-inline: 1rem;
+    padding-block: 1rem;
+  }
+
   details {
     position: relative;
 
@@ -29,24 +34,56 @@
         background-repeat: no-repeat;
         background-position: center;
         background-size: 100% 100%;
+
+        @media (max-width: 575.98px) {
+          top: 8px;
+          width: 12px;
+          height: 8px;
+        }
       }
 
       .exercise-summary {
         margin-left: 2rem;
 
+        @media (max-width: 575.98px) {
+          margin-left: 1.5rem;
+        }
+
         div {
           font-size: 1.3125rem;
           text-transform: uppercase;
+
+          @media (max-width: 575.98px) {
+            font-size: 1rem;
+          }
         }
 
         h2 {
           font-size: 1.75rem;
+
+          @media (max-width: 575.98px) {
+            font-size: 1.25rem;
+          }
         }
       }
 
       .start-button {
         flex: 0 0 auto;
         margin-left: auto;
+
+        @media (max-width: 575.98px) {
+          margin-left: 1.5rem;
+          margin-top: 1rem;
+        }
+
+        .arrow-button {
+          font-size: 1.125rem;
+          min-width: auto;
+
+          span {
+            margin-inline: 0.25rem;
+          }
+        }
       }
     }
 
@@ -61,11 +98,21 @@
       margin-left: 2rem;
       font-size: 1.125rem;
 
+      @media (max-width: 575.98px) {
+        margin-left: 1.5rem;
+        margin-top: 1rem;
+        font-size: 1rem;
+      }
+
       .exercise-metadata {
         display: flex;
         gap: 0.5rem;
         margin-bottom: 0.75rem;
         font-size: 1.3125rem;
+
+        @media (max-width: 575.98px) {
+          font-size: 1rem;
+        }
       }
     }
   }

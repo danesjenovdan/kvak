@@ -1,10 +1,18 @@
 .landing-resources-component {
   padding-block: 3.875rem;
 
+  @media (max-width: 575.98px) {
+    padding-block: 2.5rem;
+  }
+
   .resources {
     display: grid;
     gap: 1.125rem;
     grid-template-columns: repeat(4, 1fr);
     margin-top: 2rem;
+
+    @media (max-width: 575.98px) {
+      grid-template-columns: 1fr;
+    }
   }
 }

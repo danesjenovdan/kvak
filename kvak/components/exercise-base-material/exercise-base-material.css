@@ -3,6 +3,10 @@
   margin-inline: auto;
   margin-bottom: 3.875rem;
 
+  @media (max-width: 575.98px) {
+    margin-bottom: 2.5rem;
+  }
+
   h2 {
     margin-bottom: 0.5rem;
     font-size: 1.75rem;
@@ -214,5 +218,20 @@
     display: flex;
     gap: 1rem;
     margin-top: 3rem;
+
+    @media (max-width: 575.98px) {
+      justify-content: space-between;
+      margin-top: 2.5rem;
+    }
+
+    .arrow-button {
+      min-width: auto;
+      font-size: 1.125rem;
+      line-height: 1.1;
+
+      span {
+        margin-inline: 0.5rem;
+      }
+    }
   }
 }
