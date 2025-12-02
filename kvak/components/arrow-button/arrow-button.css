@@ -21,6 +21,7 @@
   .arrow-button__icon {
     width: 1.875rem;
     height: 1.875rem;
+    transition: transform 0.15s ease;
   }
 
   &.full-width {
@@ -40,7 +41,7 @@
     flex-direction: row-reverse;
 
     .arrow-button__icon {
-      transform: scaleX(-1);
+      scale: -1 1;
     }
   }
 
@@ -58,5 +59,9 @@ a.arrow-button,
 button.arrow-button {
   &:not(:disabled):hover {
     box-shadow: 0 0 0 4px var(--th-color-lighter);
+
+    .arrow-button__icon {
+      transform: rotate(-45deg);
+    }
   }
 }
