@@ -1,4 +1,9 @@
 (() => {
+  // Remove "required" attribute from all inputs
+  document.querySelectorAll("input").forEach((input) => {
+    input.removeAttribute("required");
+  });
+
   // Find the select element with id 'id_country'
   const selectElem = document.querySelector("#id_country");
   if (!selectElem) return;
