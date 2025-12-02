@@ -53,6 +53,14 @@ def get_user_answered_question(context, base_material_page, question):
     )
 
 
+@register.simple_tag(takes_context=True)
+def get_user_progress(context, course_page):
+    user = context["request"].user
+    if user.is_anonymous:
+        return None
+    return course_page.get_user_progress(user=user)
+
+
 @register.filter
 def randomize_with_original_index(values):
     original = list(values)

@@ -6,6 +6,7 @@
       <div class="courses">
         {% for course in page.get_children.specific %}
         {% component "course-card"
+          course_page=course
           heading="h2"
           title=course.title
           image=course.image
