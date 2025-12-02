@@ -1,8 +1,10 @@
 {% extends "registration/auth_base.html" %}
+{% load wagtailcore_tags %}
 
 {% block title %}Profile{% endblock %}
 
 {% block form_content %}
+
 {% component "auth-form"
   method="POST"
   action="{% url 'logout' %}"
@@ -19,4 +21,7 @@
     {% component "arrow-button" type="submit" primary=True full_width=True text="Logout" / %}
   {% endfill %}
 {% endcomponent %}
+
+{% component "profile-courses" / %}
+
 {% endblock %}

@@ -1,0 +1,17 @@
+.profile-courses-component {
+  padding-bottom: 5.25rem;
+
+  @media (max-width: 575.98px) {
+    padding-bottom: 2.5rem;
+  }
+
+  .courses {
+    display: grid;
+    gap: 1.125rem;
+    grid-template-columns: repeat(3, 1fr);
+
+    @media (max-width: 575.98px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}

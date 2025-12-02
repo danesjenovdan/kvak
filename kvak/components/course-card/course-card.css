@@ -65,13 +65,20 @@
 
   .badge-collected {
     margin-top: 1rem;
-    margin-bottom: 0.25rem;
     padding: 0.875rem 1rem;
     font-size: 1.3125rem;
     font-weight: 800;
     background: var(--th-color-lighter);
     border-radius: 10px;
     text-align: center;
+  }
+
+  &.small-bottom-padding {
+    padding-bottom: 1.5rem;
+
+    .arrow-button {
+      margin-bottom: 0;
+    }
   }
 
   &:hover {

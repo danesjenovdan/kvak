@@ -1,0 +1,21 @@
+{% load wagtailcore_tags %}
+
+<div>
+  <div class="container">
+    <div class="profile-courses-component">
+      <div class="courses">
+        {% for course in started_courses %}
+        {% component "course-card"
+          course_page=course
+          heading="h2"
+          title=course.title
+          image=course.image
+          description=course.overview|richtext
+          href=course.get_url
+          show_continue=True
+        / %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

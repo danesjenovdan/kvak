@@ -1,7 +1,7 @@
 {% load static wagtailimages_tags kvak_extras %}
 
 {% get_user_progress course_page as user_progress %}
-<a href="{% if user.is_anonymous %}{% url 'register' %}{% else %}{{ href }}{% endif %}" class="course-card-component {% if user_progress and user_progress.finished == user_progress.total %}th-purple{% endif %}">
+<a href="{% if user.is_anonymous %}{% url 'register' %}{% else %}{{ href }}{% endif %}" class="course-card-component {% if user_progress and user_progress.finished == user_progress.total %}th-purple{% endif %} {% if show_continue %}small-bottom-padding{% endif %}">
   {% if user_progress and user_progress.finished == user_progress.total %}
   <div class="badge-overlay">
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 101 101">
@@ -23,15 +23,27 @@
   {% if user.is_anonymous %}
   {% component "arrow-button" type="inert" text="REGISTER" / %}
   {% else %}
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 30 30" class="course-card__icon">
-    <circle cx="15" cy="15" r="15" fill="var(--th-color-lighter)" />
-    <path
-      fill="#000"
-      d="M20.671 20.73c-.24.241-.616.234-1.37.221-1.27-.022-3.043-.072-4.382-.178a62.903 62.903 0 0 1-3.036-.338c-1.293-.17-1.94-.255-2.104-.715-.164-.46.284-.938 1.183-1.894.366-.39.759-.805 1.159-1.226a54.033 54.033 0 0 1-1.818-1.712 61.954 61.954 0 0 1-2.125-2.277c-.467-.522-.701-.783-.692-1.101.009-.319.259-.569.76-1.07l1.994-1.994c.5-.5.75-.75 1.069-.76.318-.008.58.226 1.1.693a61.94 61.94 0 0 1 2.278 2.125 53.867 53.867 0 0 1 1.708 1.814c.47-.447.937-.89 1.371-1.297.956-.898 1.433-1.347 1.894-1.182.46.164.545.81.716 2.103.133 1.014.265 2.123.337 3.037.107 1.338.156 3.112.179 4.382.012.753.02 1.13-.22 1.37Z"
-    />
-  </svg>
-  {% if user_progress and user_progress.finished == user_progress.total %}
-  <div class="badge-collected">BADGE COLLECTED!</div>
-  {% endif %}
+    {% if user_progress and user_progress.finished == user_progress.total %}
+    <div class="badge-collected">BADGE COLLECTED!</div>
+      {% if not show_continue %}
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 30 30" class="course-card__icon">
+        <circle cx="15" cy="15" r="15" fill="var(--th-color-lighter)" />
+        <path
+          fill="#000"
+          d="M20.671 20.73c-.24.241-.616.234-1.37.221-1.27-.022-3.043-.072-4.382-.178a62.903 62.903 0 0 1-3.036-.338c-1.293-.17-1.94-.255-2.104-.715-.164-.46.284-.938 1.183-1.894.366-.39.759-.805 1.159-1.226a54.033 54.033 0 0 1-1.818-1.712 61.954 61.954 0 0 1-2.125-2.277c-.467-.522-.701-.783-.692-1.101.009-.319.259-.569.76-1.07l1.994-1.994c.5-.5.75-.75 1.069-.76.318-.008.58.226 1.1.693a61.94 61.94 0 0 1 2.278 2.125 53.867 53.867 0 0 1 1.708 1.814c.47-.447.937-.89 1.371-1.297.956-.898 1.433-1.347 1.894-1.182.46.164.545.81.716 2.103.133 1.014.265 2.123.337 3.037.107 1.338.156 3.112.179 4.382.012.753.02 1.13-.22 1.37Z"
+        />
+      </svg>
+      {% endif %}
+    {% elif show_continue %}
+    {% component "arrow-button" type="inert" text="CONTINUE" / %}
+    {% else %}
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 30 30" class="course-card__icon">
+      <circle cx="15" cy="15" r="15" fill="var(--th-color-lighter)" />
+      <path
+        fill="#000"
+        d="M20.671 20.73c-.24.241-.616.234-1.37.221-1.27-.022-3.043-.072-4.382-.178a62.903 62.903 0 0 1-3.036-.338c-1.293-.17-1.94-.255-2.104-.715-.164-.46.284-.938 1.183-1.894.366-.39.759-.805 1.159-1.226a54.033 54.033 0 0 1-1.818-1.712 61.954 61.954 0 0 1-2.125-2.277c-.467-.522-.701-.783-.692-1.101.009-.319.259-.569.76-1.07l1.994-1.994c.5-.5.75-.75 1.069-.76.318-.008.58.226 1.1.693a61.94 61.94 0 0 1 2.278 2.125 53.867 53.867 0 0 1 1.708 1.814c.47-.447.937-.89 1.371-1.297.956-.898 1.433-1.347 1.894-1.182.46.164.545.81.716 2.103.133 1.014.265 2.123.337 3.037.107 1.338.156 3.112.179 4.382.012.753.02 1.13-.22 1.37Z"
+      />
+    </svg>
+    {% endif %}
   {% endif %}
 </a>
