@@ -149,6 +149,7 @@
 
         &.correct {
           background-color: var(--color-green-barely);
+          box-shadow: 0 0 0 2px var(--color-green);
         }
 
         &:has(input:checked:disabled) {
