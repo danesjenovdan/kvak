@@ -90,6 +90,7 @@
             height: 1.125rem;
             border-radius: 3px;
             accent-color: #000;
+            cursor: pointer;
           }
 
           label {
@@ -97,6 +98,14 @@
 
             span {
               flex-shrink: 1;
+
+              a {
+                color: inherit;
+
+                &:hover {
+                  text-decoration: none;
+                }
+              }
             }
           }
         }

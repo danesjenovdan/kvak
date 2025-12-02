@@ -65,6 +65,7 @@
         border: 1px solid #000;
         border-radius: 10px;
         font-size: 1.125rem;
+        cursor: pointer;
 
         .icon {
           flex-shrink: 0;
@@ -148,6 +149,7 @@
 
         &.correct {
           background-color: var(--color-green-barely);
+          box-shadow: 0 0 0 2px var(--color-green);
         }
 
         &:has(input:checked:disabled) {

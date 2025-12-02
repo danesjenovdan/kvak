@@ -1,3 +1,5 @@
+{% load wagtailcore_tags %}
+
   <div class="container">
     <div class="auth-form-component">
       <div class="max-width-wrapper">
@@ -25,7 +27,17 @@
           {% for field in form %}
           <div class="form-field {% if field.errors %}has-error{% endif %}">
             <label for="{{ field.id_for_label }}">
+              {% if field.name == 'agree_to_terms' %}
+              {% with terms_link=settings.home.MiscSettings.terms_of_use_link.0 privacy_link=settings.home.MiscSettings.privacy_policy_link.0 %}
+              <span>
+                By creating an account, I agree to our
+                <a href="{% if terms_link.value.page %}{% pageurl terms_link.value.page %}{% else %}{{ terms_link.value.url }}{% endif %}" target="_blank">Terms of use</a> and
+                <a href="{% if privacy_link.value.page %}{% pageurl privacy_link.value.page %}{% else %}{{ privacy_link.value.url }}{% endif %}" target="_blank">Privacy Policy</a>.
+              </span>
+              {% endwith %}
+              {% else %}
               <span>{{ field.label }}</span>
+              {% endif %}
               {% if field.errors %}
               <div class="error">
                 {% for error in field.errors %}
