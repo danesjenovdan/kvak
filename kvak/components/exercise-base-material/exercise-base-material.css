@@ -65,6 +65,7 @@
         border: 1px solid #000;
         border-radius: 10px;
         font-size: 1.125rem;
+        cursor: pointer;
 
         .icon {
           flex-shrink: 0;

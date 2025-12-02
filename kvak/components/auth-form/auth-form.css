@@ -90,6 +90,7 @@
             height: 1.125rem;
             border-radius: 3px;
             accent-color: #000;
+            cursor: pointer;
           }
 
           label {
