@@ -97,6 +97,14 @@
 
             span {
               flex-shrink: 1;
+
+              a {
+                color: inherit;
+
+                &:hover {
+                  text-decoration: none;
+                }
+              }
             }
           }
         }
