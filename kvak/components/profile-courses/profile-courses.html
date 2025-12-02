@@ -2,26 +2,20 @@
 
 <div>
   <div class="container">
-    <div class="landing-courses-component">
-      {% component "landing-title-row"
-        title="COURSES"
-        description=page.courses_description
-        button_text="See all courses"
-        button_href=page.courses_page.get_url
-      / %}
+    <div class="profile-courses-component">
       <div class="courses">
-        {% for course in courses %}
+        {% for course in started_courses %}
         {% component "course-card"
           course_page=course
-          heading="h3"
+          heading="h2"
           title=course.title
           image=course.image
           description=course.overview|richtext
           href=course.get_url
+          show_continue=True
         / %}
         {% endfor %}
       </div>
-      {% component "suggest-courses" / %}
     </div>
   </div>
 </div>
