@@ -9,15 +9,23 @@
         class="logo"
       />
     </a>
-    <ul role="navigation" class="nav">
-      {% for link in settings.home.HeaderSettings.navigation %}
-      <li class="nav-item {% if link.value.page and link.value.page.id == page.id %}active{% endif %}"><a href="{% if link.value.page %}{% pageurl link.value.page %}{% else %}{{ link.value.url }}{% endif %}" {% if link.value.url %}target="_blank"{% endif %}>{{ link.value.title }}</a></li>
-      {% endfor %}
-      {% if request.user.is_anonymous %}
-      <li class="nav-item {% if request|is_profile_page %}active{% endif %}"><a href="{% url 'login' %}">Sign in</a></li>
-      {% else %}
-      <li class="nav-item {% if request|is_profile_page %}active{% endif %}"><a href="{% url 'profile' %}">Profile</a></li>
-      {% endif %}
-    </ul>
+    <button type="button" class="nav-toggle">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="sr-only">Toggle navigation</span>
+    </button>
+    <div class="nav-menu">
+      <ul role="navigation" class="nav">
+        {% for link in settings.home.HeaderSettings.navigation %}
+        <li class="nav-item {% if link.value.page and link.value.page.id == page.id %}active{% endif %}"><a href="{% if link.value.page %}{% pageurl link.value.page %}{% else %}{{ link.value.url }}{% endif %}" {% if link.value.url %}target="_blank"{% endif %}>{{ link.value.title }}</a></li>
+        {% endfor %}
+        {% if request.user.is_anonymous %}
+        <li class="nav-item {% if request|is_profile_page %}active{% endif %}"><a href="{% url 'login' %}">Sign in</a></li>
+        {% else %}
+        <li class="nav-item {% if request|is_profile_page %}active{% endif %}"><a href="{% url 'profile' %}">Profile</a></li>
+        {% endif %}
+      </ul>
+    </div>
   </header>
 </div>

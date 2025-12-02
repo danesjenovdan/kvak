@@ -5,3 +5,4 @@ from django_components import Component, register
 class Header(Component):
     template_file = "header.html"
     css_file = "header.css"
+    js_file = "header.js"
