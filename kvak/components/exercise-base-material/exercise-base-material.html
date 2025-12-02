@@ -1,4 +1,4 @@
-{% load wagtailcore_tags kvak_extras %}
+{% load wagtailcore_tags wagtailembeds_tags kvak_extras %}
 
 {% with base_material=base_material_page %}
 <div>
@@ -8,11 +8,7 @@
       <div class="description rich-text">{{ base_material.text|richtext }}</div>
       {% if base_material.video_url %}
       <div class="video-container ratio-16x9">
-        <iframe
-        src="{{ base_material.video_url }}"
-        frameborder="0"
-        allowfullscreen
-        ></iframe>
+        {% embed base_material.video_url %}
       </div>
       {% endif %}
       {% csrf_token %}
