@@ -53,9 +53,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_components",
     "django_countries",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
