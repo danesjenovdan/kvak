@@ -27,3 +27,18 @@ if os.getenv("DJANGO_ENABLE_S3", False):
     )
     AWS_S3_SIGNATURE_VERSION = os.getenv("DJANGO_AWS_S3_SIGNATURE_VERSION", "s3v4")
     AWS_S3_FILE_OVERWRITE = False
+
+# Email settings
+EMAIL_BACKEND = os.getenv(
+    "DJANGO_EMAIL_BACKEND",
+    "django.core.mail.backends.filebased.EmailBackend",
+)
+EMAIL_FILE_PATH = os.getenv("DJANGO_EMAIL_FILE_PATH", "/tmp/emails")
+EMAIL_USE_TLS = bool(os.getenv("DJANGO_EMAIL_USE_TLS", ""))
+EMAIL_USE_SSL = bool(os.getenv("DJANGO_EMAIL_USE_SSL", ""))
+EMAIL_HOST = os.getenv("DJANGO_EMAIL_HOST", "")
+EMAIL_PORT = int(os.getenv("DJANGO_EMAIL_PORT", ""))
+EMAIL_HOST_USER = os.getenv("DJANGO_EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("DJANGO_EMAIL_HOST_PASSWORD", "")
+FROM_EMAIL = os.getenv("DJANGO_FROM_EMAIL", "")
+REPLY_TO_EMAIL = os.getenv("DJANGO_REPLY_TO_EMAIL", "")

@@ -39,6 +39,21 @@
       color: #000;
     }
 
+    .auth-form-notice {
+      p + p {
+        margin-top: 0.5rem;
+
+        a {
+          color: inherit;
+          font-weight: 500;
+
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
+    }
+
     .non-field-error {
       border-color: var(--color-error);
       color: var(--color-error);

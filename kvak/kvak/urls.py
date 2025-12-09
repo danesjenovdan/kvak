@@ -7,7 +7,7 @@ from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
-from users.views import ProfileView, RegisterView
+from users.views import ProfileView, RegisterDoneView, RegisterView
 
 urlpatterns = [
     # path("favicon.ico", RedirectView.as_view(url=static("favicon/favicon.ico"))),
@@ -18,8 +18,12 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
+    from debug_toolbar.toolbar import debug_toolbar_urls
     from django.conf.urls.static import static
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+    # Add debug toolbar
+    urlpatterns += debug_toolbar_urls()
 
     # Serve static and media files from development server
     urlpatterns += staticfiles_urlpatterns()
@@ -27,6 +31,7 @@ if settings.DEBUG:
 
 urlpatterns = urlpatterns + [
     path("register/", RegisterView.as_view(), name="register"),
+    path("register/done/", RegisterDoneView.as_view(), name="register_done"),
     path("profile/", ProfileView.as_view(), name="profile"),
     path("api/", include("home.urls")),
     path("", include("django.contrib.auth.urls")),
