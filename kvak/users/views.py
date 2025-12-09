@@ -9,8 +9,12 @@ from users.forms import CustomUserCreationForm
 
 class RegisterView(CreateView):
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy("login")
+    success_url = reverse_lazy("register_done")
     template_name = "registration/register.html"
+
+
+class RegisterDoneView(TemplateView):
+    template_name = "registration/register_done.html"
 
 
 @method_decorator(login_required, name="dispatch")

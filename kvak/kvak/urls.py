@@ -7,7 +7,7 @@ from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
-from users.views import ProfileView, RegisterView
+from users.views import ProfileView, RegisterDoneView, RegisterView
 
 urlpatterns = [
     # path("favicon.ico", RedirectView.as_view(url=static("favicon/favicon.ico"))),
@@ -27,6 +27,7 @@ if settings.DEBUG:
 
 urlpatterns = urlpatterns + [
     path("register/", RegisterView.as_view(), name="register"),
+    path("register/done/", RegisterDoneView.as_view(), name="register_done"),
     path("profile/", ProfileView.as_view(), name="profile"),
     path("api/", include("home.urls")),
     path("", include("django.contrib.auth.urls")),

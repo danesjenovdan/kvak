@@ -1,0 +1,20 @@
+{% extends "registration/auth_base.html" %}
+
+{% block title %}Account created{% endblock %}
+
+{% block form_content %}
+{% component "auth-form" form=None %}
+  {% fill "title" %}
+  <div class="auth-form-title">
+    <h1 class="form-title">ACCOUNT CREATED</h1>
+  </div>
+  {% endfill %}
+
+  {% fill "notice" %}
+  <div class="auth-form-notice">
+    <p>Your account has been successfully created.</p>
+    <p>You can now <a href="{% url 'login' %}">SIGN IN</a>.</p>
+  </div>
+  {% endfill %}
+{% endcomponent %}
+{% endblock %}
