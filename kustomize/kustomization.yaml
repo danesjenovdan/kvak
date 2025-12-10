@@ -8,4 +8,4 @@ resources:
 images:
   - name: kvak
     newName: rg.fr-par.scw.cloud/djnd/kvak
-    newTag: 'd38ce8fc0b0fbe30ca591aca9e8f05056ddf5e81'
+    newTag: '815635e7b734c1a1f9b20c2651e88f417e28ec88'
