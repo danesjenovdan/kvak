@@ -297,12 +297,12 @@ class MultipleChoiceQuestionBlock(blocks.StructBlock):
 
     question_text = blocks.RichTextBlock(
         label=_("Question text"),
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image"],
     )
     explanation_text = blocks.RichTextBlock(
         label=_("Explanation text"),
         required=False,
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image"],
     )
     answer_options = blocks.ListBlock(
         AnswerOptionBlock(),
@@ -321,12 +321,12 @@ class OneCorrectAnswerQuestionBlock(blocks.StructBlock):
 
     question_text = blocks.RichTextBlock(
         label=_("Question text"),
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image"],
     )
     explanation_text = blocks.RichTextBlock(
         label=_("Explanation text"),
         required=False,
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image"],
     )
     answer_options = blocks.ListBlock(
         AnswerOptionBlock(),
@@ -345,12 +345,12 @@ class TextAnswerQuestionBlock(blocks.StructBlock):
 
     question_text = blocks.RichTextBlock(
         label=_("Question text"),
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image"],
     )
     explanation_text = blocks.RichTextBlock(
         label=_("Explanation text"),
         required=False,
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image"],
     )
 
     class Meta:
@@ -376,12 +376,12 @@ class OrderByPriorityQuestionBlock(blocks.StructBlock):
 
     question_text = blocks.RichTextBlock(
         label=_("Question text"),
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image"],
     )
     explanation_text = blocks.RichTextBlock(
         label=_("Explanation text"),
         required=False,
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image"],
     )
     priority_options = blocks.ListBlock(
         OrderByPriorityOptionBlock(),

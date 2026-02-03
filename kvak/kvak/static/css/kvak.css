@@ -168,7 +168,8 @@ body {
 
   p,
   ul,
-  ol {
+  ol,
+  img.richtext-image {
     margin-bottom: 0.75em;
 
     &:last-child {
@@ -275,11 +276,15 @@ iframe.ratio-16x9 {
     margin-inline: auto;
     font-size: 1.125rem;
 
-    img {
+    img.richtext-image {
       margin-inline: auto;
       display: block;
       max-width: 100%;
       height: auto;
+
+      &.full-width {
+        width: 100%;
+      }
     }
   }
 }
