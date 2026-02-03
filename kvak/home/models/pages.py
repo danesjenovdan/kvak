@@ -331,7 +331,7 @@ class OneCorrectAnswerQuestionBlock(blocks.StructBlock):
     answer_options = blocks.ListBlock(
         AnswerOptionBlock(),
         min_num=2,
-        max_num=10,
+        # max_num=10,
         label=_("Answer options"),
     )
 
@@ -386,7 +386,7 @@ class OrderByPriorityQuestionBlock(blocks.StructBlock):
     priority_options = blocks.ListBlock(
         OrderByPriorityOptionBlock(),
         min_num=2,
-        max_num=10,
+        # max_num=10,
         label=_("Priority options"),
     )
 
