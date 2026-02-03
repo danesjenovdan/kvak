@@ -302,7 +302,7 @@ class MultipleChoiceQuestionBlock(blocks.StructBlock):
     explanation_text = blocks.RichTextBlock(
         label=_("Explanation text"),
         required=False,
-        features=["bold", "italic", "link", "ul", "ol", "image"],
+        features=["bold", "italic", "link", "ul", "ol", "image", "embed"],
     )
     answer_options = blocks.ListBlock(
         AnswerOptionBlock(),
@@ -326,7 +326,7 @@ class OneCorrectAnswerQuestionBlock(blocks.StructBlock):
     explanation_text = blocks.RichTextBlock(
         label=_("Explanation text"),
         required=False,
-        features=["bold", "italic", "link", "ul", "ol", "image"],
+        features=["bold", "italic", "link", "ul", "ol", "image", "embed"],
     )
     answer_options = blocks.ListBlock(
         AnswerOptionBlock(),
@@ -350,7 +350,7 @@ class TextAnswerQuestionBlock(blocks.StructBlock):
     explanation_text = blocks.RichTextBlock(
         label=_("Explanation text"),
         required=False,
-        features=["bold", "italic", "link", "ul", "ol", "image"],
+        features=["bold", "italic", "link", "ul", "ol", "image", "embed"],
     )
 
     class Meta:
@@ -381,7 +381,7 @@ class OrderByPriorityQuestionBlock(blocks.StructBlock):
     explanation_text = blocks.RichTextBlock(
         label=_("Explanation text"),
         required=False,
-        features=["bold", "italic", "link", "ul", "ol", "image"],
+        features=["bold", "italic", "link", "ul", "ol", "image", "embed"],
     )
     priority_options = blocks.ListBlock(
         OrderByPriorityOptionBlock(),

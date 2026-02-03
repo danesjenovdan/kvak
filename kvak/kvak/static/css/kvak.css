@@ -169,7 +169,8 @@ body {
   p,
   ul,
   ol,
-  img.richtext-image {
+  img.richtext-image,
+  div:has(> iframe) {
     margin-bottom: 0.75em;
 
     &:last-child {
@@ -233,6 +234,15 @@ body {
 
     &:hover {
       text-decoration: none;
+    }
+  }
+
+  div {
+    iframe {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
     }
   }
 }
