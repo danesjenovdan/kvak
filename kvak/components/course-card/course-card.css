@@ -17,9 +17,23 @@
     width: 6rem;
     height: 6rem;
 
+    &:has(> img) {
+      clip-path: var(--badge-clip-path);
+      padding: 1px;
+      background: #000;
+    }
+
     svg {
       width: 100%;
       height: 100%;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #fff;
+      clip-path: var(--badge-clip-path);
     }
   }
 

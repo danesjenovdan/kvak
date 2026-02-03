@@ -137,10 +137,25 @@ class CoursePage(Page):
         blank=True,
         verbose_name=_("Course overview"),
     )
+    claim_badge_url = models.URLField(
+        blank=True,
+        verbose_name=_("Claim badge URL"),
+        help_text=_("URL where users can claim their badge after completing a course"),
+    )
+    badge_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Badge image"),
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("image"),
         FieldPanel("overview"),
+        FieldPanel("claim_badge_url"),
+        FieldPanel("badge_image"),
     ]
 
     parent_page_types = ["home.CoursesListPage"]
