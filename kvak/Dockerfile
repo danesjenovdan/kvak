@@ -1,5 +1,5 @@
 # Use an official Python runtime based on Debian 13 "trixie" as a parent image.
-FROM python:3.13-slim-trixie
+FROM python:3.14-slim-trixie
 
 # Add user that will be used in the container.
 RUN useradd wagtail
