@@ -395,7 +395,7 @@ class OrderByPriorityQuestionBlock(blocks.StructBlock):
         label = _("Order by Priority Question")
 
 
-class BaseMaterialPage(Page):
+class BaseMaterialPage(RoutablePageMixin, Page):
     text = RichTextField(
         blank=True,
         verbose_name=_("Text"),
@@ -425,6 +425,26 @@ class BaseMaterialPage(Page):
 
     parent_page_types = ["home.ExercisePage"]
     subpage_types = []
+
+    @path("")
+    def render_custom(self, request):
+        # serve_preview is overridden by RoutablePageMixin to point here as well
+        if getattr(request, "is_preview", False):
+            return self.render(request)
+
+        else:  # Not a preview
+            parent_page = self.get_parent()
+            if parent_page:
+                if self.id:
+                    child_page_ids = list(
+                        parent_page.get_children()
+                        .type(BaseMaterialPage)
+                        .values_list("id", flat=True)
+                    )
+                    page_index = child_page_ids.index(self.id) + 1
+                    return redirect(f"{parent_page.get_url()}?page={page_index}")
+
+        return self.render(request)
 
 
 class UserAnsweredQuestion(models.Model):

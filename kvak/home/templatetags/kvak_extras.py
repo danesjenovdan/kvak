@@ -23,7 +23,9 @@ AUTH_URL_NAMES = [
 
 @register.filter
 def is_profile_page(request):
-    return request.resolver_match.url_name in AUTH_URL_NAMES
+    if request.resolver_match:
+        return request.resolver_match.url_name in AUTH_URL_NAMES
+    return False
 
 
 @register.filter
