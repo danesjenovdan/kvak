@@ -137,10 +137,25 @@ class CoursePage(Page):
         blank=True,
         verbose_name=_("Course overview"),
     )
+    claim_badge_url = models.URLField(
+        blank=True,
+        verbose_name=_("Claim badge URL"),
+        help_text=_("URL where users can claim their badge after completing a course"),
+    )
+    badge_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Badge image"),
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("image"),
         FieldPanel("overview"),
+        FieldPanel("claim_badge_url"),
+        FieldPanel("badge_image"),
     ]
 
     parent_page_types = ["home.CoursesListPage"]
@@ -297,12 +312,12 @@ class MultipleChoiceQuestionBlock(blocks.StructBlock):
 
     question_text = blocks.RichTextBlock(
         label=_("Question text"),
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image"],
     )
     explanation_text = blocks.RichTextBlock(
         label=_("Explanation text"),
         required=False,
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image", "embed"],
     )
     answer_options = blocks.ListBlock(
         AnswerOptionBlock(),
@@ -321,17 +336,17 @@ class OneCorrectAnswerQuestionBlock(blocks.StructBlock):
 
     question_text = blocks.RichTextBlock(
         label=_("Question text"),
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image"],
     )
     explanation_text = blocks.RichTextBlock(
         label=_("Explanation text"),
         required=False,
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image", "embed"],
     )
     answer_options = blocks.ListBlock(
         AnswerOptionBlock(),
         min_num=2,
-        max_num=10,
+        # max_num=10,
         label=_("Answer options"),
     )
 
@@ -345,12 +360,12 @@ class TextAnswerQuestionBlock(blocks.StructBlock):
 
     question_text = blocks.RichTextBlock(
         label=_("Question text"),
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image"],
     )
     explanation_text = blocks.RichTextBlock(
         label=_("Explanation text"),
         required=False,
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image", "embed"],
     )
 
     class Meta:
@@ -376,17 +391,17 @@ class OrderByPriorityQuestionBlock(blocks.StructBlock):
 
     question_text = blocks.RichTextBlock(
         label=_("Question text"),
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image"],
     )
     explanation_text = blocks.RichTextBlock(
         label=_("Explanation text"),
         required=False,
-        features=["bold", "italic", "link", "ul", "ol"],
+        features=["bold", "italic", "link", "ul", "ol", "image", "embed"],
     )
     priority_options = blocks.ListBlock(
         OrderByPriorityOptionBlock(),
         min_num=2,
-        max_num=10,
+        # max_num=10,
         label=_("Priority options"),
     )
 
@@ -395,7 +410,7 @@ class OrderByPriorityQuestionBlock(blocks.StructBlock):
         label = _("Order by Priority Question")
 
 
-class BaseMaterialPage(Page):
+class BaseMaterialPage(RoutablePageMixin, Page):
     text = RichTextField(
         blank=True,
         verbose_name=_("Text"),
@@ -425,6 +440,26 @@ class BaseMaterialPage(Page):
 
     parent_page_types = ["home.ExercisePage"]
     subpage_types = []
+
+    @path("")
+    def render_custom(self, request):
+        # serve_preview is overridden by RoutablePageMixin to point here as well
+        if getattr(request, "is_preview", False):
+            return self.render(request)
+
+        else:  # Not a preview
+            parent_page = self.get_parent()
+            if parent_page:
+                if self.id:
+                    child_page_ids = list(
+                        parent_page.get_children()
+                        .type(BaseMaterialPage)
+                        .values_list("id", flat=True)
+                    )
+                    page_index = child_page_ids.index(self.id) + 1
+                    return redirect(f"{parent_page.get_url()}?page={page_index}")
+
+        return self.render(request)
 
 
 class UserAnsweredQuestion(models.Model):

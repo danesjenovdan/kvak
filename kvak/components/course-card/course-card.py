@@ -7,4 +7,4 @@ class CourseCard(Component):
     css_file = "course-card.css"
 
     def get_template_data(self, args, kwargs, slots, context):
-        return {**kwargs, "user": self.request.user}
+        return {**kwargs}

@@ -115,23 +115,59 @@
     }
 
     .intro-badge {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-      padding-inline: 1rem 1.25rem;
-      padding-block: 0.40625rem;
-      border: 1px solid #000;
-      border-radius: 10px;
-      font-size: 1.25rem;
-      font-weight: 600;
+      .no-badge,
+      .no-link,
+      .badge-link {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        padding-inline: 1rem 1.25rem;
+        padding-block: 0.40625rem;
+        border: 1px solid #000;
+        border-radius: 10px;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .badge-link {
+        background: #fff;
+
+        &:not(:disabled):hover {
+          box-shadow: 0 0 0 4px var(--th-color-lighter);
+        }
+      }
 
       .badge {
         width: 43px;
         height: 43px;
 
+        &:has(> img) {
+          clip-path: var(--badge-clip-path);
+          padding: 1px;
+          background: #000;
+        }
+
         svg {
           width: 100%;
           height: 100%;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          background: #fff;
+          clip-path: var(--badge-clip-path);
+        }
+      }
+
+      .no-badge {
+        .badge {
+          img {
+            filter: grayscale(100%) opacity(0.75);
+          }
         }
       }
     }

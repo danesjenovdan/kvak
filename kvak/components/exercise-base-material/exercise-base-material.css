@@ -50,6 +50,15 @@
     .question-text {
       font-size: 1.3125rem;
       font-weight: 600;
+
+      a {
+        font-weight: inherit;
+      }
+
+      b,
+      strong {
+        font-weight: 900;
+      }
     }
 
     .answers {

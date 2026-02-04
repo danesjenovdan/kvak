@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block body_class %}template-exercise{% endblock %}
+
+{% block content %}
+{% comment %}
+  ONLY USED FOR PREVIEWS IN THE WAGTAIL ADMIN!
+{% endcomment %}
+{% component "header" / %}
+{% component "exercise-breadcrumbs" / %}
+{% component "exercise-intro" page=page.get_parent.specific / %}
+{% component "exercise-base-material" base_material_page=page / %}
+{% component "footer" / %}
+{% endblock content %}

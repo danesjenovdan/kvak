@@ -35,7 +35,7 @@
           </div>
           <div class="text">Question {{ forloop.counter }}</div>
         </div>
-        <div class="question-text">
+        <div class="question-text rich-text">
           {{ question.value.question_text|richtext }}
         </div>
         <div class="answers" data-question-type="{{ question.block_type }}">
@@ -91,7 +91,7 @@
         <div class="answer-submit {% if answered_question %}hidden{% endif %}">
           {% component "arrow-button" type="button" primary=True text="Submit" disabled=True / %}
         </div>
-        <div class="explanation-text {% if not answered_question %}hidden{% endif %}">
+        <div class="explanation-text rich-text {% if not answered_question %}hidden{% endif %}">
           <hr>
           <div class="title">Explanation</div>
           {{ question.value.explanation_text|richtext }}
