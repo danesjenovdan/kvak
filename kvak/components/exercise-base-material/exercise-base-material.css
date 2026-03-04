@@ -209,15 +209,18 @@
     }
 
     .explanation-text {
+      margin-top: 2.25rem;
+      padding: 1.75rem;
+      background-color: var(--th-color-lightest);
+      border-top: 1px solid #000;
       font-size: 1.125rem;
+
+      @media (max-width: 575.98px) {
+        padding: 1.5rem;
+      }
 
       &.hidden {
         display: none;
-      }
-
-      hr {
-        max-width: 170px;
-        margin-block: 2.25rem;
       }
 
       .title {

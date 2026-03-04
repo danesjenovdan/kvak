@@ -93,8 +93,7 @@
           {% component "arrow-button" type="button" primary=True text="Submit" disabled=True / %}
         </div>
         {% if question.value.explanation_text %}
-        <div class="explanation-text rich-text {% if not answered_question %}hidden{% endif %}">
-          <hr>
+        <div class="explanation-text th-purple rich-text {% if not answered_question %}hidden{% endif %}">
           <div class="title">Explanation</div>
           {{ question.value.explanation_text|richtext }}
         </div>

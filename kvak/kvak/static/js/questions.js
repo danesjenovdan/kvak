@@ -32,6 +32,20 @@ function updateNextPageButtonState() {
 
 updateNextPageButtonState();
 
+function scrollToElementIfNeeded(element) {
+  // scroll element in to view if top of the element is less than 15%
+  // from the bottom of the viewport
+  const rect = element.getBoundingClientRect();
+  if (rect.top > window.innerHeight * 0.85) {
+    // scroll top of the element to the center of the viewport
+    const scrollTop = rect.top + window.scrollY - window.innerHeight / 2;
+    window.scrollTo({
+      top: scrollTop,
+      behavior: "smooth",
+    });
+  }
+}
+
 if (!questions.length) {
   // submit an empty answer to mark the page as completed
   submitAnswer(null, null, []);
@@ -110,6 +124,7 @@ if (!questions.length) {
       question.classList.add("answered");
       if (explanationText) {
         explanationText.classList.remove("hidden");
+        scrollToElementIfNeeded(explanationText);
       }
       disableQuestion();
       submitAnswer(question, type, inputs);
