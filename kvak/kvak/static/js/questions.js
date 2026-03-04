@@ -103,7 +103,9 @@ if (!questions.length) {
 
     submitButton.addEventListener("click", () => {
       question.classList.add("answered");
-      explanationText.classList.remove("hidden");
+      if (explanationText) {
+        explanationText.classList.remove("hidden");
+      }
       disableQuestion();
       submitAnswer(question, type, inputs);
     });
