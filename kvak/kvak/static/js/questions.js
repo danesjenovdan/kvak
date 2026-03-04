@@ -5,6 +5,11 @@ const $$ = (selector, parent = document) => {
   return Array.from(parent.querySelectorAll(selector));
 };
 
+$$(".rich-text a").forEach((link) => {
+  link.setAttribute("target", "_blank");
+  link.setAttribute("rel", "noopener noreferrer");
+});
+
 const baseMaterial = $(".exercise-base-material-component");
 const pageID = baseMaterial.dataset.id;
 const questions = $$(".question", baseMaterial);
