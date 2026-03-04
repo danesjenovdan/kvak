@@ -113,3 +113,12 @@ def is_correct_order(priority_option, answered_question):
     correct_order = priority_option.get("original_index")
     user_order = answer_data.index(correct_order)
     return correct_order == user_order
+
+
+@register.filter
+def has_options_with_image(question):
+    options = question.value.get("answer_options", [])
+    for option in options:
+        if option.get("option_image"):
+            return True
+    return False

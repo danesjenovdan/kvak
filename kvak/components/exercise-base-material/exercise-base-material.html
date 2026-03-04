@@ -1,4 +1,4 @@
-{% load wagtailcore_tags wagtailembeds_tags kvak_extras %}
+{% load wagtailcore_tags wagtailembeds_tags wagtailimages_tags kvak_extras %}
 
 {% with base_material=base_material_page %}
 <div>
@@ -38,7 +38,7 @@
         <div class="question-text rich-text">
           {{ question.value.question_text|richtext }}
         </div>
-        <div class="answers" data-question-type="{{ question.block_type }}">
+        <div class="answers {% if question|has_options_with_image %}has-images{% endif %}" data-question-type="{{ question.block_type }}">
           {% if question.block_type == "multiple_choice_question" %}
             {% for answer_option in question.value.answer_options %}
             <label class="answer-option {% if answer_option.is_correct %}correct{% endif %}">
@@ -54,7 +54,16 @@
                 </svg>
                 {% endif %}
               </div>
+              {% if answer_option.option_image %}
+              <div class="option-image">
+                <div class="image-container">
+                  {% image answer_option.option_image width-800 %}
+                </div>
+                <div class="option-text">{{ answer_option.option_text }}</div>
+              </div>
+              {% else %}
               <span>{{ answer_option.option_text }}</span>
+              {% endif %}
             </label>
             {% endfor %}
           {% elif question.block_type == "one_correct_answer_question" %}
@@ -72,7 +81,16 @@
                 </svg>
                 {% endif %}
               </div>
+              {% if answer_option.option_image %}
+              <div class="option-image">
+                <div class="image-container">
+                  {% image answer_option.option_image width-800 %}
+                </div>
+                <div class="option-text">{{ answer_option.option_text }}</div>
+              </div>
+              {% else %}
               <span>{{ answer_option.option_text }}</span>
+              {% endif %}
             </label>
             {% endfor %}
           {% elif question.block_type == "text_answer_question" %}

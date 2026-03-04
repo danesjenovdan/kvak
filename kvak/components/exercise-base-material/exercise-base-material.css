@@ -107,6 +107,45 @@
         }
       }
 
+      &.has-images {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        .answer-option {
+          align-items: flex-start;
+          margin-bottom: 0;
+          padding: 0.625rem;
+
+          .option-image {
+            width: 100%;
+
+            .image-container {
+              width: 100%;
+              padding-top: 60%;
+              position: relative;
+
+              img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                background-color: #fff;
+                border: 1px solid #e0e0e0;
+                border-radius: 5px;
+              }
+            }
+
+            .option-text {
+              margin-top: 0.5rem;
+            }
+          }
+        }
+      }
+
       textarea {
         display: block;
         width: 100%;

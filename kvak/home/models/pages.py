@@ -6,6 +6,7 @@ from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
 from wagtail.contrib.routable_page.models import RoutablePageMixin, path
 from wagtail.fields import RichTextField, StreamField
+from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page
 
 from .utils import ProgressTracker
@@ -295,6 +296,10 @@ class AnswerOptionBlock(blocks.StructBlock):
     option_text = blocks.CharBlock(
         max_length=255,
         label=_("Option text"),
+    )
+    option_image = ImageChooserBlock(
+        required=False,
+        label=_("Option image"),
     )
     is_correct = blocks.BooleanBlock(
         required=False,
