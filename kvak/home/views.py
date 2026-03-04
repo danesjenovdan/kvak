@@ -24,9 +24,9 @@ class AnswerView(View):
         question_id = data.get("question_id", None)
         answer = data.get("answer", None)
 
-        if not page_id or not question_id or answer is None:
+        if not page_id:
             return JsonResponse(
-                {"status": "error", "message": "Invalid data"}, status=400
+                {"status": "error", "message": "Invalid page id"}, status=400
             )
 
         page_exists = BaseMaterialPage.objects.filter(id=page_id).exists()
@@ -35,13 +35,14 @@ class AnswerView(View):
                 {"status": "error", "message": "Page does not exist"}, status=404
             )
 
-        # save answer
-        answer_obj = UserAnsweredQuestion.objects.create(
-            base_material_page_id=page_id,
-            question_id=question_id,
-            answer_data=answer,
-            user=request.user,
-        )
+        if question_id and answer is not None:
+            # save answer
+            answer_obj = UserAnsweredQuestion.objects.create(
+                base_material_page_id=page_id,
+                question_id=question_id,
+                answer_data=answer,
+                user=request.user,
+            )
 
         # check if all questions are answered for this base material page
         page = BaseMaterialPage.objects.get(id=page_id)
