@@ -228,10 +228,17 @@ class ExercisePage(RoutablePageMixin, Page):
         verbose_name=_("Order"),
         default=0,
     )
+    congratulations_text = RichTextField(
+        null=True,
+        blank=True,
+        verbose_name=_("Congratulations text"),
+        help_text=_("Text to show when this exercise is finished"),
+    )
     content_panels = Page.content_panels + [
         FieldPanel("description"),
         FieldPanel("estimated_time"),
         FieldPanel("category"),
+        FieldPanel("congratulations_text"),
         FieldPanel("order"),
     ]
 
@@ -265,27 +272,38 @@ class ExercisePage(RoutablePageMixin, Page):
         user_progress = self.get_user_progress(request.user)
         context["user_progress"] = user_progress
 
-        page_query = request.GET.get("page", "1")
-        try:
-            page_index = int(page_query)
-        except ValueError:
-            page_index = 1
-        page_index = max(1, min(user_progress.total, page_index))
+        finished_query = request.GET.get("finished", None)
+        finished = (
+            finished_query == "true" and user_progress.finished == user_progress.total
+        )
 
-        context["base_material_page_index"] = page_index
-        context["base_material_page"] = (
-            self.get_children().type(BaseMaterialPage).specific()[page_index - 1]
-        )
-        context["base_material_next_page_index"] = (
-            page_index + 1 if page_index < user_progress.total else None
-        )
-        context["base_material_previous_page_index"] = (
-            page_index - 1 if page_index > 1 else None
-        )
-        if page_index == user_progress.total:
+        if finished:
+            context["base_material_page_index"] = user_progress.total
+            context["show_finished_page"] = True
+
             parent_page = self.get_parent()
             if parent_page:
-                context["finish_exercise_url"] = parent_page.get_url()
+                context["course_page"] = parent_page.specific
+        else:
+            page_query = request.GET.get("page", "1")
+            try:
+                page_index = int(page_query)
+            except ValueError:
+                page_index = 1
+            page_index = max(1, min(user_progress.total, page_index))
+
+            context["base_material_page_index"] = page_index
+            context["base_material_page"] = (
+                self.get_children().type(BaseMaterialPage).specific()[page_index - 1]
+            )
+            context["base_material_next_page_index"] = (
+                page_index + 1 if page_index < user_progress.total else None
+            )
+            context["base_material_previous_page_index"] = (
+                page_index - 1 if page_index > 1 else None
+            )
+            if page_index == user_progress.total:
+                context["finish_exercise_url"] = "?finished=true"
 
         return context
 

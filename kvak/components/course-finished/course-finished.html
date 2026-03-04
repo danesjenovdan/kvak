@@ -1,0 +1,16 @@
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+<div class="container">
+  <div class="course-finished-component">
+    <div class="finished-text">
+      <div class="rich-text">
+        {% if page.congratulations_text %}
+        {{ page.congratulations_text|richtext }}
+        {% else %}
+        <h2>Congratulations!</h2>
+        <p>You finished this exercise.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
