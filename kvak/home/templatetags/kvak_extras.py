@@ -64,16 +64,52 @@ def get_user_progress(context, course_page):
 
 
 @register.filter
-def randomize_with_original_index(values):
-    original = list(values)
-    original_len = len(original)
-    original_indices = list(range(original_len))
+def randomize_with_original_index(values, answered_question):
+    if not answered_question:
+        original = list(values)
+        original_len = len(original)
+        original_indices = list(range(original_len))
 
-    randomized = list()
-    for i in range(original_len):
-        choice_index = random.choice(original_indices)
-        choice_value = original[choice_index]
-        original_indices.remove(choice_index)
-        randomized.append({"original_index": choice_index, "value": choice_value})
+        randomized = list()
+        for i in range(original_len):
+            choice_index = random.choice(original_indices)
+            choice_value = original[choice_index]
+            original_indices.remove(choice_index)
+            randomized.append({"original_index": choice_index, "value": choice_value})
 
-    return randomized
+        return randomized
+    else:
+        # if the question was already answered, we sort the options by the order in
+        # which they were answered
+        answer_data = answered_question.answer_data
+
+        if not isinstance(answer_data, list):
+            # if the answer data is not a list, we can't sort the options, so we return
+            # them in the original order
+            return [
+                {"original_index": i, "value": option}
+                for i, option in enumerate(values)
+            ]
+
+        randomized = list()
+        # for i in answer_data:
+        for i in range(len(answer_data)):
+            j = answer_data.index(i)
+            if j >= 0 and j < len(values):
+                randomized.append({"original_index": j, "value": values[j]})
+
+        return randomized
+
+
+@register.filter
+def is_correct_order(priority_option, answered_question):
+    if not answered_question:
+        return False
+
+    answer_data = answered_question.answer_data
+    if not isinstance(answer_data, list):
+        return False
+
+    correct_order = priority_option.get("original_index")
+    user_order = answer_data.index(correct_order)
+    return correct_order == user_order

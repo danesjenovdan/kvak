@@ -117,6 +117,17 @@ if (!questions.length) {
   });
 }
 
+function showCorrectOrder(question, value) {
+  const options = $$(".priority-option", question);
+  options.forEach((option, index) => {
+    const correct = Number(option.dataset.order);
+    const answered = index;
+    if (correct === answered) {
+      option.classList.add("correct");
+    }
+  });
+}
+
 async function submitAnswer(question, type, inputs) {
   let value = null;
   let questionID = null;
@@ -139,6 +150,7 @@ async function submitAnswer(question, type, inputs) {
       const optionElements = $$(".priority-option", question);
       value = optionElements.map((el) => parseInt(el.dataset.order));
       question.__sortable.destroy();
+      showCorrectOrder(question, value);
     }
 
     if (!value) {

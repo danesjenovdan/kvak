@@ -137,6 +137,16 @@
         font-size: 1.125rem;
         cursor: grab;
         user-select: none;
+
+        .handle,
+        .order-label {
+          flex-shrink: 0;
+          min-width: 1rem;
+        }
+
+        .order-label {
+          display: none;
+        }
       }
     }
 
@@ -177,8 +187,23 @@
       .priority-option {
         cursor: default;
 
+        &:not(.correct) {
+          background-color: var(--color-error-lighter);
+          box-shadow: 0 0 0 2px var(--color-error);
+        }
+
+        &.correct {
+          background-color: var(--color-green-lightest);
+          box-shadow: 0 0 0 2px var(--color-green);
+        }
+
         .handle {
           display: none;
+        }
+
+        .order-label {
+          display: block;
+          font-weight: 600;
         }
       }
     }

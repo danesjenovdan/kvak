@@ -403,6 +403,10 @@ class OrderByPriorityQuestionBlock(blocks.StructBlock):
         min_num=2,
         # max_num=10,
         label=_("Priority options"),
+        help_text=_(
+            "List the options in the correct order here, "
+            "users will get a random order of these options to sort!"
+        ),
     )
 
     class Meta:
