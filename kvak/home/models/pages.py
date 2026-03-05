@@ -345,7 +345,6 @@ class MultipleChoiceQuestionBlock(blocks.StructBlock):
     answer_options = blocks.ListBlock(
         AnswerOptionBlock(),
         min_num=2,
-        max_num=10,
         label=_("Answer options"),
     )
 
@@ -369,7 +368,6 @@ class OneCorrectAnswerQuestionBlock(blocks.StructBlock):
     answer_options = blocks.ListBlock(
         AnswerOptionBlock(),
         min_num=2,
-        # max_num=10,
         label=_("Answer options"),
     )
 
@@ -424,7 +422,6 @@ class OrderByPriorityQuestionBlock(blocks.StructBlock):
     priority_options = blocks.ListBlock(
         OrderByPriorityOptionBlock(),
         min_num=2,
-        # max_num=10,
         label=_("Priority options"),
         help_text=_(
             "List the options in the correct order here, "
@@ -435,6 +432,46 @@ class OrderByPriorityQuestionBlock(blocks.StructBlock):
     class Meta:
         icon = "order"
         label = _("Order by Priority Question")
+
+
+class ConnectTwoAnswersOptionBlock(blocks.StructBlock):
+    """Block for options in connect two answers question"""
+
+    option_text_left = blocks.CharBlock(
+        max_length=255,
+        label=_("Left option text"),
+    )
+    option_text_right = blocks.CharBlock(
+        max_length=255,
+        label=_("Right option text"),
+    )
+
+    class Meta:
+        icon = "list-ul"
+        label = _("Connect Two Answers Option")
+
+
+class ConnectTwoAnswersQuestionBlock(blocks.StructBlock):
+    """Block for connect two answers question"""
+
+    question_text = blocks.RichTextBlock(
+        label=_("Question text"),
+        features=["bold", "italic", "link", "ul", "ol", "image"],
+    )
+    explanation_text = blocks.RichTextBlock(
+        label=_("Explanation text"),
+        required=False,
+        features=["bold", "italic", "link", "ul", "ol", "image", "embed"],
+    )
+    answer_options = blocks.ListBlock(
+        ConnectTwoAnswersOptionBlock(),
+        min_num=2,
+        label=_("Answer options"),
+    )
+
+    class Meta:
+        icon = "list-ul"
+        label = _("Connect Two Answers Question")
 
 
 class BaseMaterialPage(RoutablePageMixin, Page):
@@ -452,6 +489,7 @@ class BaseMaterialPage(RoutablePageMixin, Page):
             ("one_correct_answer_question", OneCorrectAnswerQuestionBlock()),
             ("text_answer_question", TextAnswerQuestionBlock()),
             ("order_by_priority_question", OrderByPriorityQuestionBlock()),
+            ("connect_two_answers_question", ConnectTwoAnswersQuestionBlock()),
         ],
         blank=True,
         null=True,

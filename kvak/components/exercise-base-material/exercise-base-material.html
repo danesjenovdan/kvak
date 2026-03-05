@@ -96,13 +96,43 @@
           {% elif question.block_type == "text_answer_question" %}
           <textarea name="{{ question.id }}" rows="5">{% if answered_question %}{{ answered_question.answer_data }}{% endif %}</textarea>
           {% elif question.block_type == "order_by_priority_question" %}
-            {% for priority_option in question.value.priority_options|randomize_with_original_index:answered_question %}
-            <div class="priority-option {% if answered_question and priority_option|is_correct_order:answered_question %}correct{% endif %}" data-order="{{ priority_option.original_index }}">
-              <span class="handle">⋮⋮</span>
-              <span class="order-label">{{ priority_option.original_index|add:1 }}.</span>
-              <span class="option-text">{{ priority_option.value.option_text }}</span>
-            </div>
+            {% get_random_order question.value.priority_options answered_question as randomized_priority_options %}
+            {% for priority_option in randomized_priority_options %}
+              {% is_correct_order priority_option answered_question as is_correct %}
+              <div class="priority-option {% if is_correct %}correct{% endif %}" data-order="{{ priority_option.original_index }}">
+                <span class="handle">⋮⋮</span>
+                <span class="order-label">{{ priority_option.original_index|add:1 }}.</span>
+                <span class="option-text">{{ priority_option.value.option_text }}</span>
+              </div>
             {% endfor %}
+          {% elif question.block_type == "connect_two_answers_question" %}
+            {% get_random_order_pair question.value.answer_options answered_question as randomized_answer_options %}
+            <div class="connect-two-answers">
+              <div class="connect-two-answers-list connect-two-answers-left">
+                {% for answer_option in randomized_answer_options.left %}
+                  {% has_connection "left" answer_option answered_question as connected_index %}
+                  <div
+                    class="connect-two-answers-option {% if connected_index is not None %}connected {% if answer_option.original_index == connected_index %}correct{% endif %}{% endif %}"
+                    data-index="{{ answer_option.original_index }}"
+                    {% if connected_index is not None %}data-connected-index="{{ connected_index }}"{% endif %}
+                  >
+                    <span class="option-text">{{ answer_option.value.option_text_left }}</span>
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="connect-two-answers-list connect-two-answers-right">
+                {% for answer_option in randomized_answer_options.right %}
+                  {% has_connection "right" answer_option answered_question as connected_index %}
+                  <div
+                    class="connect-two-answers-option {% if connected_index is not None %}connected {% if answer_option.original_index == connected_index %}correct{% endif %}{% endif %}"
+                    data-index="{{ answer_option.original_index }}"
+                    {% if connected_index is not None %}data-connected-index="{{ connected_index }}"{% endif %}
+                  >
+                    <span class="option-text">{{ answer_option.value.option_text_right }}</span>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
           {% else %}
             {{ question.block_type }}
           {% endif %}

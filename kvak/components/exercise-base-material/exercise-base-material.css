@@ -187,6 +187,123 @@
           display: none;
         }
       }
+
+      .connect-two-answers {
+        display: flex;
+        gap: 10rem;
+
+        @media (max-width: 575.98px) {
+          gap: 3rem;
+        }
+
+        .connect-two-answers-left,
+        .connect-two-answers-right {
+          flex: 1;
+
+          .connect-two-answers-option {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem 0.625rem;
+            background: var(--color-purple-barely);
+            border: 1px solid #000;
+            border-radius: 10px;
+            font-size: 1.125rem;
+            cursor: pointer;
+
+            @media (max-width: 575.98px) {
+              padding: 0.375rem 0.5rem;
+              font-size: 0.875rem;
+            }
+
+            &::before,
+            &::after {
+              content: "";
+              position: absolute;
+              top: 50%;
+              display: block;
+
+              background-color: #fff;
+              border: 1px solid #000;
+              border-radius: 50%;
+            }
+
+            &::before {
+              width: 1rem;
+              height: 1rem;
+              z-index: 2;
+
+              @media (max-width: 575.98px) {
+                width: 0.75rem;
+                height: 0.75rem;
+              }
+            }
+
+            &::after {
+              width: 1.5rem;
+              height: 1.5rem;
+              z-index: 1;
+
+              @media (max-width: 575.98px) {
+                width: 1.125rem;
+                height: 1.125rem;
+              }
+            }
+
+            &.selected {
+              box-shadow: 0 0 0 2px var(--color-purple);
+
+              &::before {
+                background-color: var(--color-purple);
+              }
+            }
+
+            &.connected {
+              box-shadow: 0 0 0 2px var(--color-purple-lighter);
+
+              &::before {
+                background-color: var(--color-purple);
+              }
+            }
+          }
+
+          &.connect-two-answers-left {
+            .connect-two-answers-option {
+              padding-right: 1.5rem;
+
+              @media (max-width: 575.98px) {
+                padding-right: 1rem;
+              }
+
+              &::before,
+              &::after {
+                left: auto;
+                right: 0;
+                transform: translate(50%, -50%);
+              }
+            }
+          }
+
+          &.connect-two-answers-right {
+            .connect-two-answers-option {
+              padding-left: 1.5rem;
+
+              @media (max-width: 575.98px) {
+                padding-left: 1rem;
+              }
+
+              &::before,
+              &::after {
+                left: 0;
+                right: auto;
+                transform: translate(-50%, -50%);
+              }
+            }
+          }
+        }
+      }
     }
 
     .answer-submit {
@@ -243,6 +360,31 @@
         .order-label {
           display: block;
           font-weight: 600;
+        }
+      }
+
+      .connect-two-answers {
+        .connect-two-answers-left,
+        .connect-two-answers-right {
+          .connect-two-answers-option {
+            &:not(.correct) {
+              background-color: var(--color-error-lighter);
+              box-shadow: 0 0 0 2px var(--color-error);
+
+              &::before {
+                background-color: var(--color-error);
+              }
+            }
+
+            &.correct {
+              background-color: var(--color-green-lightest);
+              box-shadow: 0 0 0 2px var(--color-green);
+
+              &::before {
+                background-color: var(--color-green);
+              }
+            }
+          }
         }
       }
     }
