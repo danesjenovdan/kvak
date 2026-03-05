@@ -6,6 +6,7 @@ from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
 from wagtail.contrib.routable_page.models import RoutablePageMixin, path
 from wagtail.fields import RichTextField, StreamField
+from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page
 
 from .utils import ProgressTracker
@@ -227,10 +228,17 @@ class ExercisePage(RoutablePageMixin, Page):
         verbose_name=_("Order"),
         default=0,
     )
+    congratulations_text = RichTextField(
+        null=True,
+        blank=True,
+        verbose_name=_("Congratulations text"),
+        help_text=_("Text to show when this exercise is finished"),
+    )
     content_panels = Page.content_panels + [
         FieldPanel("description"),
         FieldPanel("estimated_time"),
         FieldPanel("category"),
+        FieldPanel("congratulations_text"),
         FieldPanel("order"),
     ]
 
@@ -264,27 +272,38 @@ class ExercisePage(RoutablePageMixin, Page):
         user_progress = self.get_user_progress(request.user)
         context["user_progress"] = user_progress
 
-        page_query = request.GET.get("page", "1")
-        try:
-            page_index = int(page_query)
-        except ValueError:
-            page_index = 1
-        page_index = max(1, min(user_progress.total, page_index))
+        finished_query = request.GET.get("finished", None)
+        finished = (
+            finished_query == "true" and user_progress.finished == user_progress.total
+        )
 
-        context["base_material_page_index"] = page_index
-        context["base_material_page"] = (
-            self.get_children().type(BaseMaterialPage).specific()[page_index - 1]
-        )
-        context["base_material_next_page_index"] = (
-            page_index + 1 if page_index < user_progress.total else None
-        )
-        context["base_material_previous_page_index"] = (
-            page_index - 1 if page_index > 1 else None
-        )
-        if page_index == user_progress.total:
+        if finished:
+            context["base_material_page_index"] = user_progress.total
+            context["show_finished_page"] = True
+
             parent_page = self.get_parent()
             if parent_page:
-                context["finish_exercise_url"] = parent_page.get_url()
+                context["course_page"] = parent_page.specific
+        else:
+            page_query = request.GET.get("page", "1")
+            try:
+                page_index = int(page_query)
+            except ValueError:
+                page_index = 1
+            page_index = max(1, min(user_progress.total, page_index))
+
+            context["base_material_page_index"] = page_index
+            context["base_material_page"] = (
+                self.get_children().type(BaseMaterialPage).specific()[page_index - 1]
+            )
+            context["base_material_next_page_index"] = (
+                page_index + 1 if page_index < user_progress.total else None
+            )
+            context["base_material_previous_page_index"] = (
+                page_index - 1 if page_index > 1 else None
+            )
+            if page_index == user_progress.total:
+                context["finish_exercise_url"] = "?finished=true"
 
         return context
 
@@ -295,6 +314,10 @@ class AnswerOptionBlock(blocks.StructBlock):
     option_text = blocks.CharBlock(
         max_length=255,
         label=_("Option text"),
+    )
+    option_image = ImageChooserBlock(
+        required=False,
+        label=_("Option image"),
     )
     is_correct = blocks.BooleanBlock(
         required=False,
@@ -322,7 +345,6 @@ class MultipleChoiceQuestionBlock(blocks.StructBlock):
     answer_options = blocks.ListBlock(
         AnswerOptionBlock(),
         min_num=2,
-        max_num=10,
         label=_("Answer options"),
     )
 
@@ -346,7 +368,6 @@ class OneCorrectAnswerQuestionBlock(blocks.StructBlock):
     answer_options = blocks.ListBlock(
         AnswerOptionBlock(),
         min_num=2,
-        # max_num=10,
         label=_("Answer options"),
     )
 
@@ -401,13 +422,56 @@ class OrderByPriorityQuestionBlock(blocks.StructBlock):
     priority_options = blocks.ListBlock(
         OrderByPriorityOptionBlock(),
         min_num=2,
-        # max_num=10,
         label=_("Priority options"),
+        help_text=_(
+            "List the options in the correct order here, "
+            "users will get a random order of these options to sort!"
+        ),
     )
 
     class Meta:
         icon = "order"
         label = _("Order by Priority Question")
+
+
+class ConnectTwoAnswersOptionBlock(blocks.StructBlock):
+    """Block for options in connect two answers question"""
+
+    option_text_left = blocks.CharBlock(
+        max_length=255,
+        label=_("Left option text"),
+    )
+    option_text_right = blocks.CharBlock(
+        max_length=255,
+        label=_("Right option text"),
+    )
+
+    class Meta:
+        icon = "list-ul"
+        label = _("Connect Two Answers Option")
+
+
+class ConnectTwoAnswersQuestionBlock(blocks.StructBlock):
+    """Block for connect two answers question"""
+
+    question_text = blocks.RichTextBlock(
+        label=_("Question text"),
+        features=["bold", "italic", "link", "ul", "ol", "image"],
+    )
+    explanation_text = blocks.RichTextBlock(
+        label=_("Explanation text"),
+        required=False,
+        features=["bold", "italic", "link", "ul", "ol", "image", "embed"],
+    )
+    answer_options = blocks.ListBlock(
+        ConnectTwoAnswersOptionBlock(),
+        min_num=2,
+        label=_("Answer options"),
+    )
+
+    class Meta:
+        icon = "list-ul"
+        label = _("Connect Two Answers Question")
 
 
 class BaseMaterialPage(RoutablePageMixin, Page):
@@ -425,6 +489,7 @@ class BaseMaterialPage(RoutablePageMixin, Page):
             ("one_correct_answer_question", OneCorrectAnswerQuestionBlock()),
             ("text_answer_question", TextAnswerQuestionBlock()),
             ("order_by_priority_question", OrderByPriorityQuestionBlock()),
+            ("connect_two_answers_question", ConnectTwoAnswersQuestionBlock()),
         ],
         blank=True,
         null=True,

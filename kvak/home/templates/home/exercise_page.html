@@ -6,6 +6,12 @@
 {% component "header" / %}
 {% component "exercise-breadcrumbs" / %}
 {% component "exercise-intro" / %}
+{% if show_finished_page %}
+{% component "exercise-finished" / %}
+{% component "course-exercises" course_page=course_page / %}
+{% component "back-to-course" course_page=course_page / %}
+{% else %}
 {% component "exercise-base-material" / %}
+{% endif %}
 {% component "footer" / %}
 {% endblock content %}

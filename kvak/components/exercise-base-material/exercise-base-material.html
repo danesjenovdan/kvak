@@ -1,4 +1,4 @@
-{% load wagtailcore_tags wagtailembeds_tags kvak_extras %}
+{% load wagtailcore_tags wagtailembeds_tags wagtailimages_tags kvak_extras %}
 
 {% with base_material=base_material_page %}
 <div>
@@ -38,7 +38,7 @@
         <div class="question-text rich-text">
           {{ question.value.question_text|richtext }}
         </div>
-        <div class="answers" data-question-type="{{ question.block_type }}">
+        <div class="answers {% if question|has_options_with_image %}has-images{% endif %}" data-question-type="{{ question.block_type }}">
           {% if question.block_type == "multiple_choice_question" %}
             {% for answer_option in question.value.answer_options %}
             <label class="answer-option {% if answer_option.is_correct %}correct{% endif %}">
@@ -54,7 +54,16 @@
                 </svg>
                 {% endif %}
               </div>
+              {% if answer_option.option_image %}
+              <div class="option-image">
+                <div class="image-container">
+                  {% image answer_option.option_image width-800 %}
+                </div>
+                <div class="option-text">{{ answer_option.option_text }}</div>
+              </div>
+              {% else %}
               <span>{{ answer_option.option_text }}</span>
+              {% endif %}
             </label>
             {% endfor %}
           {% elif question.block_type == "one_correct_answer_question" %}
@@ -72,18 +81,58 @@
                 </svg>
                 {% endif %}
               </div>
+              {% if answer_option.option_image %}
+              <div class="option-image">
+                <div class="image-container">
+                  {% image answer_option.option_image width-800 %}
+                </div>
+                <div class="option-text">{{ answer_option.option_text }}</div>
+              </div>
+              {% else %}
               <span>{{ answer_option.option_text }}</span>
+              {% endif %}
             </label>
             {% endfor %}
           {% elif question.block_type == "text_answer_question" %}
           <textarea name="{{ question.id }}" rows="5">{% if answered_question %}{{ answered_question.answer_data }}{% endif %}</textarea>
           {% elif question.block_type == "order_by_priority_question" %}
-            {% for priority_option in question.value.priority_options|randomize_with_original_index %}
-            <div class="priority-option" data-order="{{ priority_option.original_index }}">
-              <span class="handle">⋮⋮</span>
-              <span class="option-text">{{ priority_option.value.option_text }}</span>
-            </div>
+            {% get_random_order question.value.priority_options answered_question as randomized_priority_options %}
+            {% for priority_option in randomized_priority_options %}
+              {% is_correct_order priority_option answered_question as is_correct %}
+              <div class="priority-option {% if is_correct %}correct{% endif %}" data-order="{{ priority_option.original_index }}">
+                <span class="handle">⋮⋮</span>
+                <span class="order-label">{{ priority_option.original_index|add:1 }}.</span>
+                <span class="option-text">{{ priority_option.value.option_text }}</span>
+              </div>
             {% endfor %}
+          {% elif question.block_type == "connect_two_answers_question" %}
+            {% get_random_order_pair question.value.answer_options answered_question as randomized_answer_options %}
+            <div class="connect-two-answers">
+              <div class="connect-two-answers-list connect-two-answers-left">
+                {% for answer_option in randomized_answer_options.left %}
+                  {% has_connection "left" answer_option answered_question as connected_index %}
+                  <div
+                    class="connect-two-answers-option {% if connected_index is not None %}connected {% if answer_option.original_index == connected_index %}correct{% endif %}{% endif %}"
+                    data-index="{{ answer_option.original_index }}"
+                    {% if connected_index is not None %}data-connected-index="{{ connected_index }}"{% endif %}
+                  >
+                    <span class="option-text">{{ answer_option.value.option_text_left }}</span>
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="connect-two-answers-list connect-two-answers-right">
+                {% for answer_option in randomized_answer_options.right %}
+                  {% has_connection "right" answer_option answered_question as connected_index %}
+                  <div
+                    class="connect-two-answers-option {% if connected_index is not None %}connected {% if answer_option.original_index == connected_index %}correct{% endif %}{% endif %}"
+                    data-index="{{ answer_option.original_index }}"
+                    {% if connected_index is not None %}data-connected-index="{{ connected_index }}"{% endif %}
+                  >
+                    <span class="option-text">{{ answer_option.value.option_text_right }}</span>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
           {% else %}
             {{ question.block_type }}
           {% endif %}
@@ -91,11 +140,12 @@
         <div class="answer-submit {% if answered_question %}hidden{% endif %}">
           {% component "arrow-button" type="button" primary=True text="Submit" disabled=True / %}
         </div>
-        <div class="explanation-text rich-text {% if not answered_question %}hidden{% endif %}">
-          <hr>
+        {% if question.value.explanation_text %}
+        <div class="explanation-text th-purple rich-text {% if not answered_question %}hidden{% endif %}">
           <div class="title">Explanation</div>
           {{ question.value.explanation_text|richtext }}
         </div>
+        {% endif %}
       </div>
       {% endfor %}
       <div class="page-buttons">

@@ -1,0 +1,11 @@
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+<div class="container">
+  <div class="back-to-course-component">
+    {% if course_page %}
+    <div class="back-to-course-button">
+      {% component "arrow-button" type="link" reverse=True text="Back to course" href="{% pageurl course_page %}" / %}
+    </div>
+    {% endif %}
+  </div>
+</div>
