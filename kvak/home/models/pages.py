@@ -63,6 +63,37 @@ class HomePage(Page):
                                 label=_("Description"),
                             ),
                         ),
+                        (
+                            "images",
+                            blocks.StreamBlock(
+                                [
+                                    (
+                                        "image",
+                                        blocks.StructBlock(
+                                            [
+                                                (
+                                                    "image",
+                                                    ImageChooserBlock(
+                                                        required=True,
+                                                        label=_("Image"),
+                                                    ),
+                                                ),
+                                                (
+                                                    "link",
+                                                    blocks.URLBlock(
+                                                        required=False,
+                                                        label=_("Link"),
+                                                    ),
+                                                ),
+                                            ],
+                                            label=_("Image"),
+                                        ),
+                                    ),
+                                ],
+                                required=False,
+                                label=_("Images"),
+                            ),
+                        ),
                     ],
                     icon="link",
                     label=_("Internal link"),
