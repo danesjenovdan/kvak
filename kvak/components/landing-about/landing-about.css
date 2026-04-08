@@ -60,6 +60,13 @@
         .logo {
           border: 1px solid #000;
           aspect-ratio: 4 / 3;
+
+          img {
+            width: 100%;
+            height: 100%;
+            padding: 0.25rem;
+            object-fit: contain;
+          }
         }
       }
     }

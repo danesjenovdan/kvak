@@ -229,6 +229,8 @@ WAGTAILDOCS_EXTENSIONS = [
     "zip",
 ]
 
+WAGTAILIMAGES_EXTENSIONS = ["avif", "gif", "jpg", "jpeg", "png", "webp", "svg"]
+
 LOGIN_REDIRECT_URL = "/profile/"
 LOGIN_URL = "/login/"
 LOGOUT_REDIRECT_URL = "/"
