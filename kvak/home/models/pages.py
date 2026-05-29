@@ -156,7 +156,7 @@ class CoursesListPage(Page):
     subpage_types = ["home.CoursePage"]
 
 
-class CoursePage(Page):
+class CoursePage(RoutablePageMixin, Page):
     image = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
@@ -192,6 +192,13 @@ class CoursePage(Page):
 
     parent_page_types = ["home.CoursesListPage"]
     subpage_types = ["home.ExercisePage"]
+
+    @path("")
+    def render_custom(self, request):
+        if not request.user or request.user.is_anonymous:
+            return redirect("register")
+
+        return self.render(request)
 
     def get_user_progress(self, user):
         # Get all ExercisePage instances that are children of this CoursePage
