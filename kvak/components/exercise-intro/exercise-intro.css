@@ -1,11 +1,6 @@
 .exercise-intro-component {
   max-width: 800px;
   margin-inline: auto;
-  margin-bottom: 3.875rem;
-
-  @media (max-width: 575.98px) {
-    margin-bottom: 2.5rem;
-  }
 
   h1 {
     position: relative;
@@ -25,8 +20,8 @@
       position: absolute;
       inset: 0;
       --top: calc(
-        (var(--fm-ascender) - var(--fm-capital-height)) / var(--fm-units-per-em) *
-          1em - 0.05em
+        (var(--fm-ascender) - var(--fm-capital-height)) /
+          var(--fm-units-per-em) * 1em - 0.05em
       );
       --bottom: calc(
         var(--fm-descender) / var(--fm-units-per-em) * 1em - 0.05em
@@ -59,20 +54,29 @@
       }
     }
   }
+}
 
-  .exercise-progress {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    padding-block: 0.75rem;
-    padding-inline: 1rem;
-    background-color: var(--color-pale);
-    border-radius: 10px;
+.exercise-intro-component-exercise-progress {
+  position: sticky;
+  top: 0;
+  max-width: 800px;
+  margin-inline: auto;
+  margin-bottom: 3.875rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding-block: 0.75rem;
+  padding-inline: 1rem;
+  background-color: var(--color-pale);
+  border-radius: 10px;
 
-    .num {
-      strong {
-        font-weight: 700;
-      }
+  @media (max-width: 575.98px) {
+    margin-bottom: 2.5rem;
+  }
+
+  .num {
+    strong {
+      font-weight: 700;
     }
   }
 }

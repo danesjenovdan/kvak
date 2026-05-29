@@ -1,21 +1,20 @@
 {% load wagtailcore_tags %}
 
-<div>
-  <div class="container">
-    <div class="exercise-intro-component">
-      <h1>{{ page.title }}</h1>
-      <div class="exercise-content">
-        <div class="exercise-metadata">
-          <div class="time">⏱️ {{ page.estimated_time }} minutes</div>
-          |
-          <div class="category">📂 {{ page.category }}</div>
-        </div>
-        {{ page.description|richtext }}
+<div class="container">
+  <div class="exercise-intro-component">
+    <h1>{{ page.title }}</h1>
+    <div class="exercise-content">
+      <div class="exercise-metadata">
+        <div class="time">⏱️ {{ page.estimated_time }} minutes</div>
+        |
+        <div class="category">📂 {{ page.category }}</div>
       </div>
-      <div class="exercise-progress">
-        <div class="num"><strong>{{ base_material_page_index }}/{{ user_progress.total }}</strong></div>
-        {% component "progress-pips" progress=user_progress current=base_material_page_index / %}
-      </div>
+      {{ page.description|richtext }}
     </div>
   </div>
+</div>
+
+<div class="exercise-intro-component-exercise-progress">
+  <div class="num"><strong>{{ base_material_page_index }}/{{ user_progress.total }}</strong></div>
+  {% component "progress-pips" progress=user_progress current=base_material_page_index / %}
 </div>
