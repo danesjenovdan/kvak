@@ -3,8 +3,9 @@
 <div>
   <div class="container">
     <div class="profile-courses-component">
+      <h1 class="profile-courses-title">{{ title }}</h1>
       <div class="courses">
-        {% for course in started_courses %}
+        {% for course in courses %}
         {% component "course-card"
           course_page=course
           heading="h2"

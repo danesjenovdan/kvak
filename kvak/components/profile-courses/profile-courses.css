@@ -5,10 +5,17 @@
     padding-bottom: 2.5rem;
   }
 
+  .profile-courses-title {
+    margin-bottom: 0.5rem;
+    font-size: 1.75rem;
+    font-weight: 600;
+  }
+
   .courses {
     display: grid;
     gap: 1.125rem;
     grid-template-columns: repeat(3, 1fr);
+    margin-top: 1.5rem;
 
     @media (max-width: 575.98px) {
       grid-template-columns: 1fr;

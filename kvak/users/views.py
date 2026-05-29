@@ -40,18 +40,29 @@ class ProfileView(TemplateView):
             user_progress = course.get_user_progress(user)
             return user_progress.total == user_progress.finished
 
-        return list(sorted(courses, key=is_completed, reverse=True))
+        # get courses in the same order as defined in the admin (default menu order)
+        sorted_courses = CoursePage.objects.filter(
+            id__in=[course.id for course in courses]
+        )
+
+        finished_courses = [course for course in sorted_courses if is_completed(course)]
+        started_courses = [
+            course for course in sorted_courses if not is_completed(course)
+        ]
+
+        return started_courses, finished_courses
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        self._get_started_courses(self.request.user)
+        started_courses, finished_courses = self._get_started_courses(self.request.user)
 
         class DummyForm:
             def __iter__(self):
                 return iter([])
 
         context["form"] = DummyForm()
-        context["started_courses"] = self._get_started_courses(self.request.user)
+        context["started_courses"] = started_courses
+        context["finished_courses"] = finished_courses
 
         return context
