@@ -117,6 +117,7 @@ class HomePage(Page):
         "home.CoursesListPage",
         "home.ExcerciseCategoryPage",
         "home.GenericPage",
+        "home.ResourcePage",
     ]
 
     def get_context(self, request, *args, **kwargs):
@@ -124,7 +125,28 @@ class HomePage(Page):
         if self.courses_page:
             courses = self.courses_page.get_children().type(CoursePage).specific()
             context["courses"] = courses[:3]
+            resources = self.get_children().type(ResourcePage).specific()
+            context["resources"] = resources[:3]
         return context
+
+
+class ResourcePage(Page):
+    description = RichTextField(
+        blank=True,
+        verbose_name=_("Description"),
+    )
+    link_url = models.URLField(
+        blank=True,
+        verbose_name=_("Link URL"),
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("description"),
+        FieldPanel("link_url"),
+    ]
+
+    parent_page_types = ["home.HomePage"]
+    subpage_types = []
 
 
 class GenericPage(Page):
@@ -156,7 +178,7 @@ class CoursesListPage(Page):
     subpage_types = ["home.CoursePage"]
 
 
-class CoursePage(Page):
+class CoursePage(RoutablePageMixin, Page):
     image = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
@@ -192,6 +214,13 @@ class CoursePage(Page):
 
     parent_page_types = ["home.CoursesListPage"]
     subpage_types = ["home.ExercisePage"]
+
+    @path("")
+    def render_custom(self, request):
+        if not request.user or request.user.is_anonymous:
+            return redirect("register")
+
+        return self.render(request)
 
     def get_user_progress(self, user):
         # Get all ExercisePage instances that are children of this CoursePage
