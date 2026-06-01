@@ -1,33 +1,20 @@
+{% load wagtailcore_tags %}
+
 <div class="bg-purple-barely th-purple">
   <div class="container">
     <div class="landing-resources-component">
       {% component "landing-title-row"
         title="RESOURCES"
         description=page.resources_description
-        button_text="See all resources"
-        button_href="#"
       / %}
       <div class="resources">
+        {% for resource in resources %}
         {% component "resource-card"
-          title="Title of the resource"
-          description="Nunc mollis commodo mauris, at lacinia neque interdum sed. Nam rhoncus,  eros eu sollicitudin placerat, velit magna euismod mi, at sodales lacus  lacus sit amet nisl."
-          href="#"
+          title=resource.title
+          description=resource.description|richtext
+          href=resource.link_url
         / %}
-        {% component "resource-card"
-          title="Title of the handbook which is a bit longer"
-          description="Nunc mauris, at lacinia neque interdum sed. Nam rhoncus,  eros eu sollicitudin placerat, velit magna euismod mi, at sodales lacus  lacus sit amet nisl."
-          href="#"
-        / %}
-        {% component "resource-card"
-          title="Title of the resource"
-          description="Nam rhoncus,  eros eu sollicitudin placerat, velit magna euismod mi, at sodales lacus  lacus sit amet nisl."
-          href="#"
-        / %}
-        {% component "resource-card"
-          title="Title of the resource"
-          description="Nunc mollis commodo mauris, at lacinia neque interdum sed. Nam rhoncus,  eros eu sollicitudin placerat, velit magna euismod mi, at sodales lacus  lacus sit amet nisl."
-          href="#"
-        / %}
+        {% endfor %}
       </div>
     </div>
   </div>
