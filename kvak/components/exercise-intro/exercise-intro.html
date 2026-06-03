@@ -1,4 +1,4 @@
-{% load wagtailcore_tags %}
+{% load i18n wagtailcore_tags %}
 
 <div class="container">
   <div class="exercise-intro-component">
@@ -6,7 +6,7 @@
     {% if not show_finished_page %}
     <div class="exercise-content">
       <div class="exercise-metadata">
-        <div class="time">⏱️ {{ page.estimated_time }} minutes</div>
+        <div class="time">⏱️ {{ page.estimated_time }} {% trans "minutes" %}</div>
         {% if page.category %}
         | <div class="category">📂 {{ page.category }}</div>
         {% endif %}

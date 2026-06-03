@@ -5,7 +5,7 @@
 {% else %}
 <a href="{{ href }}" class="arrow-button {% if full_width %}full-width{% endif %} {% if primary %}primary{% endif %} {% if reverse %}reverse{% endif %}" {% if disabled %}aria-disabled="true"{% endif %}>
 {% endif %}
-  <span>{{ text }}</span>
+  <span>{% if start_flag %}🏁 {% endif %}{{ text }}{% if start_flag %} 🏁{% endif %}</span>
   {% if not hide_arrow %}
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 30 30" class="arrow-button__icon">
     <circle cx="15" cy="15" r="15" fill="var(--_circle-color)" />

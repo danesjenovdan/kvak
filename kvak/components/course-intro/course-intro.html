@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags wagtailimages_tags %}
+{% load static i18n wagtailcore_tags wagtailimages_tags %}
 
 <div class="container">
   <div class="course-intro-component">
@@ -15,25 +15,28 @@
     </div>
     <hr />
     <div class="intro-progress">
+      {% trans "REVIEW THE COURSE" as review_text %}
+      {% trans "CONTINUE THE COURSE" as continue_text %}
+      {% trans "START THE COURSE" as start_text %}
       {% if start_exercise_index != None %}
         {% if user_progress.finished == user_progress.total %}
-        {% component "arrow-button" primary=True hide_arrow=True text="🏁 REVIEW THE COURSE 🏁" href="{{ start_exercise_page.get_url }}" / %}
+        {% component "arrow-button" primary=True hide_arrow=True start_flag=True text=review_text href="{{ start_exercise_page.get_url }}" / %}
         {% elif start_exercise_index > 1 %}
-        {% component "arrow-button" primary=True hide_arrow=True text="🏁 CONTINUE THE COURSE 🏁" href="{{ start_exercise_page.get_url }}" / %}
+        {% component "arrow-button" primary=True hide_arrow=True start_flag=True text=continue_text href="{{ start_exercise_page.get_url }}" / %}
         {% else %}
-        {% component "arrow-button" primary=True hide_arrow=True text="🏁 START THE COURSE 🏁" href="{{ start_exercise_page.get_url }}" / %}
+        {% component "arrow-button" primary=True hide_arrow=True start_flag=True text=start_text href="{{ start_exercise_page.get_url }}" / %}
         {% endif %}
       {% elif start_exercise_page %}
         {% if user_progress.finished == user_progress.total %}
-        {% component "arrow-button" primary=True hide_arrow=True text="🏁 REVIEW THE COURSE 🏁" href="{{ start_exercise_page.get_url }}" / %}
+        {% component "arrow-button" primary=True hide_arrow=True start_flag=True text=review_text href="{{ start_exercise_page.get_url }}" / %}
         {% elif user_progress.finished > 0 %}
-        {% component "arrow-button" primary=True hide_arrow=True text="🏁 CONTINUE THE COURSE 🏁" href="{{ start_exercise_page.get_url }}" / %}
+        {% component "arrow-button" primary=True hide_arrow=True start_flag=True text=continue_text href="{{ start_exercise_page.get_url }}" / %}
         {% else %}
-        {% component "arrow-button" primary=True hide_arrow=True text="🏁 START THE COURSE 🏁" href="{{ start_exercise_page.get_url }}" / %}
+        {% component "arrow-button" primary=True hide_arrow=True start_flag=True text=start_text href="{{ start_exercise_page.get_url }}" / %}
         {% endif %}
       {% endif %}
       <div class="exercise-progress">
-        <div class="num"><strong>{{ user_progress.finished }}/{{ user_progress.total }}</strong> exercises finished</div>
+        <div class="num"><strong>{{ user_progress.finished }}/{{ user_progress.total }}</strong> {% trans "exercises finished" %}</div>
         {% component "progress-pips" progress=user_progress / %}
       </div>
       <div class="intro-badge">
@@ -61,10 +64,10 @@
             {% endif %}
           </div>
         {% if page.claim_badge_url %}
-          Collect badge!
+          {% trans "COLLECT BADGE!" %}
         </a>
         {% else %}
-          Badge collected!
+          {% trans "BADGE COLLECTED!" %}
         </div>
         {% endif %}
         {% else %}
@@ -85,7 +88,7 @@
             </svg>
             {% endif %}
           </div>
-          Badge not collected yet
+          {% trans "BADGE NOT COLLECTED YET" %}
         </div>
         {% endif %}
       </div>

@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags wagtailimages_tags %}
+{% load static i18n wagtailcore_tags wagtailimages_tags %}
 
 <div class="container">
   <div class="course-finished-component">
@@ -30,7 +30,7 @@
               </svg>
               {% endif %}
             </div>
-            Collect badge!
+            {% trans "COLLECT BADGE!" %}
           </a>
           {% endif %}
         {% endif %}

@@ -16,6 +16,7 @@ ENV PYTHONUNBUFFERED=1 \
 
 # Install system packages required by Wagtail and Django.
 RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
+    gettext \
     build-essential \
     libpq-dev \
     libmariadb-dev \
@@ -51,8 +52,8 @@ USER wagtail
 ENV IPYTHONDIR=/tmp/ipython
 RUN mkdir -p $IPYTHONDIR/profile_default
 
-# Collect static files.
-RUN python manage.py collectstatic --noinput --clear
+# Compile translation messages.
+RUN python manage.py compilemessages
 
 # Runtime command that executes when "docker run" is called, it does the
 # following:

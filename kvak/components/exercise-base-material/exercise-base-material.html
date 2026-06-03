@@ -1,4 +1,4 @@
-{% load wagtailcore_tags wagtailembeds_tags wagtailimages_tags kvak_extras %}
+{% load i18n wagtailcore_tags wagtailembeds_tags wagtailimages_tags kvak_extras %}
 
 {% with base_material=base_material_page %}
 <div>
@@ -33,7 +33,7 @@
               />
             </svg>
           </div>
-          <div class="text">Question {{ forloop.counter }}</div>
+          <div class="text">{% trans "Question" %} {{ forloop.counter }}</div>
         </div>
         <div class="question-text rich-text">
           {{ question.value.question_text|richtext }}
@@ -138,29 +138,33 @@
           {% endif %}
         </div>
         <div class="answer-submit {% if answered_question %}hidden{% endif %}">
-          {% component "arrow-button" type="button" primary=True text="Submit" disabled=True / %}
+          {% trans "Submit" as submit_text %}
+          {% component "arrow-button" type="button" primary=True text=submit_text disabled=True / %}
         </div>
         {% if question.value.explanation_text %}
         <div class="explanation-text th-purple rich-text {% if not answered_question %}hidden{% endif %}">
-          <div class="title">Explanation</div>
+          <div class="title">{% trans "Explanation" %}</div>
           {{ question.value.explanation_text|richtext }}
         </div>
         {% endif %}
       </div>
       {% endfor %}
       <div class="page-buttons">
+        {% trans "Next page" as next_page_text %}
+        {% trans "Previous page" as previous_page_text %}
+        {% trans "Finish exercise" as finish_exercise_text %}
         {% if base_material_previous_page_index %}
         <div class="previous-page-button">
-          {% component "arrow-button" type="link" reverse=True text="Previous page" href="?page={{ base_material_previous_page_index }}" / %}
+          {% component "arrow-button" type="link" reverse=True text=previous_page_text href="?page={{ base_material_previous_page_index }}" / %}
         </div>
         {% endif %}
         {% if base_material_next_page_index %}
         <div class="next-page-button">
-          {% component "arrow-button" type="link" primary=True text="Next page" href="?page={{ base_material_next_page_index }}" disabled=True / %}
+          {% component "arrow-button" type="link" primary=True text=next_page_text href="?page={{ base_material_next_page_index }}" disabled=True / %}
         </div>
         {% elif finish_exercise_url %}
         <div class="next-page-button">
-          {% component "arrow-button" type="link" primary=True text="Finish exercise" href="{{ finish_exercise_url }}" disabled=True / %}
+          {% component "arrow-button" type="link" primary=True text=finish_exercise_text href="{{ finish_exercise_url }}" disabled=True / %}
         </div>
         {% endif %}
       </div>
