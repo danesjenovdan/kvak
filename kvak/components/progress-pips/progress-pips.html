@@ -1,5 +1,19 @@
 {% load wagtailcore_tags %}
 
+{% if progress.total_ids and progress.finished_ids %}
+<div class="progress-pips {% if progress.total == 1 %}single{% endif %}">
+  <div class="line"></div>
+  {% for pip_id in progress.total_ids %}
+  <div class="pip">
+    {% if pip_id in progress.finished_ids %}
+    <div class="filled completed"></div>
+    {% elif current_id != None and pip_id == current_id %}
+    <div class="filled current"></div>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+{% else %}
 <div class="progress-pips {% if progress.total == 1 %}single{% endif %}">
   <div class="line"></div>
   {% for pip in progress.range %}
@@ -18,3 +32,4 @@
   </div>
   {% endfor %}
 </div>
+{% endif %}

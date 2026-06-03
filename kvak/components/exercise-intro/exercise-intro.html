@@ -6,15 +6,23 @@
     <div class="exercise-content">
       <div class="exercise-metadata">
         <div class="time">⏱️ {{ page.estimated_time }} minutes</div>
-        |
-        <div class="category">📂 {{ page.category }}</div>
+        {% if page.category %}
+        | <div class="category">📂 {{ page.category }}</div>
+        {% endif %}
       </div>
       {{ page.description|richtext }}
     </div>
+    {% if not base_material_page %}
+    <p>
+      <strong>Base material page does not exist.</strong>
+    </p>
+    {% endif %}
   </div>
 </div>
 
+{% if user_progress.total > 0 %}
 <div class="exercise-intro-component-exercise-progress">
   <div class="num"><strong>{{ base_material_page_index }}/{{ user_progress.total }}</strong></div>
-  {% component "progress-pips" progress=user_progress current=base_material_page_index / %}
+  {% component "progress-pips" progress=user_progress current_id=base_material_page.id current=base_material_page_index / %}
 </div>
+{% endif %}

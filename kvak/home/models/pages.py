@@ -8,6 +8,7 @@ from wagtail.contrib.routable_page.models import RoutablePageMixin, path
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page
+from wagtail.signals import page_published, page_unpublished
 
 from .utils import ProgressTracker
 
@@ -227,10 +228,27 @@ class CoursePage(RoutablePageMixin, Page):
         total_exercises = self.get_children().type(ExercisePage).count()
         if user.is_anonymous or total_exercises == 0:
             return ProgressTracker(total_exercises, 0)
+        total_exercise_pages = self.get_children().type(ExercisePage).specific()
+        total_exercises_ids = list(total_exercise_pages.values_list("id", flat=True))
         finished_exercises = UserFinishedExcercisePage.objects.filter(
-            user=user, exercise__in=self.get_children().type(ExercisePage)
-        ).count()
-        return ProgressTracker(total_exercises, finished_exercises)
+            user=user, exercise__in=total_exercise_pages
+        )
+        finished_exercises_count = finished_exercises.count()
+        finished_exercises_ids = list(
+            finished_exercises.values_list("exercise_id", flat=True)
+        )
+        print(
+            f"Total exercises: {total_exercises}, Finished exercises: {finished_exercises_count}"
+        )
+        print(
+            f"Total exercise IDs: {total_exercises_ids}, Finished exercise IDs: {finished_exercises_ids}"
+        )
+        return ProgressTracker(
+            total_exercises,
+            finished_exercises_count,
+            total_ids=total_exercises_ids,
+            finished_ids=finished_exercises_ids,
+        )
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
@@ -238,18 +256,36 @@ class CoursePage(RoutablePageMixin, Page):
         user_progress = self.get_user_progress(request.user)
         context["user_progress"] = user_progress
 
-        exercise_index = None
-        if user_progress.total > 0:
-            if user_progress.finished < user_progress.total:
-                exercise_index = user_progress.finished + 1
-            elif user_progress.finished == user_progress.total:
-                exercise_index = 1
-        context["start_exercise_index"] = exercise_index
+        if user_progress.finished_ids and user_progress.total_ids:
+            next_exercise_id = None
+            for exercise_id in user_progress.total_ids:
+                if exercise_id not in user_progress.finished_ids:
+                    next_exercise_id = exercise_id
+                    break
 
-        if exercise_index is not None:
             context["start_exercise_page"] = (
-                self.get_children().type(ExercisePage).specific()[exercise_index - 1]
+                self.get_children()
+                .type(ExercisePage)
+                .specific()
+                .get(id=next_exercise_id)
+                if next_exercise_id
+                else None
             )
+        else:
+            exercise_index = None
+            if user_progress.total > 0:
+                if user_progress.finished < user_progress.total:
+                    exercise_index = user_progress.finished + 1
+                elif user_progress.finished == user_progress.total:
+                    exercise_index = 1
+            context["start_exercise_index"] = exercise_index
+
+            if exercise_index is not None:
+                context["start_exercise_page"] = (
+                    self.get_children()
+                    .type(ExercisePage)
+                    .specific()[exercise_index - 1]
+                )
 
         return context
 
@@ -321,10 +357,22 @@ class ExercisePage(RoutablePageMixin, Page):
             return ProgressTracker(total_base_materials, 0)
         # Get finished BaseMaterialPage instances that are children of this ExercisePage
         base_material_pages = self.get_children().type(BaseMaterialPage).specific()
-        finished_base_materials = UserFinishedBaseMaterial.objects.filter(
+        total_base_materials_ids = list(
+            base_material_pages.values_list("id", flat=True)
+        )
+        finished_bm = UserFinishedBaseMaterial.objects.filter(
             user=user, base_material__in=base_material_pages
-        ).count()
-        return ProgressTracker(total_base_materials, finished_base_materials)
+        )
+        finished_base_materials_count = finished_bm.count()
+        finished_base_materials_ids = list(
+            finished_bm.values_list("base_material_id", flat=True)
+        )
+        return ProgressTracker(
+            total_base_materials,
+            finished_base_materials_count,
+            total_ids=total_base_materials_ids,
+            finished_ids=finished_base_materials_ids,
+        )
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
@@ -344,6 +392,25 @@ class ExercisePage(RoutablePageMixin, Page):
             parent_page = self.get_parent()
             if parent_page:
                 context["course_page"] = parent_page.specific
+                course_user_progress = parent_page.specific.get_user_progress(
+                    request.user
+                )
+                context["course_user_progress"] = course_user_progress
+                if course_user_progress.finished_ids and course_user_progress.total_ids:
+                    next_exercise_id = None
+                    for exercise_id in course_user_progress.total_ids:
+                        if exercise_id not in course_user_progress.finished_ids:
+                            next_exercise_id = exercise_id
+                            break
+
+                    context["start_exercise_page"] = (
+                        parent_page.specific.get_children()
+                        .type(ExercisePage)
+                        .specific()
+                        .get(id=next_exercise_id)
+                        if next_exercise_id
+                        else None
+                    )
         else:
             page_query = request.GET.get("page", "1")
             try:
@@ -352,9 +419,12 @@ class ExercisePage(RoutablePageMixin, Page):
                 page_index = 1
             page_index = max(1, min(user_progress.total, page_index))
 
+            base_material_pages = self.get_children().type(BaseMaterialPage).specific()
             context["base_material_page_index"] = page_index
             context["base_material_page"] = (
-                self.get_children().type(BaseMaterialPage).specific()[page_index - 1]
+                base_material_pages[page_index - 1]
+                if page_index <= len(base_material_pages)
+                else None
             )
             context["base_material_next_page_index"] = (
                 page_index + 1 if page_index < user_progress.total else None
@@ -646,3 +716,68 @@ class UserFinishedExcercisePage(models.Model):
         auto_now_add=True,
         verbose_name=_("Finished at"),
     )
+
+
+def on_page_published(sender, instance, **kwargs):
+    if isinstance(instance, BaseMaterialPage):
+        exercise_page = instance.get_parent().specific
+
+        question_ids = set()
+        for block in instance.questions:
+            question_ids.add(block.id)
+
+        user_finished_qs = UserFinishedBaseMaterial.objects.filter(
+            base_material=instance,
+        )
+
+        for user_finished in user_finished_qs:
+            answered_questions_ids = UserAnsweredQuestion.objects.filter(
+                user=user_finished.user,
+                base_material_page_id=instance.id,
+            ).values_list("question_id", flat=True)
+            found_question_ids = set(answered_questions_ids)
+            if not question_ids.issubset(found_question_ids):
+                print(
+                    f"User {user_finished.user} has answered questions {found_question_ids} "
+                    f"but current question ids are {question_ids}, deleting finished status"
+                )
+                user_finished.delete()
+                UserFinishedExcercisePage.objects.filter(
+                    user=user_finished.user,
+                    exercise=exercise_page,
+                ).delete()
+
+        user_finished_exercises_qs = UserFinishedExcercisePage.objects.filter(
+            exercise=exercise_page,
+        )
+
+        for user_finished_exercise in user_finished_exercises_qs:
+            user_finished_base_materials = UserFinishedBaseMaterial.objects.filter(
+                user=user_finished_exercise.user,
+                base_material__in=exercise_page.get_children().type(BaseMaterialPage),
+            )
+            finished_base_material_ids = set(
+                user_finished_base_materials.values_list("base_material_id", flat=True)
+            )
+            exercise_base_material_ids = set(
+                exercise_page.get_children()
+                .type(BaseMaterialPage)
+                .values_list("id", flat=True)
+            )
+            if not exercise_base_material_ids.issubset(finished_base_material_ids):
+                print(
+                    f"User {user_finished_exercise.user} has finished exercise {exercise_page} "
+                    f"but has not finished all base materials, deleting finished status"
+                )
+                user_finished_exercise.delete()
+
+
+page_published.connect(on_page_published)
+
+
+def on_page_unpublished(sender, instance, **kwargs):
+    if isinstance(instance, BaseMaterialPage):
+        print(f"BaseMaterialPage unpublished: {instance.title}")
+
+
+page_unpublished.connect(on_page_unpublished)
