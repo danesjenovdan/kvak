@@ -19,6 +19,11 @@
       list-style: none;
       cursor: pointer;
 
+      @media (max-width: 575.98px) {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
       &::marker {
         display: none;
         content: "";
