@@ -1,11 +1,21 @@
-{% load wagtailcore_tags %}
+{% load i18n wagtailcore_tags %}
 
 <div class="bg-green-lightest">
   <div class="container">
     <div class="courses-list-intro-component">
       <div class="intro-text">
-        <h1>{{ page.title }}</h1>
-        <div class="rich-text">{{ page.intro_text|richtext }}</div>
+        <h1>{% trans "COURSES" %}</h1>
+        <div class="rich-text">
+          {% if request.LANGUAGE_CODE == "en" %}
+            {{ page.intro_text|richtext }}
+          {% elif request.LANGUAGE_CODE == "sl" %}
+            {{ page.intro_text_sl|richtext }}
+          {% elif request.LANGUAGE_CODE == "it" %}
+            {{ page.intro_text_it|richtext }}
+          {% elif request.LANGUAGE_CODE == "ca" %}
+            {{ page.intro_text_ca|richtext }}
+          {% endif %}
+        </div>
         <hr />
         <div class="language-selector">
           <label for="courses-language-select">
@@ -13,12 +23,12 @@
           </label>
           <select
             id="courses-language-select"
-            onchange="location = this.value;"
+            onchange="window.location = '?lang=' + this.value;"
           >
-            <option value="en" selected>English</option>
-            {% comment %} <option value="si">Slovenščina</option>
-            <option value="it">Italiano</option>
-            <option value="es">Español</option> {% endcomment %}
+            <option value="en" {% if request.LANGUAGE_CODE == "en" %}selected{% endif %}>English</option>
+            <option value="sl" {% if request.LANGUAGE_CODE == "sl" %}selected{% endif %}>Slovenščina</option>
+            <option value="it" {% if request.LANGUAGE_CODE == "it" %}selected{% endif %}>Italiano</option>
+            <option value="ca" {% if request.LANGUAGE_CODE == "ca" %}selected{% endif %}>Català</option>
           </select>
         </div>
       </div>

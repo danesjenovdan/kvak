@@ -4,7 +4,7 @@
   <div class="container">
     <div class="courses-list-courses-component">
       <div class="courses">
-        {% for course in page.get_children.specific %}
+        {% for course in courses %}
         {% component "course-card"
           course_page=course
           heading="h2"

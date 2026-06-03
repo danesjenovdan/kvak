@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags wagtailimages_tags %}
+{% load static i18n wagtailcore_tags wagtailimages_tags %}
 
 <div class="container">
   <div class="course-finished-component">
@@ -10,7 +10,7 @@
         <h2>Congratulations!</h2>
         <p>You finished this exercise.</p>
         {% endif %}
-        {% if user_progress.finished == user_progress.total %}
+        {% if course_user_progress.finished == course_user_progress.total %}
           {% if course_page.claim_badge_url %}
           <a href="{{ course_page.claim_badge_url }}" target="_blank" class="badge-link">
             <div class="badge">
@@ -30,7 +30,7 @@
               </svg>
               {% endif %}
             </div>
-            Collect badge!
+            {% trans "COLLECT BADGE!" %}
           </a>
           {% endif %}
         {% endif %}

@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.shortcuts import redirect
+from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
@@ -168,18 +169,65 @@ class CoursesListPage(Page):
     intro_text = RichTextField(
         blank=True,
         features=["bold", "italic", "link"],
-        verbose_name=_("Introduction text"),
+        verbose_name=_("Introduction text (English)"),
+    )
+    intro_text_sl = RichTextField(
+        blank=True,
+        features=["bold", "italic", "link"],
+        verbose_name=_("Introduction text (Slovenian)"),
+    )
+    intro_text_it = RichTextField(
+        blank=True,
+        features=["bold", "italic", "link"],
+        verbose_name=_("Introduction text (Italian)"),
+    )
+    intro_text_ca = RichTextField(
+        blank=True,
+        features=["bold", "italic", "link"],
+        verbose_name=_("Introduction text (Catalan)"),
     )
 
     content_panels = Page.content_panels + [
         FieldPanel("intro_text"),
+        FieldPanel("intro_text_sl"),
+        FieldPanel("intro_text_it"),
+        FieldPanel("intro_text_ca"),
     ]
 
     parent_page_types = ["home.HomePage"]
     subpage_types = ["home.CoursePage"]
 
+    def get_context(self, request, *args, **kwargs):
+        lang = request.GET.get("lang")
+        if lang and lang in dict(settings.LANGUAGES).keys():
+            translation.activate(lang)
+        else:
+            translation.activate("en")
+        request.LANGUAGE_CODE = translation.get_language()
+
+        context = super().get_context(request, *args, **kwargs)
+        courses = (
+            CoursePage.objects.live()
+            .descendant_of(self)
+            .type(CoursePage)
+            .filter(language=request.LANGUAGE_CODE)
+        )
+        context["courses"] = courses
+        return context
+
 
 class CoursePage(RoutablePageMixin, Page):
+    language = models.CharField(
+        max_length=10,
+        choices=[
+            ("en", "English"),
+            ("sl", "Slovenian"),
+            ("ca", "Catalan"),
+            ("it", "Italian"),
+        ],
+        default="en",
+        verbose_name=_("Course language"),
+    )
     image = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
@@ -207,6 +255,7 @@ class CoursePage(RoutablePageMixin, Page):
     )
 
     content_panels = Page.content_panels + [
+        FieldPanel("language"),
         FieldPanel("image"),
         FieldPanel("overview"),
         FieldPanel("claim_badge_url"),
@@ -251,6 +300,13 @@ class CoursePage(RoutablePageMixin, Page):
         )
 
     def get_context(self, request, *args, **kwargs):
+        lang = self.language
+        if lang and lang in dict(settings.LANGUAGES).keys():
+            translation.activate(lang)
+        else:
+            translation.activate("en")
+        request.LANGUAGE_CODE = translation.get_language()
+
         context = super().get_context(request, *args, **kwargs)
 
         user_progress = self.get_user_progress(request.user)
@@ -375,6 +431,14 @@ class ExercisePage(RoutablePageMixin, Page):
         )
 
     def get_context(self, request, *args, **kwargs):
+        parent_page = self.get_parent()
+        lang = parent_page.specific.language if parent_page else None
+        if lang and lang in dict(settings.LANGUAGES).keys():
+            translation.activate(lang)
+        else:
+            translation.activate("en")
+        request.LANGUAGE_CODE = translation.get_language()
+
         context = super().get_context(request, *args, **kwargs)
 
         user_progress = self.get_user_progress(request.user)
@@ -389,7 +453,6 @@ class ExercisePage(RoutablePageMixin, Page):
             context["base_material_page_index"] = user_progress.total
             context["show_finished_page"] = True
 
-            parent_page = self.get_parent()
             if parent_page:
                 context["course_page"] = parent_page.specific
                 course_user_progress = parent_page.specific.get_user_progress(

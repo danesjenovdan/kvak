@@ -1,4 +1,4 @@
-{% load static wagtailimages_tags kvak_extras %}
+{% load static i18n wagtailimages_tags kvak_extras %}
 
 {% get_user_progress course_page as user_progress %}
 <a href="{% if user.is_anonymous %}{% url 'register' %}{% else %}{{ href }}{% endif %}" class="course-card-component {% if user_progress and user_progress.finished == user_progress.total %}th-purple{% endif %} {% if show_continue %}small-bottom-padding{% endif %}">
@@ -28,7 +28,7 @@
   {% component "arrow-button" type="inert" text="REGISTER" / %}
   {% else %}
     {% if user_progress and user_progress.finished == user_progress.total %}
-    <div class="badge-collected">BADGE COLLECTED!</div>
+    <div class="badge-collected">{% trans "BADGE COLLECTED!" %}</div>
       {% if not show_continue %}
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 30 30" class="course-card__icon">
         <circle cx="15" cy="15" r="15" fill="var(--th-color-lighter)" />

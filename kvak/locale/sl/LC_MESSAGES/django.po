@@ -1,0 +1,401 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-03 12:58+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
+"n%100==4 ? 2 : 3);\n"
+
+#: components/course-card/course-card.html:31
+#: components/course-intro/course-intro.html:70
+msgid "BADGE COLLECTED!"
+msgstr "ZNAČKA PRIDOBLJENA"
+
+#: components/course-exercises/course-exercises.html:11
+#: home/models/pages.py:776
+msgid "Exercise"
+msgstr "Vaja"
+
+#: components/course-exercises/course-exercises.html:14
+msgid "COMPLETED"
+msgstr "KONČANO"
+
+#: components/course-exercises/course-exercises.html:15
+msgid "START"
+msgstr "ZAČNI"
+
+#: components/course-exercises/course-exercises.html:40
+#: components/exercise-intro/exercise-intro.html:9
+msgid "minutes"
+msgstr "minut"
+
+#: components/course-intro/course-intro.html:18
+msgid "REVIEW THE COURSE"
+msgstr "PREGLEJ TEČAJ"
+
+#: components/course-intro/course-intro.html:19
+msgid "CONTINUE THE COURSE"
+msgstr "NADALJUJ TEČAJ"
+
+#: components/course-intro/course-intro.html:20
+msgid "START THE COURSE"
+msgstr "ZAČNI TEČAJ"
+
+#: components/course-intro/course-intro.html:39
+msgid "exercises finished"
+msgstr "končanih vaj"
+
+#: components/course-intro/course-intro.html:67
+#: components/exercise-finished/exercise-finished.html:33
+msgid "COLLECT BADGE!"
+msgstr "PRIDOBI ZNAČKO"
+
+#: components/course-intro/course-intro.html:91
+msgid "BADGE NOT COLLECTED YET"
+msgstr "ZNAČKA ŠE NI PRIDOBLJENA"
+
+#: components/courses-list-intro/courses-list-intro.html:7
+msgid "COURSES"
+msgstr "TEČAJI"
+
+#: components/exercise-base-material/exercise-base-material.html:36
+msgid "Question"
+msgstr "Vprašanje"
+
+#: components/exercise-base-material/exercise-base-material.html:141
+msgid "Submit"
+msgstr "Pošlji"
+
+#: components/exercise-base-material/exercise-base-material.html:146
+msgid "Explanation"
+msgstr "Razlaga"
+
+#: components/exercise-base-material/exercise-base-material.html:153
+msgid "Next page"
+msgstr "Naslednja stran"
+
+#: components/exercise-base-material/exercise-base-material.html:154
+msgid "Previous page"
+msgstr "Prejšnja stran"
+
+#: components/exercise-base-material/exercise-base-material.html:155
+msgid "Finish exercise"
+msgstr "Končaj vajo"
+
+#: home/models/pages.py:21
+msgid "Introduction text"
+msgstr ""
+
+#: home/models/pages.py:25
+msgid "Courses description"
+msgstr ""
+
+#: home/models/pages.py:33
+msgid "Courses page"
+msgstr ""
+
+#: home/models/pages.py:37
+msgid "Resources description"
+msgstr ""
+
+#: home/models/pages.py:50 home/models/settings.py:12
+#: home/models/settings.py:28
+msgid "Title"
+msgstr ""
+
+#: home/models/pages.py:57 home/models/settings.py:16
+msgid "Page"
+msgstr ""
+
+#: home/models/pages.py:65 home/models/pages.py:138
+msgid "Description"
+msgstr ""
+
+#: home/models/pages.py:80 home/models/pages.py:91
+msgid "Image"
+msgstr ""
+
+#: home/models/pages.py:87 home/models/settings.py:32
+msgid "Link"
+msgstr ""
+
+#: home/models/pages.py:96
+msgid "Images"
+msgstr ""
+
+#: home/models/pages.py:101 home/models/settings.py:21
+msgid "Internal link"
+msgstr ""
+
+#: home/models/pages.py:106
+msgid "About columns"
+msgstr ""
+
+#: home/models/pages.py:142
+msgid "Link URL"
+msgstr ""
+
+#: home/models/pages.py:157
+msgid "Body"
+msgstr ""
+
+#: home/models/pages.py:172
+msgid "Introduction text (English)"
+msgstr ""
+
+#: home/models/pages.py:177
+msgid "Introduction text (Slovenian)"
+msgstr ""
+
+#: home/models/pages.py:182
+msgid "Introduction text (Italian)"
+msgstr ""
+
+#: home/models/pages.py:187
+msgid "Introduction text (Catalan)"
+msgstr ""
+
+#: home/models/pages.py:229
+msgid "Course language"
+msgstr ""
+
+#: home/models/pages.py:237
+msgid "Course image"
+msgstr ""
+
+#: home/models/pages.py:241
+msgid "Course overview"
+msgstr ""
+
+#: home/models/pages.py:245
+msgid "Claim badge URL"
+msgstr ""
+
+#: home/models/pages.py:246
+msgid "URL where users can claim their badge after completing a course"
+msgstr ""
+
+#: home/models/pages.py:254
+msgid "Badge image"
+msgstr ""
+
+#: home/models/pages.py:352
+msgid "Category description"
+msgstr ""
+
+#: home/models/pages.py:366
+msgid "Exercise description"
+msgstr ""
+
+#: home/models/pages.py:369
+msgid "Estimated time (minutes)"
+msgstr ""
+
+#: home/models/pages.py:377
+msgid "Category"
+msgstr ""
+
+#: home/models/pages.py:380
+msgid "Order"
+msgstr ""
+
+#: home/models/pages.py:386
+msgid "Congratulations text"
+msgstr ""
+
+#: home/models/pages.py:387
+msgid "Text to show when this exercise is finished"
+msgstr ""
+
+#: home/models/pages.py:509 home/models/pages.py:595
+msgid "Option text"
+msgstr ""
+
+#: home/models/pages.py:513
+msgid "Option image"
+msgstr ""
+
+#: home/models/pages.py:518
+msgid "Is correct"
+msgstr ""
+
+#: home/models/pages.py:523
+msgid "Answer option"
+msgstr ""
+
+#: home/models/pages.py:530 home/models/pages.py:553 home/models/pages.py:576
+#: home/models/pages.py:607 home/models/pages.py:651
+msgid "Question text"
+msgstr ""
+
+#: home/models/pages.py:534 home/models/pages.py:557 home/models/pages.py:580
+#: home/models/pages.py:611 home/models/pages.py:655
+msgid "Explanation text"
+msgstr ""
+
+#: home/models/pages.py:541 home/models/pages.py:564 home/models/pages.py:662
+msgid "Answer options"
+msgstr ""
+
+#: home/models/pages.py:546
+msgid "Multiple Choice Question"
+msgstr ""
+
+#: home/models/pages.py:569
+msgid "One Correct Answer Question"
+msgstr ""
+
+#: home/models/pages.py:587
+msgid "Text Answer Question"
+msgstr ""
+
+#: home/models/pages.py:600
+msgid "Priority option"
+msgstr ""
+
+#: home/models/pages.py:618
+msgid "Priority options"
+msgstr ""
+
+#: home/models/pages.py:620
+msgid ""
+"List the options in the correct order here, users will get a random order of "
+"these options to sort!"
+msgstr ""
+
+#: home/models/pages.py:627
+msgid "Order by Priority Question"
+msgstr ""
+
+#: home/models/pages.py:635
+msgid "Left option text"
+msgstr ""
+
+#: home/models/pages.py:639
+msgid "Right option text"
+msgstr ""
+
+#: home/models/pages.py:644
+msgid "Connect Two Answers Option"
+msgstr ""
+
+#: home/models/pages.py:667
+msgid "Connect Two Answers Question"
+msgstr ""
+
+#: home/models/pages.py:673
+msgid "Text"
+msgstr ""
+
+#: home/models/pages.py:677
+msgid "Video URL"
+msgstr ""
+
+#: home/models/pages.py:689
+msgid "Questions"
+msgstr ""
+
+#: home/models/pages.py:690
+msgid "Add questions for this material"
+msgstr ""
+
+#: home/models/pages.py:728 home/models/pages.py:751 home/models/pages.py:770
+msgid "User"
+msgstr ""
+
+#: home/models/pages.py:731
+msgid "Base Material Page ID"
+msgstr ""
+
+#: home/models/pages.py:735
+msgid "Question ID"
+msgstr ""
+
+#: home/models/pages.py:738
+msgid "Answer data"
+msgstr ""
+
+#: home/models/pages.py:742
+msgid "Answered at"
+msgstr ""
+
+#: home/models/pages.py:757
+msgid "Base Material"
+msgstr ""
+
+#: home/models/pages.py:761 home/models/pages.py:780
+msgid "Finished at"
+msgstr ""
+
+#: home/models/settings.py:37
+msgid "External link"
+msgstr ""
+
+#: home/models/settings.py:48
+msgid "Navigation"
+msgstr ""
+
+#: home/models/settings.py:56
+msgid "Header Settings"
+msgstr ""
+
+#: home/models/settings.py:64
+msgid "Suggest courses text"
+msgstr ""
+
+#: home/models/settings.py:69
+msgid "Suggest courses text 2"
+msgstr ""
+
+#: home/models/settings.py:78
+msgid "Terms of use link"
+msgstr ""
+
+#: home/models/settings.py:87
+msgid "Privacy policy link"
+msgstr ""
+
+#: home/models/settings.py:98
+msgid "Miscellaneous Settings"
+msgstr ""
+
+#: users/forms.py:14
+msgid "Email"
+msgstr ""
+
+#: users/forms.py:17 users/forms.py:50 users/forms.py:63
+msgid "Nationality or country of residence"
+msgstr ""
+
+#: users/forms.py:21 users/forms.py:54 users/forms.py:67
+msgid "Are you a young person or youth worker?"
+msgstr ""
+
+#: users/forms.py:26
+msgid "By creating an account, I agree to our Terms of use and Privacy Policy."
+msgstr ""
+
+#: users/models.py:47
+msgid "email address"
+msgstr ""
+
+#: users/models.py:48
+msgid "first name"
+msgstr ""
+
+#: users/models.py:49
+msgid "last name"
+msgstr ""
