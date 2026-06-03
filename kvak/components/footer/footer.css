@@ -1,13 +1,40 @@
 .footer-component {
   .contact {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 195px;
+    padding: 2rem;
     background: var(--color-green-lightest);
     border-radius: 20px;
     font-size: 1.75rem;
-    font-weight: 600;
+    line-height: 1.2;
+    font-weight: 500;
+    text-align: center;
+
+    @media (max-width: 575.98px) {
+      font-size: 1.25rem;
+    }
+
+    p {
+      &:not(:last-child) {
+        margin-bottom: 0.75rem;
+
+        @media (max-width: 575.98px) {
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      a {
+        font-weight: inherit;
+        color: inherit;
+        text-decoration: underline;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
   }
 
   .eu-fund {
