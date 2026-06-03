@@ -11,14 +11,28 @@
             <div>Exercise {{ forloop.counter }}</div>
             <h2>{{ exercise.title }}</h2>
           </div>
-          {% if forloop.counter < start_exercise_index or user_progress.finished == user_progress.total %}
-          <div class="start-button">
-            {% component "arrow-button" text="COMPLETED" href=exercise.get_url / %}
-          </div>
-          {% elif forloop.counter == start_exercise_index %}
-          <div class="start-button">
-            {% component "arrow-button" primary=True text="START" href=exercise.get_url / %}
-          </div>
+          {% if user_progress.finished_ids and user_progress.total_ids %}
+            {% if exercise.id in user_progress.finished_ids %}
+            <div class="start-button">
+              {% component "arrow-button" text="COMPLETED" href=exercise.get_url / %}
+            </div>
+            {% elif exercise.id == start_exercise_page.id %}
+            <div class="start-button">
+              {% component "arrow-button" primary=True text="START" href=exercise.get_url / %}
+            </div>
+            {% else %}
+            {{user_progress.finished_ids}}
+            {% endif %}
+          {% else %}
+            {% if forloop.counter < start_exercise_index or user_progress.finished == user_progress.total %}
+            <div class="start-button">
+              {% component "arrow-button" text="COMPLETED" href=exercise.get_url / %}
+            </div>
+            {% elif forloop.counter == start_exercise_index %}
+            <div class="start-button">
+              {% component "arrow-button" primary=True text="START" href=exercise.get_url / %}
+            </div>
+            {% endif %}
           {% endif %}
         </summary>
         <div class="exercise-content">

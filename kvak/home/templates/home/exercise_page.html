@@ -8,7 +8,7 @@
 {% component "exercise-intro" / %}
 {% if show_finished_page %}
 {% component "exercise-finished" / %}
-{% component "course-exercises" course_page=course_page / %}
+{% component "course-exercises" course_page=course_page user_progress=course_user_progress / %}
 {% component "back-to-course" course_page=course_page / %}
 {% else %}
 {% component "exercise-base-material" / %}

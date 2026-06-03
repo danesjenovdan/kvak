@@ -23,6 +23,14 @@
         {% else %}
         {% component "arrow-button" primary=True hide_arrow=True text="🏁 START THE COURSE 🏁" href="{{ start_exercise_page.get_url }}" / %}
         {% endif %}
+      {% elif start_exercise_page %}
+        {% if user_progress.finished == user_progress.total %}
+        {% component "arrow-button" primary=True hide_arrow=True text="🏁 REVIEW THE COURSE 🏁" href="{{ start_exercise_page.get_url }}" / %}
+        {% elif user_progress.finished > 0 %}
+        {% component "arrow-button" primary=True hide_arrow=True text="🏁 CONTINUE THE COURSE 🏁" href="{{ start_exercise_page.get_url }}" / %}
+        {% else %}
+        {% component "arrow-button" primary=True hide_arrow=True text="🏁 START THE COURSE 🏁" href="{{ start_exercise_page.get_url }}" / %}
+        {% endif %}
       {% endif %}
       <div class="exercise-progress">
         <div class="num"><strong>{{ user_progress.finished }}/{{ user_progress.total }}</strong> exercises finished</div>
