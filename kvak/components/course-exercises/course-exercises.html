@@ -24,8 +24,9 @@
         <div class="exercise-content">
           <div class="exercise-metadata">
             <div class="time">⏱️ {{ exercise.estimated_time }} minutes</div>
-            |
-            <div class="category">📂 {{ exercise.category }}</div>
+            {% if exercise.category %}
+            | <div class="category">📂 {{ exercise.category }}</div>
+            {% endif %}
           </div>
           {{ exercise.description|richtext }}
         </div>

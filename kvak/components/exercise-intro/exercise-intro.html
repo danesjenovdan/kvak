@@ -6,8 +6,9 @@
     <div class="exercise-content">
       <div class="exercise-metadata">
         <div class="time">⏱️ {{ page.estimated_time }} minutes</div>
-        |
-        <div class="category">📂 {{ page.category }}</div>
+        {% if page.category %}
+        | <div class="category">📂 {{ page.category }}</div>
+        {% endif %}
       </div>
       {{ page.description|richtext }}
     </div>
