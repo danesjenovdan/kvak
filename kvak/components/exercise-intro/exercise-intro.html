@@ -12,10 +12,17 @@
       </div>
       {{ page.description|richtext }}
     </div>
+    {% if not base_material_page %}
+    <p>
+      <strong>Base material page does not exist.</strong>
+    </p>
+    {% endif %}
   </div>
 </div>
 
+{% if user_progress.total > 0 %}
 <div class="exercise-intro-component-exercise-progress">
   <div class="num"><strong>{{ base_material_page_index }}/{{ user_progress.total }}</strong></div>
   {% component "progress-pips" progress=user_progress current=base_material_page_index / %}
 </div>
+{% endif %}

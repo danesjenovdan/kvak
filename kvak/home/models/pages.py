@@ -352,9 +352,12 @@ class ExercisePage(RoutablePageMixin, Page):
                 page_index = 1
             page_index = max(1, min(user_progress.total, page_index))
 
+            base_material_pages = self.get_children().type(BaseMaterialPage).specific()
             context["base_material_page_index"] = page_index
             context["base_material_page"] = (
-                self.get_children().type(BaseMaterialPage).specific()[page_index - 1]
+                base_material_pages[page_index - 1]
+                if page_index <= len(base_material_pages)
+                else None
             )
             context["base_material_next_page_index"] = (
                 page_index + 1 if page_index < user_progress.total else None
