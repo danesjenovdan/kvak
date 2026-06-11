@@ -1,0 +1,52 @@
+services:
+  kvak:
+    build: ./kvak
+    working_dir: /app
+    command: >
+      sh -c "python manage.py collectstatic --no-input &&
+        python manage.py migrate --no-input &&
+        gunicorn kvak.wsgi:application -b 0.0.0.0:8000 --log-level DEBUG --workers 1 --threads 3 --timeout 90"
+    user: "wagtail:wagtail"
+    volumes:
+      - ${PERSISTENT_DATA_DIR}/kvak-storage:/storage
+    environment:
+      # --- GENERAL SETTINGS ---
+      DJANGO_SETTINGS_MODULE: kvak.settings.prod
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DATABASE_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      DJANGO_STATIC_ROOT: /storage/static
+      DJANGO_STATIC_URL_BASE: /static/
+      # --- EMAIL SETTINGS ---
+      DJANGO_EMAIL_BACKEND: ${DJANGO_EMAIL_BACKEND}
+      DJANGO_EMAIL_HOST: ${DJANGO_EMAIL_HOST}
+      DJANGO_EMAIL_HOST_PASSWORD: ${DJANGO_EMAIL_HOST_PASSWORD}
+      DJANGO_EMAIL_HOST_USER: ${DJANGO_EMAIL_HOST_USER}
+      DJANGO_EMAIL_PORT: ${DJANGO_EMAIL_PORT}
+      DJANGO_EMAIL_USE_SSL: ${DJANGO_EMAIL_USE_SSL}
+      DJANGO_EMAIL_USE_TLS: ${DJANGO_EMAIL_USE_TLS}
+      DJANGO_REPLY_TO_EMAIL: ${DJANGO_REPLY_TO_EMAIL}
+      DJANGO_FROM_EMAIL: ${DJANGO_FROM_EMAIL}
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  web:
+    image: nginx:alpine
+    volumes:
+      - ${PERSISTENT_DATA_DIR}/kvak-storage:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:80"
+    depends_on:
+      - kvak
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: kvak
+      POSTGRES_USER: kvak
+      POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD}
+    volumes:
+      - ${PERSISTENT_DATA_DIR}/postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
